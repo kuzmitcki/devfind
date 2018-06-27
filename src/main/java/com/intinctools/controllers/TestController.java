@@ -23,22 +23,7 @@ import java.util.Collections;
 public class TestController {
 
 
-    private final UserRepo userRepo;
-
-
-    private final WorkDayRepo workDayRepo;
-
-
-    private final SpecializationRepo specializationRepo;
-
     private final static Logger LOGGER = LoggerFactory.getLogger(TestController.class);
-
-    @Autowired
-    public TestController(UserRepo userRepo, WorkDayRepo workDayRepo, SpecializationRepo specializationRepo) {
-        this.userRepo = userRepo;
-        this.workDayRepo = workDayRepo;
-        this.specializationRepo = specializationRepo;
-    }
 
     @GetMapping("/login")
     public String login(){

@@ -1,12 +1,5 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-
-logging page
-
-</body>
-</html>
+<#import "macros/page.ftl" as p>
+<#import "macros/login(out).ftl" as l>
+<@p.page>
+    <@l.login "/login"/>
+</@p.page>

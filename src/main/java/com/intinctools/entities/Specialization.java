@@ -1,14 +1,13 @@
 package com.intinctools.entities;
 
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
-
+import lombok.*;
 import javax.persistence.*;
 
 @Entity
 @Getter
 @Setter
+@ToString
+@NoArgsConstructor
 public class Specialization {
 
     @Id
@@ -17,11 +16,7 @@ public class Specialization {
 
     private String skills;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id" , nullable = false)
-    private User user;
-
-    private boolean workEnable;
-
-
+    public Specialization(String skills) {
+        this.skills = skills;
+    }
 }

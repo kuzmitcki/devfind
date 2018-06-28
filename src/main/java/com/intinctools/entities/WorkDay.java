@@ -1,31 +1,30 @@
 package com.intinctools.entities;
 
-import lombok.Data;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.sql.Time;
 
 @Entity
 @Getter
 @Setter
+@NoArgsConstructor
 public class WorkDay {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    private Time start;
+    private int start;
 
-    private Time end;
+    private int end;
 
     private int schedule;
 
-    @OneToOne
-    @JoinColumn(name = "user_id" , nullable = false)
+    @OneToOne(mappedBy = "workDay")
     private User user;
 
-    public WorkDay(Time start, Time end, int schedule) {
+    public WorkDay(int start, int end, int schedule) {
         this.start = start;
         this.end = end;
         this.schedule = schedule;

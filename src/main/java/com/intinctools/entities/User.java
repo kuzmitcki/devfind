@@ -1,8 +1,6 @@
 package com.intinctools.entities;
 
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -14,6 +12,8 @@ import java.util.Set;
 @Entity
 @Getter
 @Setter
+@NoArgsConstructor
+@ToString
 public class User implements UserDetails {
 
     @Id
@@ -24,22 +24,31 @@ public class User implements UserDetails {
 
     private String password;
 
+
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "roles", joinColumns = @JoinColumn(name = "user_id"))
     @Enumerated(EnumType.STRING)
     private Set<Role> roles;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(cascade = CascadeType.ALL , orphanRemoval = true , fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_id")
     private Set<Specialization> specializations;
 
     private boolean enable;
 
-    @OneToOne(mappedBy = "user")
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name="work_id")
     private WorkDay workDay;
 
     @Email
     private String  email;
 
+
+    public User(String username, String password , String email) {
+        this.username = username;
+        this.password = password;
+        this.email = email;
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -68,6 +77,6 @@ public class User implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return isEnable();
+        return true;
     }
 }

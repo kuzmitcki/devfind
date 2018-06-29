@@ -2,30 +2,32 @@ package com.intinctools.controllers;
 
 import com.intinctools.entities.User;
 import com.intinctools.repo.UserRepo;
-import com.intinctools.service.UserService;
+import com.intinctools.service.DeveloperService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
 @Controller
 public class DeveloperController {
 
 
-    private final UserService userService;
+    private final DeveloperService developerService;
 
     @Autowired
     private UserRepo userRepo;
 
     @Autowired
-    public DeveloperController(UserService userService) {
-        this.userService = userService;
+    public DeveloperController(DeveloperService developerService) {
+        this.developerService = developerService;
     }
 
 
     @PostMapping("/developer")
     public String developerRegistration(User user , Model model){
-        if (userService.saveDeveloper(user)){
+        if (developerService.saveDeveloper(user)){
             return "redirect:/login";
         }
         model.addAttribute("message" , "User already exits");
@@ -37,25 +39,24 @@ public class DeveloperController {
         return "developerRegistration";
     }
 
+
     @GetMapping("/information")
-    public String informationPage(){
+    @PreAuthorize("hasAuthority(\"DEVELOPER\")")
+    public String informationPage(@AuthenticationPrincipal User user,
+                                  Model model){
+        model.addAttribute("user" , user);
         return "information";
     }
 
 
-    /*
-        fix problem with date
-     */
     @PostMapping("/information")
+    @PreAuthorize("hasAuthority('DEVELOPER')")
     public String addInformation(@AuthenticationPrincipal User user,
-                                 @RequestParam(value = "start" , required = false) int start,
-                                 @RequestParam(value = "end",  required = false) int end,
+                                 @RequestParam(value = "start" , required = false) String start,
+                                 @RequestParam(value = "end",  required = false) String end,
                                  @RequestParam(value = "schedule" , required = false) String schedule,
                                  @RequestParam(value = "skill" ,required = false) String skill){
-       if (schedule.equals("")){
-           schedule = String.valueOf(user.getWorkDay().getSchedule());
-       }
-        userService.addInformation(user , skill,  end , start,  Integer.parseInt(schedule));
+        developerService.addInformation(user , skill,  end , start, schedule);
         return "welcomePage";
     }
 }

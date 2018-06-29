@@ -1,6 +1,7 @@
 package com.intinctools.config;
 
-import com.intinctools.service.UserService;
+import com.intinctools.service.DeveloperService;
+import com.intinctools.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -15,18 +16,21 @@ import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private final UserService userService;
+    private final EmployeeService employeeService;
+
+    private final DeveloperService developerService;
 
     @Autowired
-    public WebSecurityConfig(UserService userService) {
-        this.userService = userService;
+    public WebSecurityConfig(EmployeeService employeeService, DeveloperService developerService) {
+        this.employeeService = employeeService;
+        this.developerService = developerService;
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                    .antMatchers("/", "/employee","/developer").permitAll()
+                    .antMatchers("/", "/employee","/developer" , "/time").permitAll()
                     .anyRequest().authenticated()
                 .and()
                     .formLogin()
@@ -39,7 +43,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userService)
+        auth.userDetailsService(employeeService)
+                .passwordEncoder(NoOpPasswordEncoder.getInstance());
+        auth.userDetailsService(developerService)
                 .passwordEncoder(NoOpPasswordEncoder.getInstance());
     }
 

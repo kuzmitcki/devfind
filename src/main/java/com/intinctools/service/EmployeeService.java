@@ -3,8 +3,8 @@ package com.intinctools.service;
 import com.intinctools.entities.Role;
 import com.intinctools.entities.Specialization;
 import com.intinctools.entities.User;
-import com.intinctools.entities.WorkDay;
 import com.intinctools.repo.UserRepo;
+import org.omg.CORBA.PUBLIC_MEMBER;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -12,15 +12,18 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
 
 
 @Service
-public class UserService implements UserDetailsService {
+public class EmployeeService implements UserDetailsService {
 
     private final UserRepo userRepo;
 
+
     @Autowired
-    public UserService(UserRepo userRepo) {
+    public EmployeeService(UserRepo userRepo) {
         this.userRepo = userRepo;
     }
 
@@ -29,10 +32,6 @@ public class UserService implements UserDetailsService {
         return userRepo.findByUsername(username);
     }
 
-
-    /**
-     *Do something with this methods
-     */
 
     public boolean saveEmployee(User user){
         User userFromDb = userRepo.findByUsername(user.getUsername());
@@ -45,25 +44,18 @@ public class UserService implements UserDetailsService {
         return true;
     }
 
-    public boolean saveDeveloper(User user) {
-        User userFromDb = userRepo.findByUsername(user.getUsername());
-        if(userFromDb!=null){
-            return false;
+
+
+    public List<User> searchForDevelopers(String skills){
+        Iterable<User> byRoles = userRepo.findByRoles(Collections.singleton(Role.DEVELOPER));
+        List<User> userBySkills = new LinkedList<>();
+        for (User byRole : byRoles) {
+            if (byRole.getSpecializations().toString().contains(skills)){
+                userBySkills.add(byRole);
+            }
         }
-        user.setEnable(true);
-        user.setRoles(Collections.singleton(Role.DEVELOPER));
-        userRepo.save(user);
-        return true;
+        return userBySkills;
     }
 
-    public void addInformation(User user, String skill, int end, int start, int schedule){
-        Specialization specialization = new Specialization(skill);
-        user.getSpecializations().clear();
-        WorkDay workDay = user.getWorkDay();
-        workDay.setEnd(end);
-        workDay.setStart(start);
-        workDay.setSchedule(schedule);
-        user.getSpecializations().add(specialization);
-        userRepo.save(user);
-    }
+
 }

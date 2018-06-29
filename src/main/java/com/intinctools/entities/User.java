@@ -17,7 +17,7 @@ import java.util.Set;
 public class User implements UserDetails {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     private String username;
@@ -36,8 +36,9 @@ public class User implements UserDetails {
 
     private boolean enable;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name="work_id")
+
+
+    @OneToOne(cascade=CascadeType.ALL)
     private WorkDay workDay;
 
     @Email

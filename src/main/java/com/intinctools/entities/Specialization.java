@@ -6,7 +6,6 @@ import javax.persistence.*;
 @Entity
 @Getter
 @Setter
-@ToString
 @NoArgsConstructor
 public class Specialization {
 
@@ -18,5 +17,10 @@ public class Specialization {
 
     public Specialization(String skills) {
         this.skills = skills;
+    }
+
+    @Override
+    public String toString() {
+        return skills ;
     }
 }

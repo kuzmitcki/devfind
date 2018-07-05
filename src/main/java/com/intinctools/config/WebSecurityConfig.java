@@ -1,7 +1,6 @@
 package com.intinctools.config;
 
-import com.intinctools.service.DeveloperService;
-import com.intinctools.service.EmployeeService;
+import com.intinctools.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -11,26 +10,26 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 
+
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private final EmployeeService employeeService;
 
-    private final DeveloperService developerService;
+    private final UserService userService;
 
     @Autowired
-    public WebSecurityConfig(EmployeeService employeeService, DeveloperService developerService) {
-        this.employeeService = employeeService;
-        this.developerService = developerService;
+    public WebSecurityConfig(UserService userService) {
+        this.userService = userService;
     }
 
+
     @Override
-    protected void configure(HttpSecurity http) throws Exception {
+    protected void configure(final HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                    .antMatchers("/", "/employee","/developer" , "/time").permitAll()
+                    .antMatchers("/", "/employee", "/developer", "/static/**").permitAll()
                     .anyRequest().authenticated()
                 .and()
                     .formLogin()
@@ -42,11 +41,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(employeeService)
-                .passwordEncoder(NoOpPasswordEncoder.getInstance());
-        auth.userDetailsService(developerService)
-                .passwordEncoder(NoOpPasswordEncoder.getInstance());
+    protected void configure(final AuthenticationManagerBuilder auth) throws Exception {
+           auth.userDetailsService(userService)
+                   .passwordEncoder(NoOpPasswordEncoder.getInstance());
     }
 
 

@@ -2,7 +2,4 @@
 <#import "macros/login(out).ftl" as l>
 <@p.page>
     <@l.login "/login"/>
-
-
-
 </@p.page>

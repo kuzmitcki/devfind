@@ -12,4 +12,9 @@ public interface EmployeeService {
 
     void addJob(User user, String title, String fullDescription, String shortDescription, String desiredExperience,
                 Long fromSalary, Long toSalary, String company, String jobType, String salaryPeriod);
+
+    boolean checkEmployeeEditing(User user, Long id);
+
+    void editJob(User user, String title, String fullDescription, String shortDescription, String desiredExperience,
+                 String fromSalary, String  toSalary, String company, String jobType, String salaryPeriod, Long id);
 }

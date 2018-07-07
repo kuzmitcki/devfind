@@ -5,9 +5,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 @Getter
@@ -29,6 +27,9 @@ public class Job {
     private String company;
     private String jobType;
     private String salaryPeriod;
+    @ManyToOne
+    private Employee employee;
+
 
     public Job(String title, String fullDescription, String shortDescription, String desiredExperience, Long fromSalary, Long toSalary, String company, String jobType, String salaryPeriod) {
         this.title = title;

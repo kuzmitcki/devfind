@@ -1,20 +1,15 @@
 package com.intinctools.entities.empEntites;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
 @ToString
+@EqualsAndHashCode
 public class Address {
         @Id
         @GeneratedValue(strategy = GenerationType.AUTO)
@@ -26,7 +21,8 @@ public class Address {
         private String street;
         private String zipPostalCode;
         private String telephone;
-
+        @ManyToOne
+        private Employee employee;
 
 
         public Address(String country, String state, String street, String zipPostalCode, String telephone) {

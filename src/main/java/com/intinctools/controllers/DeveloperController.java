@@ -35,7 +35,7 @@ public class DeveloperController {
                                 @RequestParam("email") String email,
                                 RedirectAttributes attribute) {
         if (developerService.saveDeveloper(user, email)) {
-            return "redirect:/developer";
+            return "redirect:/";
         }
         attribute.addFlashAttribute("message", "User already exists");
         return "redirect:/developer";

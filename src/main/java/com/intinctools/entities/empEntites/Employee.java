@@ -1,19 +1,16 @@
 package com.intinctools.entities.empEntites;
 
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
-@ToString
 public class Employee {
         @Id
         @GeneratedValue(strategy = GenerationType.AUTO)
@@ -31,7 +28,28 @@ public class Employee {
         private Set<Job> jobs;
 
 
-        public Employee(String email) {
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Employee employee = (Employee) o;
+        return id == employee.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
+
+    public Employee(String email) {
             this.email = email;
+        }
+
+        @Override
+        public String toString() {
+                return "Employee{" +
+                        "id=" + id +
+                        ", email='" + email + '\'' +
+                        '}';
         }
 }

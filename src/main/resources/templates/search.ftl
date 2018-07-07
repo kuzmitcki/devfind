@@ -1,5 +1,5 @@
 <#import "macros/page.ftl" as p>
-<#import "macros/login(out).ftl" as l>
+<#--<#import "macros/login(out).ftl" as l>-->
 <@p.page>
 
     <#list developers as developer>

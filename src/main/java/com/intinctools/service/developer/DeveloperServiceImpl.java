@@ -11,6 +11,8 @@ import com.intinctools.repo.AddressRepo;
 import com.intinctools.repo.JobRepo;
 import com.intinctools.repo.UserRepo;
 import com.intinctools.service.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
@@ -104,7 +106,7 @@ public class DeveloperServiceImpl extends UserService implements DeveloperServic
         if (title.equals("")) {
             return Collections.emptyList();
         }
-        return jobRepo.findByTitleIgnoreCaseContaining(title);
+        return jobRepo.findByTitleIgnoreCaseLike("%" + title + "%");
     }
 
     @Override
@@ -113,20 +115,26 @@ public class DeveloperServiceImpl extends UserService implements DeveloperServic
         if (experience.equals("")) {
             return Collections.emptyList();
         }
-        return jobRepo.findByDesiredExperienceIgnoreCaseLike("%" + experience + "%");
+        experience = experience.trim().replaceAll(" +", " ");
+        String[] words = experience.split("\\s");
+        List<Job> jobs = new LinkedList<>();
+        for (String word : words) {
+            jobs.addAll(jobRepo.findByDesiredExperienceIgnoreCaseLike("%"+ word +"%"));
+        }
+        return jobs;
     }
 
     @Override
     @Transactional(isolation = Isolation.SERIALIZABLE)
-    public List<Job> findEmployeesByDescription(String jobDescription) {
+    public Set<Job> findEmployeesByDescription(String jobDescription) {
         if (jobDescription.equals("")) {
-            return Collections.emptyList();
+            return Collections.emptySet();
         }
         jobDescription = jobDescription.trim().replaceAll(" +", " ");
         String[] words = jobDescription.split("\\s");
-        List<Job> jobs = new LinkedList<>();
+        Set<Job> jobs = new HashSet<>();
         for (String word : words) {
-            jobs.addAll(jobRepo.findByFullDescriptionIgnoreCaseContaining(word));
+            jobs.addAll(jobRepo.findByFullDescriptionIgnoreCaseLike("%" + word + "%"));
         }
         return jobs;
     }
@@ -137,7 +145,7 @@ public class DeveloperServiceImpl extends UserService implements DeveloperServic
         if (company.equals("")) {
             return Collections.emptyList();
         }
-        return jobRepo.findByCompanyIgnoreCaseContaining(company);
+        return jobRepo.findByCompanyIgnoreCaseLike("%" + company + "%");
     }
 
     @Override
@@ -151,18 +159,28 @@ public class DeveloperServiceImpl extends UserService implements DeveloperServic
 
     @Override
     @Transactional(isolation = Isolation.SERIALIZABLE)
-    public Set<Job> findEmployeeBySalary(Long fromSalary, Long toSalary) {
-        if (String.valueOf(fromSalary).equals("") && !String.valueOf(toSalary).equals("")){
-            return jobRepo.findByToSalaryLessThanEqual(toSalary);
+    public Collection<Job> findEmployeeBySalary(String fromSalary, String toSalary) {
+        if (fromSalary.equals("") && !toSalary.equals("")){
+            return jobRepo.findByToSalaryLessThanEqual(Long.valueOf(toSalary));
         }
-        if (String.valueOf(toSalary).equals("") && !String.valueOf(fromSalary).equals("")){
-            return jobRepo.findByFromSalaryGreaterThanEqual(fromSalary);
+        if (!fromSalary.equals("") && toSalary.equals("")){
+            return jobRepo.findByFromSalaryGreaterThanEqual(Long.valueOf(fromSalary));
         }
-        if (String.valueOf(fromSalary).equals("") && String.valueOf(toSalary).equals("")){
-            return (Set<Job>) jobRepo.findAll();
+        if (fromSalary.equals("") && toSalary.equals("")){
+            return jobRepo.findAll();
         }
-        if (!String.valueOf(fromSalary).equals("") && !String.valueOf(toSalary).equals("")){
-            return jobRepo.findByFromSalaryAndToSalaryBetween(fromSalary, toSalary);
+        if (!fromSalary.equals("") && !toSalary.equals("")){
+            Set<Job> fromSalarySet = jobRepo.findByFromSalaryGreaterThanEqual(Long.valueOf(fromSalary));
+            Set<Job> toSalarySet = jobRepo.findByToSalaryLessThanEqual(Long.valueOf(toSalary));
+            Set<Job> jobs = new HashSet<>();
+            for (Job fromSalaryJob : toSalarySet) {
+                for (Job toSalaryJob : fromSalarySet) {
+                    if (fromSalaryJob.equals(toSalaryJob)){
+                        jobs.add(fromSalaryJob);
+                    }
+                }
+            }
+            return jobs;
         }
         return Collections.emptySet();
     }
@@ -171,21 +189,36 @@ public class DeveloperServiceImpl extends UserService implements DeveloperServic
     @Override
     @Transactional(isolation = Isolation.SERIALIZABLE)
     public Set<Job> findEmployeesByJobDescription(String jobDescription) {
-        if (findEmployeesByTitle(jobDescription).isEmpty()) {
-            if (findEmployeesByDesiredExperience(jobDescription).isEmpty()) {
-                if (findEmployeesByDescription(jobDescription).isEmpty()) {
-                    return Collections.emptySet();
-                } else {
-                    return new HashSet<>(findEmployeesByDescription(jobDescription));
+       if (findEmployeesByTitle(jobDescription).isEmpty()){
+           if (findEmployeesByDesiredExperience(jobDescription).isEmpty()){
+               if (findEmployeesByDescription(jobDescription).isEmpty()){
+                   return Collections.emptySet();
+               }else {
+                   return new HashSet<>(findEmployeesByDescription(jobDescription));
+               }
+           }else {
+               HashSet<Job> jobs = new HashSet<>(findEmployeesByDesiredExperience(jobDescription));
+               jobs.addAll(findEmployeesByDescription(jobDescription));
+               return jobs;
+           }
+       }else {
+           return new HashSet<>(findEmployeesByTitle(jobDescription));
+       }
+    }
+
+    @Override
+    public Set<Job> findEmployeesBySalaryAndSalaryPeriod(String fromSalary, String toSalary, String salaryPeriod) {
+        Set<Job> employeesBySalaryPeriod = new HashSet<>(findEmployeesBySalaryPeriod(salaryPeriod));
+        Collection<Job> employeeBySalary = findEmployeeBySalary(fromSalary, toSalary);
+        Set<Job> jobWithSalaryAndPeriod  = new HashSet<>();
+        for (Job job : employeeBySalary) {
+            for (Job salaryPeriodJob: employeesBySalaryPeriod) {
+                if (job.equals(salaryPeriodJob)){
+                    jobWithSalaryAndPeriod.add(job);
                 }
-            } else {
-                Set<Job> jobSet = new HashSet<>(findEmployeesByDescription(jobDescription));
-                jobSet.addAll(findEmployeesByDesiredExperience(jobDescription));
-                return jobSet;
             }
-        } else {
-            return new HashSet<>(findEmployeesByTitle(jobDescription));
         }
+        return jobWithSalaryAndPeriod;
     }
 
 
@@ -229,6 +262,51 @@ public class DeveloperServiceImpl extends UserService implements DeveloperServic
         } else {
             return new HashSet<>(findEmployeesByCountry(jobLocation));
         }
+    }
+
+    @Override
+    @Transactional(isolation = Isolation.SERIALIZABLE)
+    public Set<Job> advancedSearch(String title, String salaryPeriod, String company, String keywords,
+                                   String fullDescription, String location,
+                                   String fromSalary, String toSalary) {
+        Set<Job> employeesByDescription = findEmployeesByDescription(fullDescription);
+        Set<Job> employeesBySalaryAndSalaryPeriod = findEmployeesBySalaryAndSalaryPeriod(fromSalary, toSalary, salaryPeriod);
+        Collection<Job> employeeBySalary = findEmployeeBySalary(fromSalary, toSalary);
+        List<Job> employeesByCompany = findEmployeesByCompany(company);
+        Set<Job> withAddressKeywords = findWithAddress(keywords, location);
+        Set<Job> withAddressTitle = findWithAddress(title, location);
+        Set<Job> jobs = new HashSet<>();
+        if (!withAddressKeywords.isEmpty()){
+            for (Job withAddressKeyword : withAddressKeywords) {
+                if (employeesByDescription.isEmpty()){
+                    jobs.add(withAddressKeyword);
+                }else {
+                    for (Job byDescription : employeesByDescription) {
+                        if (withAddressKeyword.equals(byDescription)){
+                            jobs.add(withAddressKeyword);
+                        }
+                    }
+                }
+                if (!employeesBySalaryAndSalaryPeriod.isEmpty()){
+                    for (Job salary : employeeBySalary) {
+                        if (withAddressKeyword.equals(salary)){
+                            jobs.add(withAddressKeyword);
+                        }
+                    }
+                }
+                for (Job companyName : employeesByCompany) {
+                    if (withAddressKeyword.equals(companyName)){
+                        jobs.add(withAddressKeyword);
+                    }
+                }
+                for (Job withTitle : withAddressTitle) {
+                    if (withAddressKeyword.equals(withTitle)){
+                        jobs.add(withTitle);
+                    }
+                }
+            }
+        }
+        return jobs;
     }
 
     @Override

@@ -1257,7 +1257,7 @@
     </column>
     <column id="324" parent="233" name="full_description">
       <Position>5</Position>
-      <DataType>varchar(255)|0s</DataType>
+      <DataType>varchar(10000)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
     <column id="325" parent="233" name="job_type">
@@ -1354,11 +1354,13 @@
     <column id="343" parent="236" name="password">
       <Position>3</Position>
       <DataType>varchar(255)|0s</DataType>
+      <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
     <column id="344" parent="236" name="username">
       <Position>4</Position>
       <DataType>varchar(255)|0s</DataType>
+      <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
     <column id="345" parent="236" name="developer_id">

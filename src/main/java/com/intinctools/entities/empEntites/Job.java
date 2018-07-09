@@ -10,7 +10,6 @@ import javax.persistence.*;
 @Entity
 @Getter
 @Setter
-@ToString
 @NoArgsConstructor
 public class Job {
 
@@ -41,5 +40,12 @@ public class Job {
         this.company = company;
         this.jobType = jobType;
         this.salaryPeriod = salaryPeriod;
+    }
+
+    @Override
+    public String toString() {
+        return "Job{" +
+                "id=" + id +
+                '}';
     }
 }

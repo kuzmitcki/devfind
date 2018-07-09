@@ -45,11 +45,10 @@ public class Employee {
             this.email = email;
         }
 
-        @Override
-        public String toString() {
-                return "Employee{" +
-                        "id=" + id +
-                        ", email='" + email + '\'' +
-                        '}';
-        }
+    @Override
+    public String toString() {
+        return "Employee{" +
+                "id=" + id +
+                '}';
+    }
 }

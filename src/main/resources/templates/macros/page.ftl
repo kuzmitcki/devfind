@@ -6,20 +6,36 @@
     <title></title>
     <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
     <style>
-        textarea {
-            width: 50%;
-            height: 150px;
-            padding: 12px 20px;
-            box-sizing: border-box;
-            border: 2px solid #ccc;
-            border-radius: 4px;
-            background-color: #f8f8f8;
-            resize: none;
+        body{
+            background-color: #f6f6f6 !important;
+        }
+        #select{
+            size: 35px !important;
+        }
+        pre {
+            white-space: pre-wrap;
+            overflow-x: auto;
+        }
+        #hider {
+            position: absolute;
+            top: -9999px;
+            left: -9999px;
+        }
+        #hider:checked + .content {
             display: block;
-            margin-left: auto;
-            margin-right: auto;
+        }
+        #clickme {
+            text-decoration: underline;
+            color: blue;
+            cursor: pointer;
+        }
+
+        .content {
+            margin-top: 10px;
+            display: none;
         }
     </style>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
 </head>
 <body>
 <#nested>

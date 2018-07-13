@@ -1,7 +1,5 @@
 package com.intinctools.controllers;
 
-import com.intinctools.entities.empEntites.Employee;
-import com.intinctools.entities.empEntites.Job;
 import com.intinctools.entities.userEntites.User;
 import com.intinctools.repo.JobRepo;
 import com.intinctools.service.employee.EmployeeService;
@@ -17,9 +15,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import java.util.Optional;
-import java.util.Set;
 
 @Controller
 public class EmployeeController {
@@ -69,7 +64,7 @@ public class EmployeeController {
                                @RequestParam(name = "telephone", required = false) String telephone,
                                RedirectAttributes attribute) {
         employeeService.editEmployee(user, country, state, street, zipPostalCode, telephone);
-        attribute.addFlashAttribute("message", "You are successfully updated your account");
+        attribute.addFlashAttribute("message", "You are successfully added address to your account");
         return "redirect:/edit-employee";
     }
 
@@ -114,10 +109,10 @@ public class EmployeeController {
             return "employee/employeeJobs";
         }
 
-        @GetMapping("/employee-jobs/edit/{id}")
+        @GetMapping("/employee-jobs/edit/{user}")
         @PreAuthorize("hasAuthority('EMPLOYEE')")
         public String employeesJobEditPage(@AuthenticationPrincipal User user,
-                                           @PathVariable Long id,
+                                           @PathVariable("user") Long id,
                                            Model model){
             if (employeeService.checkEmployeeEditing(user , id)){
                 model.addAttribute("job", jobRepo.getById(id));
@@ -126,7 +121,7 @@ public class EmployeeController {
             return "redirect:/employee-jobs";
         }
 
-        @PostMapping("/employee-jobs/edit/{id}")
+        @PostMapping("/employee-jobs/edit/{user}")
         @PreAuthorize("hasAuthority('EMPLOYEE')")
         public String employeeJobEdit(@AuthenticationPrincipal User user,
                                       @RequestParam(name = "title", required = false) String title,
@@ -138,7 +133,7 @@ public class EmployeeController {
                                       @RequestParam(name = "salaryPeriod", required = false) String salaryPeriod,
                                       @RequestParam(name = "jobType", required = false) String jobType,
                                       @RequestParam(name = "fullDescription", required = false) String fullDescription,
-                                      @PathVariable("id") Long id,
+                                      @PathVariable("user") Long id,
                                       RedirectAttributes attribute){
             employeeService.editJob(user, title, fullDescription, shortDescription, desiredExperience, fromSalary, toSalary, company, jobType, salaryPeriod, id);
             attribute.addFlashAttribute("message" , "You are successfully updated job");

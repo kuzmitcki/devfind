@@ -10,7 +10,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @ToString
 @EqualsAndHashCode
-public class Address {
+public class EmployeeAddress {
         @Id
         @GeneratedValue(strategy = GenerationType.AUTO)
         private Long id;
@@ -21,11 +21,12 @@ public class Address {
         private String street;
         private String zipPostalCode;
         private String telephone;
+
         @ManyToOne
         private Employee employee;
 
 
-        public Address(String country, String state, String street, String zipPostalCode, String telephone) {
+        public EmployeeAddress(String country, String state, String street, String zipPostalCode, String telephone) {
                 this.country = country;
                 this.state = state;
                 this.street = street;

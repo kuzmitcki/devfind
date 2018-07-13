@@ -17,15 +17,23 @@ public class Specialization {
         @GeneratedValue(strategy = GenerationType.AUTO)
         private Long id;
 
-        private String skills;
+        private String skill;
+        private String experience;
 
+        @ManyToOne
+        private Developer developer;
 
-        public Specialization(String skills) {
-            this.skills = skills;
+        public Specialization(String skill) {
+            this.skill = skill;
         }
 
-        @Override
+        public Specialization(String skill, String experience) {
+        this.skill = skill;
+        this.experience = experience;
+        }
+
+    @Override
         public String toString() {
-            return skills;
+            return skill;
         }
 }

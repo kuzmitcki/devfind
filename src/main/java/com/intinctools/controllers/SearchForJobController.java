@@ -9,10 +9,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
-
+@RequestMapping("job-search")
 public class SearchForJobController {
 
     private Logger logger = LoggerFactory.getLogger(SearchForJobController.class);
@@ -26,29 +27,29 @@ public class SearchForJobController {
     }
 
 
-    @GetMapping("/job-search")
+    @GetMapping()
     @PreAuthorize("hasAuthority('DEVELOPER')")
     public String searchPage() {
         return "developer/searchJobPage";
     }
 
 
-    @PostMapping("/job-search")
+    @PostMapping()
     @PreAuthorize("hasAuthority('DEVELOPER')")
     public String searchJobs(@RequestParam(name = "whatDescription", required = false) String jobDescription,
                              @RequestParam(name = "whereDescription", required = false) String jobLocation,
                              Model model) {
-        model.addAttribute("jobs", developerService.findWithAddress(jobDescription, jobLocation));
+        model.addAttribute("job", developerService.findWithAddress(jobDescription, jobLocation));
         return "developer/searchResult";
     }
 
-    @GetMapping("/job-search/advanced")
+    @GetMapping("/advanced")
     @PreAuthorize("hasAuthority('DEVELOPER')")
     public String advancedSearchPage() {
         return "developer/advancedSearch";
     }
 
-    @PostMapping("/job-search/advanced")
+    @PostMapping("/advanced")
     public String advancedSearch(@RequestParam(name = "title", required = false) String title,
                                  @RequestParam(name = "salaryPeriod", required = false) String salaryPeriod,
                                  @RequestParam(name = "company", required = false) String company,

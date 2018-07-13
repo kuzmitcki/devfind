@@ -12,9 +12,26 @@
             <option>Male</option>
             <option>Female</option>
         </select>
+        <select name="experience">
+            <option>Less than 1 year</option>
+            <option>1-2 years</option>
+            <option>3-5 years</option>
+            <option>6-10 years</option>
+            <option>More than 10 years</option>
+        </select>
+        <select name="education">
+            <option>No education</option>
+            <option>Diploma</option>
+            <option>Associates</option>
+            <option>Bachelors</option>
+            <option>Masters</option>
+            <option>Doctorate</option>
+        </select>
         <input type="text" value="${user.developer.birthday!}" name="birthday" pattern="[0-9]{4}-(0[1-9]|1[012])-(0[1-9]|1[0-9]|2[0-9]|3[01])" placeholder="Format: YYYY-MM-DD">
         <input type="submit" value="submit">
         <input type="hidden" name="_csrf" value="${_csrf.token}" />
     </form>
+
+<a href="/edit-developer/address">Add address</a>
     <@l.logout></@l.logout>
 </@p.page>

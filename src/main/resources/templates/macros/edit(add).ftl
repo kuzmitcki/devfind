@@ -22,7 +22,7 @@
              <option>Commision</option>
          </select>
          <div>
-             <textarea name="fullDescription">Some text...</textarea>
+             <textarea name="fullDescription"><#if isAddForm><#else>${job.fullDescription!}</#if></textarea>
          </div>
          <input type="submit" value="submit">
          <input type="hidden" name="_csrf" value="${_csrf.token}" />

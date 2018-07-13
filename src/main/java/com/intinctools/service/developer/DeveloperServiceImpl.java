@@ -1,23 +1,17 @@
 package com.intinctools.service.developer;
 
-import com.intinctools.entities.devEntities.Developer;
-import com.intinctools.entities.devEntities.Specialization;
-import com.intinctools.entities.empEntites.Address;
+import com.intinctools.entities.devEntities.*;
+import com.intinctools.entities.empEntites.EmployeeAddress;
 import com.intinctools.entities.empEntites.Employee;
 import com.intinctools.entities.empEntites.Job;
 import com.intinctools.entities.userEntites.Role;
 import com.intinctools.entities.userEntites.User;
-import com.intinctools.repo.AddressRepo;
-import com.intinctools.repo.JobRepo;
-import com.intinctools.repo.UserRepo;
+import com.intinctools.repo.*;
 import com.intinctools.service.UserService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.Date;
 import java.util.*;
 
 
@@ -27,15 +21,21 @@ public class DeveloperServiceImpl extends UserService implements DeveloperServic
 
     private final UserRepo userRepo;
     private final JobRepo jobRepo;
-    private final AddressRepo addressRepo;
+    private final WorkExperienceRepo workExperienceRepo;
+    private final EmployeeAddressRepo addressRepo;
+    private final SpecializationRepo specializationRepo;
 
 
-    public DeveloperServiceImpl(UserRepo userRepo, JobRepo jobRepo, AddressRepo addressRepo) {
+    public DeveloperServiceImpl(UserRepo userRepo, JobRepo jobRepo, WorkExperienceRepo workExperienceRepo, EmployeeAddressRepo addressRepo, SpecializationRepo specializationRepo) {
         super(userRepo);
         this.userRepo = userRepo;
         this.jobRepo = jobRepo;
+        this.workExperienceRepo = workExperienceRepo;
         this.addressRepo = addressRepo;
+        this.specializationRepo = specializationRepo;
     }
+
+
 
     @Override
     @Transactional(isolation = Isolation.SERIALIZABLE)
@@ -57,8 +57,71 @@ public class DeveloperServiceImpl extends UserService implements DeveloperServic
 
     @Override
     @Transactional(isolation = Isolation.SERIALIZABLE)
+    public void setBasicQualities(User user, String firstName, String lastName,
+                                  String country, String city,
+                                  String zipPostalCode, String telephone) {
+        Developer developer = user.getDeveloper();
+        if (!country.equals("")){
+            if (zipPostalCode.equals("")){
+                zipPostalCode = developer.getZipPostalCode();
+            }
+            if (telephone.equals("")){
+                telephone = developer.getTelephone();
+            }
+            developer.setFirstName(firstName);
+            developer.setLastName(lastName);
+            developer.setCountry(country);
+            developer.setCity(city);
+            developer.setZipPostalCode(zipPostalCode);
+            developer.setTelephone(telephone);
+            user.setDeveloper(developer);
+            userRepo.save(user);
+        }
+    }
+
+    @Override
+    public void setEducation(User user, String degree, String place, String fieldOfStudy,
+                             String city, String monthFrom, String monthTo,
+                             String yearFrom, String yearTo) {
+      if (!degree.equals("") && !fieldOfStudy.equals("") && !place.equals("")){
+          Developer developer = user.getDeveloper();
+          Set<Education> educations = new HashSet<>(developer.getEducation());
+          developer.getEducation().clear();
+          educations.add(new Education(degree, place, fieldOfStudy, city, monthFrom, monthTo, yearFrom, yearTo, developer));
+          developer.setEducation(educations);
+          user.setDeveloper(developer);
+          userRepo.save(user);
+      }
+    }
+
+    @Override
+    public void setWorkExperience(User user, String jobTitle, String company,
+                                  String city, String monthFrom, String monthTo,
+                                  String yearFrom, String yearTo, String description, String check) {
+        Developer developer = user.getDeveloper();
+        if (check != null){
+            developer.setJobExperience(false);
+            user.setDeveloper(developer);
+            userRepo.save(user);
+        }else {
+                Set<WorkExperience> workExperiences = new HashSet<>(developer.getWorkExperiences());
+                developer.getWorkExperiences().clear();
+                developer.setJobExperience(true);
+                workExperiences.add(new WorkExperience(jobTitle, company, city, monthFrom, monthTo, yearFrom, yearTo, description, developer));
+                developer.setWorkExperiences(workExperiences);
+                user.setDeveloper(developer);
+                userRepo.save(user);
+
+        }
+
+    }
+
+    //______________________________________________________________________//
+
+    @Override
+    @Transactional(isolation = Isolation.SERIALIZABLE)
     public void editDeveloper(User user, String firstName, String lastName,
-                              String company, String email, String date, String gender) {
+                              String company, String email) {
         Developer developer = user.getDeveloper();
         if (firstName.equals("")) {
             firstName = developer.getFirstName();
@@ -66,22 +129,14 @@ public class DeveloperServiceImpl extends UserService implements DeveloperServic
         if (lastName.equals("")) {
             lastName = developer.getLastName();
         }
-        if (company.equals("")) {
-            company = developer.getCompany();
-        }
+
         if (email.equals("")) {
             email = developer.getEmail();
         }
-        if (date.equals("")) {
-            date = String.valueOf(developer.getBirthday());
-        }
         developer.setFirstName(firstName);
         developer.setLastName(lastName);
-        developer.setCompany(company);
         developer.setEmail(email);
-        developer.setGender(gender);
         developer.setEnable(true);
-        developer.setBirthday(Date.valueOf(date));
         user.setDeveloper(developer);
         userRepo.save(user);
     }
@@ -100,11 +155,18 @@ public class DeveloperServiceImpl extends UserService implements DeveloperServic
         userRepo.save(user);
     }
 
+
+
+    @Override
+    public boolean checkDeveloperEditing(User user, Long id) {
+        return user.getDeveloper().equals(workExperienceRepo.getById(id).getDeveloper());
+    }
+
     @Override
     @Transactional(isolation = Isolation.SERIALIZABLE)
     public List<Job> findEmployeesByTitle(String title) {
         if (title.equals("")) {
-            return Collections.emptyList();
+            return  jobRepo.findAll();
         }
         return jobRepo.findByTitleIgnoreCaseLike("%" + title + "%");
     }
@@ -113,7 +175,7 @@ public class DeveloperServiceImpl extends UserService implements DeveloperServic
     @Transactional(isolation = Isolation.SERIALIZABLE)
     public List<Job> findEmployeesByDesiredExperience(String experience) {
         if (experience.equals("")) {
-            return Collections.emptyList();
+            return  jobRepo.findAll();
         }
         experience = experience.trim().replaceAll(" +", " ");
         String[] words = experience.split("\\s");
@@ -128,7 +190,7 @@ public class DeveloperServiceImpl extends UserService implements DeveloperServic
     @Transactional(isolation = Isolation.SERIALIZABLE)
     public Set<Job> findEmployeesByDescription(String jobDescription) {
         if (jobDescription.equals("")) {
-            return Collections.emptySet();
+            return new HashSet<>(jobRepo.findAll());
         }
         jobDescription = jobDescription.trim().replaceAll(" +", " ");
         String[] words = jobDescription.split("\\s");
@@ -143,7 +205,7 @@ public class DeveloperServiceImpl extends UserService implements DeveloperServic
     @Transactional(isolation = Isolation.SERIALIZABLE)
     public List<Job> findEmployeesByCompany(String company) {
         if (company.equals("")) {
-            return Collections.emptyList();
+            return jobRepo.findAll();
         }
         return jobRepo.findByCompanyIgnoreCaseLike("%" + company + "%");
     }
@@ -152,7 +214,7 @@ public class DeveloperServiceImpl extends UserService implements DeveloperServic
     @Transactional(isolation = Isolation.SERIALIZABLE)
     public List<Job> findEmployeesBySalaryPeriod(String salaryPeriod) {
         if (salaryPeriod.equals("")) {
-            return Collections.emptyList();
+            return  jobRepo.findAll();
         }
         return jobRepo.findBySalaryPeriod(salaryPeriod);
     }
@@ -182,7 +244,7 @@ public class DeveloperServiceImpl extends UserService implements DeveloperServic
             }
             return jobs;
         }
-        return Collections.emptySet();
+        return  jobRepo.findAll();
     }
 
 
@@ -192,7 +254,7 @@ public class DeveloperServiceImpl extends UserService implements DeveloperServic
        if (findEmployeesByTitle(jobDescription).isEmpty()){
            if (findEmployeesByDesiredExperience(jobDescription).isEmpty()){
                if (findEmployeesByDescription(jobDescription).isEmpty()){
-                   return Collections.emptySet();
+                   return new HashSet<>(jobRepo.findAll());
                }else {
                    return new HashSet<>(findEmployeesByDescription(jobDescription));
                }
@@ -224,38 +286,38 @@ public class DeveloperServiceImpl extends UserService implements DeveloperServic
 
     @Override
     @Transactional(isolation = Isolation.SERIALIZABLE)
-    public List<Address> findEmployeesByState(String state) {
+    public List<EmployeeAddress> findEmployeesByState(String state) {
         return addressRepo.findByStateIgnoreCaseLike("%" + state + "%");
     }
 
     @Override
     @Transactional(isolation = Isolation.SERIALIZABLE)
-    public List<Address> findEmployeesByCountry(String country) {
+    public List<EmployeeAddress> findEmployeesByCountry(String country) {
         return addressRepo.findByCountryIgnoreCaseLike("%" + country + "%");
     }
 
 
     @Override
     @Transactional(isolation = Isolation.SERIALIZABLE)
-    public List<Address> findEmployeesByZipPostalCode(String code) {
+    public List<EmployeeAddress> findEmployeesByZipPostalCode(String code) {
         if (code.equals("")) {
-            return Collections.emptyList();
+            return  addressRepo.findAll();
         }
         return addressRepo.findByZipPostalCode(code);
     }
 
     @Override
     @Transactional(isolation = Isolation.SERIALIZABLE)
-    public Set<Address> findEmployeesByAddress(String jobLocation) {
+    public Set<EmployeeAddress> findEmployeesByAddress(String jobLocation) {
         if (findEmployeesByCountry(jobLocation).isEmpty()) {
             if (findEmployeesByState(jobLocation).isEmpty()) {
                 if (findEmployeesByZipPostalCode(jobLocation).isEmpty()) {
-                    return Collections.emptySet();
+                    return new HashSet<>(addressRepo.findAll());
                 } else {
                     return new HashSet<>(findEmployeesByZipPostalCode(jobLocation));
                 }
             } else {
-                List<Address> employeesByState = findEmployeesByState(jobLocation);
+                List<EmployeeAddress> employeesByState = findEmployeesByState(jobLocation);
                 employeesByState.addAll(findEmployeesByZipPostalCode(jobLocation));
                 return new HashSet<>(employeesByState);
             }
@@ -305,7 +367,10 @@ public class DeveloperServiceImpl extends UserService implements DeveloperServic
                     }
                 }
             }
+            return jobs;
         }
+        jobs.addAll(withAddressTitle);
+        jobs.addAll(employeesByDescription);
         return jobs;
     }
 
@@ -313,16 +378,16 @@ public class DeveloperServiceImpl extends UserService implements DeveloperServic
     @Transactional(isolation = Isolation.SERIALIZABLE)
     public Set<Job> findWithAddress(String jobDescription, String jobLocation) {
         if (jobDescription.equals("") && jobDescription.equals("")) {
-            return Collections.emptySet();
+            return new HashSet<>(jobRepo.findAll());
         }
         if (!jobDescription.equals("") && jobLocation.equals("")) {
             return findEmployeesByJobDescription(jobDescription);
         }
         if (jobDescription.equals("") && !jobLocation.equals("")) {
-            Set<Address> employeesAddress = findEmployeesByAddress(jobLocation);
+            Set<EmployeeAddress> employeesAddress = findEmployeesByAddress(jobLocation);
             Set<Employee> employees = new HashSet<>();
             Set<Job> jobs = new HashSet<>();
-            for (Address address : employeesAddress) {
+            for (EmployeeAddress address : employeesAddress) {
                 employees.add(address.getEmployee());
             }
             for (Employee employee : employees) {
@@ -330,12 +395,11 @@ public class DeveloperServiceImpl extends UserService implements DeveloperServic
             }
             return jobs;
         }
-        if (!jobDescription.equals("") && !jobLocation.equals("")) {
-            Set<Address> employeesAddress = findEmployeesByAddress(jobLocation);
+            Set<EmployeeAddress> employeesAddress = findEmployeesByAddress(jobLocation);
             Set<Job> employeesByJobDescription = findEmployeesByJobDescription(jobDescription);
             Set<Job> jobs = new HashSet<>();
             for (Job job : employeesByJobDescription) {
-                for (Address address : employeesAddress) {
+                for (EmployeeAddress address : employeesAddress) {
                     if (job.getEmployee() == (address.getEmployee())) {
                         jobs.add(job);
                     }
@@ -343,8 +407,6 @@ public class DeveloperServiceImpl extends UserService implements DeveloperServic
             }
             return jobs;
 
-        }
-        return Collections.emptySet();
     }
 }
 

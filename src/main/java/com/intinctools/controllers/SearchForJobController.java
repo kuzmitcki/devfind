@@ -1,6 +1,8 @@
 package com.intinctools.controllers;
 
 
+import com.intinctools.entities.empEntites.Job;
+import com.intinctools.repo.employeeRepo.JobRepo;
 import com.intinctools.service.developer.DeveloperService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,57 +14,74 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpServletRequest;
+import java.util.Set;
+
 @Controller
-@RequestMapping("job-search")
+@RequestMapping("job")
 public class SearchForJobController {
 
     private Logger logger = LoggerFactory.getLogger(SearchForJobController.class);
 
 
     private final DeveloperService developerService;
+    private final JobRepo jobRepo;
 
-    public SearchForJobController(DeveloperService developerService) {
+    public SearchForJobController(DeveloperService developerService, JobRepo jobRepo) {
         this.developerService = developerService;
-
+        this.jobRepo = jobRepo;
     }
 
-
-    @GetMapping()
+    @GetMapping("search")
     @PreAuthorize("hasAuthority('DEVELOPER')")
-    public String searchPage() {
-        return "developer/searchJobPage";
+    public String searchJobPage(){
+        return "developer/search/usual";
     }
 
-
-    @PostMapping()
+    @PostMapping("search")
     @PreAuthorize("hasAuthority('DEVELOPER')")
-    public String searchJobs(@RequestParam(name = "whatDescription", required = false) String jobDescription,
-                             @RequestParam(name = "whereDescription", required = false) String jobLocation,
-                             Model model) {
-        model.addAttribute("job", developerService.findWithAddress(jobDescription, jobLocation));
-        return "developer/searchResult";
+    public String searchJob(@RequestParam("whatDescription") String whatDescription,
+                            @RequestParam(value = "whereDescription", required = false) String whereDescription,
+                            HttpServletRequest request){
+        request.getSession().setAttribute("jobsRequest",  developerService.searchForJob(whatDescription, whereDescription));
+        return "redirect:/job/results";
     }
 
-    @GetMapping("/advanced")
+
+    @GetMapping("results")
     @PreAuthorize("hasAuthority('DEVELOPER')")
-    public String advancedSearchPage() {
-        return "developer/advancedSearch";
+    public String searchResults(Model model,
+                                HttpServletRequest request){
+        Set<Job> jobs = (Set<Job>) request.getSession().getAttribute("jobsRequest");
+        if (jobs == null){
+            model.addAttribute("jobs", jobRepo.findAll());
+        }
+        else{
+            model.addAttribute("jobs", jobs);
+        }
+        return "developer/results/results";
     }
 
-    @PostMapping("/advanced")
-    public String advancedSearch(@RequestParam(name = "title", required = false) String title,
-                                 @RequestParam(name = "salaryPeriod", required = false) String salaryPeriod,
-                                 @RequestParam(name = "company", required = false) String company,
-                                 @RequestParam(name = "keywords") String keywords,
-                                 @RequestParam(name = "fullDescription", required = false) String fullDescription,
-                                 @RequestParam(name = "location", required = false) String location,
-                                 @RequestParam(name = "fromSalary", required = false) String fromSalary,
-                                 @RequestParam(name = "toSalary", required = false) String toSalary,
-                                 final Model model) {
-        model.addAttribute("jobs" , developerService.advancedSearch(title, salaryPeriod, company, keywords, fullDescription, location, fromSalary, toSalary));
-        return "developer/searchResult";
+
+    @GetMapping("search/advanced")
+    @PreAuthorize("hasAuthority('DEVELOPER')")
+    public String advancedJobSearchPage(){
+        return "developer/search/advanced";
+    }
 
 
+    @PostMapping("search/advanced")
+    @PreAuthorize("hasAuthority('DEVELOPER')")
+    public String advancedSearch(@RequestParam("allWords") String allWords,
+                                 @RequestParam("phrase") String phrase,
+                                 @RequestParam("oneWord") String oneWord,
+                                 @RequestParam(name = "title",required = false) String title,
+                                 @RequestParam("jobType") String jobType,
+                                 @RequestParam(name = "salary", required = false) String salary,
+                                 @RequestParam("salaryPeriod") String salaryPeriod,
+                                 HttpServletRequest request){
+        request.getSession().setAttribute("jobsRequest", developerService.searchForJobAdvanced(allWords, phrase, oneWord, title, jobType, salary, salaryPeriod));
+        return "redirect:/job/results";
     }
 }
 

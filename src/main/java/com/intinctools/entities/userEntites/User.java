@@ -1,7 +1,7 @@
 package com.intinctools.entities.userEntites;
 
-import com.intinctools.entities.empEntites.Employee;
 import com.intinctools.entities.devEntities.Developer;
+import com.intinctools.entities.empEntites.Employee;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;

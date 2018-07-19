@@ -2,6 +2,6 @@
 <#import "../../macros/forms.ftl" as f>
 <@p.page>
 
-<@f.education "/resume/wizard/education"></@f.education>
+<@f.education "/resume/wizard/education" true></@f.education>
 
 </@p.page>

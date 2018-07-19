@@ -6,7 +6,6 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
-import java.sql.Date;
 import java.util.Objects;
 import java.util.Set;
 
@@ -44,6 +43,11 @@ public class Developer {
         @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
         @JoinColumn(name = "developer_id")
         private Set<WorkExperience> workExperiences;
+
+
+        @OneToOne(cascade = CascadeType.ALL)
+        @JoinColumn(name = "desiredJob_id")
+        private DesiredJob desiredJob;
 
 
 

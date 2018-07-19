@@ -1,9 +1,10 @@
-package com.intinctools.repo;
+package com.intinctools.repo.employeeRepo;
 
 import com.intinctools.entities.empEntites.Employee;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.List;
+import java.util.Set;
 
 public interface EmployeeRepo extends JpaRepository<Employee, Long> {
+    Set<Employee> findByCompanyIgnoreCaseLike(String companyLike);
 }

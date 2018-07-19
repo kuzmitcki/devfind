@@ -1,15 +1,20 @@
 <#import "../../macros/page.ftl" as p>
 <@p.page>
 
-
+<div>
+    <form method="post" action="/logout">
+        <input type="hidden" name="_csrf" value="${_csrf.token}" />
+        <button type="submit" style="border-radius: 18px;  margin-top: 10px;" class="btn btn-primary">Log out</button>
+    </form>
+</div>
 
 <div style="margin: 8% 18% 2%;">
     <div style=" margin-bottom: 1.5%;border-radius:8px;width: 66.666667%;border:1px solid #e0e0e0;background-color: white">
         <div style="padding-left: 10px;font-size: 18px;margin: 10px;font-weight: 700;">
             Summary
-            <a style="font-size: 15px;float: right;font-weight: 300;margin-right: 20px;" id="summary" href="#">Edit</a>
+            <a style="font-size: 15px;float: right;font-weight: 300;margin-right: 30px;" id="summary" href="#"><input type="image" src="https://image.flaticon.com/icons/svg/660/660756.svg" style="height: 1.1rem;width: 1.5rem;float: right"></a>
         </div>
-        <div style="padding: 20px;">
+        <div style="padding-top: 11px;padding-left: 20px;">
             <div>
                 <pre style="font-family: Helvetica Neue,Helvetica,Arial,Liberation Sans,Roboto,Noto,sans-serif;font-size: .875rem;letter-spacing: 0;line-height: 1.25rem;font-weight: 400;">${developer.summary!}</pre>
             </div>
@@ -27,8 +32,38 @@
     </div>
 
         <div style="margin-bottom: 1.5%;border-radius:8px;width: 66.666667%;border:1px solid #e0e0e0;background-color: white">
-            <div style="padding-left: 10px;font-size: 18px;margin: 10px;font-weight: 700;">Contact Information <a  style="font-size: 15px;float: right;font-weight: 300;margin-right: 20px;" href="#" id="contact"> Edit</a></div>
+            <div style="padding-left: 10px;font-size: 18px;margin: 10px;font-weight: 700;">Contact Information
+                <a style="font-size: 15px;float: right;font-weight: 300;margin-right: 30px;" id="contact" href="#"><input type="image" src="https://image.flaticon.com/icons/svg/660/660756.svg" style="height: 1.1rem;width: 1.5rem;float: right"></a>
+            </div>
             <div id="contactBox" style="padding: 20px;display: none;">
+                <form method="post" action="/edit-developer/information">
+                    <div class="form-group">
+                        <label  for="inputCountry" style="color: #4b4b4b;font-size: .875rem;letter-spacing: 0;line-height: 1.25rem;font-weight: 700;display: block;">Country (optional)
+                        </label>
+                        <input value="${developer.country!}"  style="border-radius: 8px;" type="text" class="form-control" name="country" id="inputCountry">
+                    </div>
+                    <div class="form-group">
+                        <label  for="inputCity" style="color: #4b4b4b;font-size: .875rem;letter-spacing: 0;line-height: 1.25rem;font-weight: 700;display: block;">City (optional)</label>
+                        <input  value="${developer.city}"  style="border-radius: 8px;" type="text" class="form-control" name="city" id="inputCity">
+                    </div>
+                    <div class="form-group">
+                        <label  for="inputTelephone" style="color: #4b4b4b;font-size: .875rem;letter-spacing: 0;line-height: 1.25rem;font-weight: 700;display: block;">Telephone (optional)</label>
+                        <input value="${developer.telephone}"   style="border-radius: 8px;" type="text" class="form-control" name="telephone" id="inputTelephone">
+                    </div>
+                    <div class="form-group">
+                        <label  for="zipPostalCode" style="color: #4b4b4b;font-size: .875rem;letter-spacing: 0;line-height: 1.25rem;font-weight: 700;display: block;">Postal code (optional)</label>
+                        <input value="${developer.zipPostalCode}"  style="border-radius: 8px;" type="text" class="form-control" name="zipPostalCode" id="zipPostalCode">
+                    </div>
+                    <div class="form-group">
+                        <label  for="inputEmail" style="color: #4b4b4b;font-size: .875rem;letter-spacing: 0;line-height: 1.25rem;font-weight: 700;display: block;">Email (optional)</label>
+                        <input value="${developer.email}" required  style="border-radius: 8px;" type="text" class="form-control" name="email" id="inputEmail">
+                    </div>
+                    <div style="font-size: 0.85rem" class="form-group">
+                        <input type="hidden" name="_csrf" value="${_csrf.token}" />
+                        <button type="submit" style="border-radius: 18px;  margin-top: 10px;" class="btn btn-primary">Save</button>
+                        <a style="border-radius: 18px;  margin-top: 10px;" class="btn btn-primary" id="contact" href="">Cancel</a>
+                    </div>
+                </form>
             </div>
             <div style="padding-left: 20px; padding-bottom: 10px;" class="container">
                 <strong style="line-height: 1.25rem;font-weight: 400;">${developer.email!}</strong>
@@ -37,14 +72,94 @@
                     </div>
             </div>
         </div>
+    <div style="margin-bottom: 1.5%;border-radius:8px;width: 66.666667%;border:1px solid #e0e0e0;background-color: white">
+        <div style="padding-left: 10px;font-size: 18px;margin-top: 10px;margin-left: 10px;font-weight: 700;">Desired Job<a  style="font-size: 15px;float: right;font-weight: 300;margin-right: 39px;" href="#" id="desired"> <input type="image" src="https://image.flaticon.com/icons/svg/660/660756.svg" style="height: 1.1rem;width: 1.5rem;float: right"></a></div>
+        <div style="padding-left: 20px" class="container">
+            <pre style="font-family: Helvetica Neue,Helvetica,Arial,Liberation Sans,Roboto,Noto,sans-serif;font-size: .875rem;letter-spacing: 0;line-height: 1.25rem;font-weight: 400;">Help us match you with your next job</pre>
+        </div>
+        <div style="padding: 20px;display: none" id="desiredBox">
+           <form action="/edit-developer/desired" method="post">
+               <div class="form-group">
+                   <label for="inputTitle" style="color: #000;font-size: .875rem;letter-spacing: 0;line-height: 1.25rem;font-weight: 700;display: block;">
+                       Desired Job Title
+                   </label>
+                   <input value="<#if developer.desiredJob??>${developer.desiredJob.desiredJobTitle!}<#else></#if>" style="border-radius: 8px;" type="text" class="form-control" name="title" id="inputTitle">
+               </div>
+                   <div class="form-group">
+                       <label for="inputJobType" style="color: #000;font-size: .875rem;letter-spacing: 0;line-height: 1.25rem;font-weight: 700;display: block;">
+                           Desired Job Types
+                       </label>
+                       <select   style="color: #4b4b4b; border-radius: 8px" class="custom-select" id="inputJobType" name="jobType">
+                           <option>Full-time</option>
+                           <option>Part-time</option>
+                           <option>Temporary</option>
+                           <option>Contract</option>
+                           <option>Internship</option>
+                           <option>Commision</option>
+                       </select>
+                   </div>
+               <div class="form-row">
+                   <span style="padding: 4.5% 0 0;">$</span>
+                   <div class="form-group col-md-6">
+                       <label for="fromSalary" style="margin-left: 7px;color: #000;font-size: .875rem;letter-spacing: 0;line-height: 1.25rem;font-weight: 700;display: block;">
+                           Desired Salary
+                       </label>
+                       <input value="<#if developer.desiredJob??>${developer.desiredJob.desiredSalary!  }<#else></#if>" placeholder="Example: 50,000" style="margin-left: 7px;border-radius: 8px" type="text" class="form-control" name="salary" id="fromSalary">
+                   </div>
+                   <div class="form-group col-md-3">
+                       <select name="salaryPeriod" style="margin-top: 28px;margin-left: 20px;width: 175%; border-radius: 8px" id="inputPeriod" class="custom-select">
+                           <option selected>per year</option>
+                           <option>per month</option>
+                           <option>per week</option>
+                           <option>per day</option>
+                           <option>per hour</option>
+                       </select>
+                   </div>
+               </div>
+               <div style="font-size: 0.85rem" class="form-group">
+                   <input type="hidden" name="_csrf" value="${_csrf.token}" />
+                   <button type="submit" style="border-radius: 18px;  margin-top: 10px;" class="btn btn-primary">Save</button>
+                   <a style="border-radius: 18px;  margin-top: 10px;" class="btn btn-primary" id="contact" href="">Cancel</a>
+               </div>
+           </form>
+        </div>
+        <#if developer.desiredJob??>
+            <div style="padding-left: 10px;font-size: 14px;margin-bottom: 20px;margin-top: 10px;margin-left: 10px;font-weight: 700;">
+                <strong style="color: black;line-height: 1.25rem;font-weight: 600;">Desired Job Title</strong>
+                <div style="font-family: Helvetica Neue,Helvetica,Arial,Liberation Sans,Roboto,Noto,sans-serif;font-size: .875rem;letter-spacing: 0;line-height: 1.25rem;font-weight: 400;">
+                    ${developer.desiredJob.desiredJobTitle!}
+                </div>
+            </div>
+        <div style="padding-left: 10px;font-size: 14px;margin-bottom: 20px;margin-top: 10px;margin-left: 10px;font-weight: 700;">
+            <strong style="line-height: 1.25rem;font-weight: 600;">Desired Job Type</strong>
+            <div style="font-family: Helvetica Neue,Helvetica,Arial,Liberation Sans,Roboto,Noto,sans-serif;font-size: .875rem;letter-spacing: 0;line-height: 1.25rem;font-weight: 400;">
+                ${developer.desiredJob.desiredJobType!}
+            </div>
+        </div>
+        <div style="padding-left: 10px;font-size: 14px;margin-bottom: 20px;margin-top: 10px;margin-left: 10px;font-weight: 700;">
+            <strong style="line-height: 1.25rem;font-weight: 600;">Desired Salary</strong>
+            <div style="font-family: Helvetica Neue,Helvetica,Arial,Liberation Sans,Roboto,Noto,sans-serif;font-size: .875rem;letter-spacing: 0;line-height: 1.25rem;font-weight: 400;">
+                $ ${developer.desiredJob.desiredSalary!} ${developer.desiredJob.desiredSalaryPeriod!}
+            </div>
+        </div>
+        </#if>
+
+    </div>
+
+
+
         <div style=" margin-bottom: 1.5%;border-radius:8px;width: 66.666667%;border:1px solid #e0e0e0;background-color: white">
             <div style="padding-left: 10px;font-size: 18px;margin: 10px;font-weight: 700;">
-                Work Experience <a  style="font-size: 15px;float: right;font-weight: 300;margin-right: 20px;" href="/resume/wizard/experience">Add</a>
+                Work Experience <a  style="font-size: 15px;float: right;font-weight: 300;margin-right: 30px;" href="/resume/wizard/experience"><input type="image" src="https://image.flaticon.com/icons/svg/969/969621.svg" style="height: auto;width: 1.8rem;float:"></a>
             </div>
             <div style="padding: 20px;">
                 <#list developer.workExperiences as experience>
                    <div style="padding-top: 10px">
-                       <a  style="font-size: 15px;float: right;font-weight: 300;margin-right: 20px;" id="workExperience" href="/edit-developer/experience/${experience.id}">Edit</a>
+                       <a  style="font-size: 15px;float: right;font-weight: 300;margin-right: 20px;" id="workExperience" href="/edit-developer/experience/${experience.id!}"><input type="image" src="https://image.flaticon.com/icons/svg/660/660756.svg" style="height: 1.1rem;width: 1.5rem;float:"></a>
+                       <form method="post" action="/edit-developer/work-delete/${experience.id!}">
+                           <input type="image" src="https://image.flaticon.com/icons/svg/148/148777.svg" style="height: 1.1rem;width: 1.5rem;float: right;margin-right: 15px;">
+                           <input type="hidden" name="_csrf" value="${_csrf.token}" />
+                       </form>
                        <strong>${experience.jobTitle}</strong><br>
                       <div style="padding-top: 1.4%;color: #767676;font-family: Helvetica Neue,Helvetica,Arial,Liberation Sans,Roboto,Noto,sans-serif;font-size: 14px;letter-spacing: 0;line-height: 1.25rem;font-weight: 400;display: inline-block">
                           ${experience.company} - ${experience.city}<br>
@@ -63,13 +178,17 @@
 
     <div style=" margin-bottom: 1.5%;border-radius:8px;width: 66.666667%;border:1px solid #e0e0e0;background-color: white">
         <div style="padding-left: 10px;font-size: 18px;margin: 10px;font-weight: 700;">
-            Education <a  style="font-size: 15px;float: right;font-weight: 300;margin-right: 20px;" href="/resume/wizard/education">Add</a>
+            Education <a  style="font-size: 15px;float: right;font-weight: 300;margin-right: 30px;" href="/resume/wizard/education"><input type="image" src="https://image.flaticon.com/icons/svg/969/969621.svg" style="size:height: auto;width: 1.8rem;float:"></a>
         </div>
         <div style="padding: 20px;">
                     <#list developer.education as education>
                        <div style="padding-top: 10px">
-                           <a  style="font-size: 15px;float: right;font-weight: 300;margin-right: 20px;" href="/edit-developer"> Edit</a>
-                        <div style="font-family: Helvetica Neue,Helvetica,Arial,Liberation Sans,Roboto,Noto,sans-serif;font-size: .875rem;letter-spacing: 0;line-height: 1.25rem;font-weight: 400;">
+                           <a  style="font-size: 15px;float: right;font-weight: 300;margin-right: 20px;" href="/edit-developer/education/${education.id!}"><input type="image" src="https://image.flaticon.com/icons/svg/660/660756.svg" style="height: 1.1rem;width: 1.5rem;float:"></a>
+                           <form method="post" action="/edit-developer/education-delete/${education.id!}">
+                              <input type="image" src="https://image.flaticon.com/icons/svg/148/148777.svg" style="height: 1.1rem;width: 1.5rem;float: right;margin-right: 15px;">
+                              <input type="hidden" name="_csrf" value="${_csrf.token}" />
+                          </form>
+                           <div style="font-family: Helvetica Neue,Helvetica,Arial,Liberation Sans,Roboto,Noto,sans-serif;font-size: .875rem;letter-spacing: 0;line-height: 1.25rem;font-weight: 400;">
                             ${education.degree} in ${education.fieldOfStudy}<br>
                             ${education.place} - ${education.cityOfEducation}<br>
                             ${education.monthFrom} ${education.yearFrom} to ${education.monthTo} ${education.yearTo}
@@ -84,7 +203,7 @@
 
     <div style=" margin-bottom: 1.5%;border-radius:8px;width: 66.666667%;border:1px solid #e0e0e0;background-color: white">
         <div style="padding-left: 10px;font-size: 18px;margin: 10px;font-weight: 700;">
-            Skills <a style="font-size: 15px;float: right;font-weight: 300;margin-right: 20px;" id="skills" href="#">Add</a>
+            Skills <a style="font-size: 15px;float: right;font-weight: 300;margin-right: 30px;" id="skills" href="#"><input type="image" src="https://image.flaticon.com/icons/svg/969/969621.svg" style="height: auto;width: 1.8rem;float:"></a>
         </div>
         <div id="skillsBox"  style="padding: 20px;display: none;">
             <form method="post" action="/edit-developer/skills">
@@ -124,9 +243,9 @@
         <div style="padding: 20px;">
                     <#list developer.specializations as specialization>
                         <div style="padding-top: 10px">
-                            <form method="post" action="/edit-developer/skill-delete/${specialization.id}">
-                                <input type="submit" value="delete">
-                                <#--<input type="image" src="https://image.flaticon.com/icons/svg/148/148777.svg" style="size:height: 1.5rem;width: 1.1rem;float: right;margin-right: 30px;">-->
+                            <a  style="font-size: 15px;float: right;font-weight: 300;margin-right: 20px;" href="/edit-developer/skill/${specialization.id!}"><input type="image" src="https://image.flaticon.com/icons/svg/660/660756.svg" style="height: 1.1rem;width: 1.5rem;float:"></a>
+                            <form method="post" action="/edit-developer/skill-delete/${specialization.id!}">
+                                <input type="image" src="https://image.flaticon.com/icons/svg/148/148777.svg" style="height: 1.1rem;width: 1.5rem;float: right;margin-right: 15px;">
                                 <input type="hidden" name="_csrf" value="${_csrf.token}"/>
                             </form>
                             <div style="font-family: Helvetica Neue,Helvetica,Arial,Liberation Sans,Roboto,Noto,sans-serif;font-size: .875rem;letter-spacing: 0;line-height: 1.25rem;font-weight: 400;">
@@ -142,7 +261,7 @@
     <div style=" margin-bottom: 1.5%;border-radius:8px;width: 66.666667%;border:1px solid #e0e0e0;background-color: white">
         <div style="padding-left: 10px;font-size: 18px;margin: 10px;font-weight: 700;">
             Additional information
-            <a style="font-size: 15px;float: right;font-weight: 300;margin-right: 20px;" id="additional" href="#">Edit</a>
+            <a style="font-size: 15px;float: right;font-weight: 300;margin-right: 30px;" id="additional" href="#"><input type="image" src="https://image.flaticon.com/icons/svg/660/660756.svg" style="height: 1.1rem;width: 1.5rem;float: right"></a>
         </div>
         <div style="padding: 20px;">
             <div>
@@ -194,6 +313,10 @@
         };
         document.getElementById("workExperience").onclick = function (ev) {
             openBox("workExperienceBox", this);
+            return false;
+        };
+        document.getElementById("desired").onclick = function (ev) {
+            openBox("desiredBox", this);
             return false;
         }
     };

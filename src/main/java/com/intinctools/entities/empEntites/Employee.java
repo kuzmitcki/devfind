@@ -1,7 +1,9 @@
 package com.intinctools.entities.empEntites;
 
 
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.Objects;
@@ -17,11 +19,10 @@ public class Employee {
         private long id;
 
         private String email;
+        private String phone;
+        private String name;
+        private String company;
 
-
-        @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-        @JoinColumn(name = "employee_id")
-        private Set<EmployeeAddress> addresses;
 
         @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
         @JoinColumn(name = "employee_id")

@@ -6,8 +6,6 @@ import com.intinctools.entities.userEntites.User;
 import java.util.Set;
 
 public interface DeveloperService {
-
-    boolean saveDeveloper(User user, String email);
     void setBasicQualities(User user, String firstName,String lastName,
                            String country, String city,
                            String zipPostalCode, String telephone);
@@ -47,29 +45,34 @@ public interface DeveloperService {
 
     void setDesiredJob(User user, String title, String salary, String jobType, String salaryPeriod);
 
-
     Set<Job> searchForJobByTitle(String title);
+
     Set<Job> searchForJobByQualifications(String qualifications);
+
     Set<Job> searchForJobByCompany(String company);
 
     Set<Job> searchForJob(String description);
 
     Set<Job> searchForJobByLocation(String location);
+
     Set<Job> searchForJob(String whatDescription, String whereDescription);
 
+    Set<Job> searchForJobByDesiredExperience(String desiredExperience);
 
+    Set<Job> searchForJobByDescription(String description);
 
     Set<Job> searchForJobByOneWord (String oneWord);
+
     Set<Job> searchForJobByAllWords (String allWords);
+
     Set<Job> searchFroJobByPhrase (String phrase);
 
-
-
     Set<Job> searchForJobByWordsInTitle(String title);
-    Set<Job> searchForJobByJobType(String jobType);
-    Set<Job> searchForJobBySalaryAndPeriod(String salary, String salaryPeriod);
 
+    Set<Job> searchForJobByJobType(String jobType);
+
+    Set<Job> searchForJobBySalaryAndPeriod(Long salary);
 
     Set<Job> searchForJobAdvanced(String allWords, String phrase, String oneWord,
-                                  String title, String jobType, String salary, String salaryPeriod);
+                                  String title, String jobType, Long salary);
 }

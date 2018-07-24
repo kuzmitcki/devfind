@@ -4,8 +4,7 @@ import com.intinctools.entities.userEntites.User;
 import com.intinctools.repo.developerRepo.EducationRepo;
 import com.intinctools.repo.developerRepo.WorkExperienceRepo;
 import com.intinctools.service.developer.DeveloperService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.intinctools.service.mail.MailSender;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -15,56 +14,37 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 
 @Controller
+@PreAuthorize("hasAuthority('DEVELOPER')")
 public class DeveloperController {
-
     private final DeveloperService developerService;
+
+    private final MailSender mailSender;
+
     private final WorkExperienceRepo workExperienceRepo;
+
     private final EducationRepo educationRepo;
 
-
-    private final static Logger LOGGER = LoggerFactory.getLogger(DeveloperController.class);
-
     @Autowired
-    public DeveloperController(final DeveloperService developerService, WorkExperienceRepo workExperienceRepo, EducationRepo educationRepo) {
+    public DeveloperController(final DeveloperService developerService, MailSender mailSender, WorkExperienceRepo workExperienceRepo, EducationRepo educationRepo) {
         this.developerService = developerService;
+        this.mailSender = mailSender;
         this.workExperienceRepo = workExperienceRepo;
         this.educationRepo = educationRepo;
     }
 
-    @GetMapping("/developer")
-    public String developerForm() {
-        return "developer/developerRegistration";
-    }
-
-    @PostMapping("/developer")
-    public String saveDeveloper(User user,
-                                @RequestParam("email") String email,
-                                RedirectAttributes attribute) {
-        if (developerService.saveDeveloper(user, email)) {
-            return "redirect:/";
-        }
-        attribute.addFlashAttribute("message", "User already exists");
-        return "redirect:/developer";
-    }
-
-
-
-
     @GetMapping("resume/wizard/profile")
-    @PreAuthorize("hasAuthority('DEVELOPER')")
     public String resumeBasicsPage(@AuthenticationPrincipal User user,
                                    Model model){
+        model.addAttribute("user", user);
         model.addAttribute("developer", user.getDeveloper());
         return "developer/resume/profile";
     }
 
 
     @PostMapping("/resume/wizard/profile")
-    @PreAuthorize("hasAuthority('DEVELOPER')")
     public String resumeBasicsAdd(@AuthenticationPrincipal User user,
                                   @RequestParam(name = "firstName") String firstName,
                                   @RequestParam(name = "lastName")  String lastName,
@@ -77,7 +57,6 @@ public class DeveloperController {
     }
 
     @PostMapping("edit-developer/summary")
-    @PreAuthorize("hasAuthority('DEVELOPER')")
     public String summary(@AuthenticationPrincipal User user,
                           @RequestParam("summary") String summary){
         developerService.setDeveloperSummary(user, summary);
@@ -85,16 +64,13 @@ public class DeveloperController {
     }
 
     @PostMapping("edit-developer/additional")
-    @PreAuthorize("hasAuthority('DEVELOPER')")
     public String additionalInformation(@AuthenticationPrincipal User user,
                                         @RequestParam("additional") String additional){
         developerService.setDeveloperAdditional(user, additional);
         return "redirect:/developer/resume";
     }
 
-
     @PostMapping("/edit-developer/information")
-    @PreAuthorize("hasAuthority('DEVELOPER')")
     public String editContactInformation(@AuthenticationPrincipal User user,
                                          @RequestParam(name = "country") String country,
                                          @RequestParam(name = "city") String city,
@@ -105,18 +81,14 @@ public class DeveloperController {
         return "redirect:/developer/resume";
     }
 
-
     @GetMapping("resume/wizard/education")
-    @PreAuthorize("hasAuthority('DEVELOPER')")
     public String resumeEducationPage(@AuthenticationPrincipal User user,
                                       Model model){
         model.addAttribute("education", user.getDeveloper().getEducation().isEmpty());
         return "developer/resume/education";
     }
 
-
     @PostMapping("resume/wizard/education")
-    @PreAuthorize("hasAuthority('DEVELOPER')")
     public String resumeEducation(@AuthenticationPrincipal User user,
                                   @RequestParam(name = "degree") String degree,
                                   @RequestParam(name = "place") String place,
@@ -131,21 +103,17 @@ public class DeveloperController {
     }
 
     @GetMapping("edit-developer/education/{id}")
-    @PreAuthorize("hasAuthority('DEVELOPER')")
     public String educationEditPage(@AuthenticationPrincipal User user,
                                     @PathVariable("id") Long id,
                                     Model model){
         if (!developerService.checkDeveloperEditingEducation(user, id)){
             return "redirect:/developer/resume";
         }
-        model.addAttribute("educ", educationRepo.getById(id));
+        model.addAttribute("educ", educationRepo.getOne(id));
         return "developer/edit/education";
     }
 
-
-
     @PostMapping("edit-developer/education/{id}")
-    @PreAuthorize("hasAuthority('DEVELOPER')")
     public String educationEdit(@AuthenticationPrincipal User user,
                                 @RequestParam(name = "degree") String degree,
                                 @RequestParam(name = "place") String place,
@@ -168,13 +136,10 @@ public class DeveloperController {
         return "redirect:/developer/resume";
     }
 
-
-
     @GetMapping("resume/wizard/experience")
     public String resumeExperiencePage(){
         return "developer/resume/experience";
     }
-
 
     @PostMapping("resume/wizard/experience")
     public String resumeExperience(@AuthenticationPrincipal User user,
@@ -219,21 +184,19 @@ public class DeveloperController {
 
     @PostMapping("edit-developer/work-delete/{id}")
     public String  deleteWork(@AuthenticationPrincipal User user,
-                                   @PathVariable("id") Long id){
+                              @PathVariable("id") Long id){
         developerService.deleteDeveloperWork(user, id);
         return "redirect:/developer/resume";
     }
 
-
-
     @GetMapping("developer/resume")
     public String profilePage(@AuthenticationPrincipal User user,
                               Model model){
+        model.addAttribute("user", user);
         model.addAttribute("developer", user.getDeveloper());
         model.addAttribute("telephone", user.getDeveloper().getTelephone());
         return "developer/resume/resume";
     }
-
 
     @PostMapping("edit-developer/skills")
     public String skills(@AuthenticationPrincipal User user,
@@ -243,14 +206,12 @@ public class DeveloperController {
         return "redirect:/developer/resume";
     }
 
-
     @PostMapping("edit-developer/skill-delete/{id}")
     public String deleteSkill(@AuthenticationPrincipal User user,
                               @PathVariable("id") Long id){
         developerService.deleteDeveloperSkill(user, id);
         return "redirect:/developer/resume";
     }
-
 
     @PostMapping("edit-developer/desired")
     public String editDesiredJob(@AuthenticationPrincipal User user,
@@ -262,11 +223,17 @@ public class DeveloperController {
         return "redirect:/developer/resume";
     }
 
+    @GetMapping("developer/job-offer")
+    public String offerSaving(@AuthenticationPrincipal User user){
+        mailSender.getOfferFromEmployee(user);
+        return "redirect:/developer/resume";
+    }
 
-
-
-
-
-
+    @GetMapping("developer/resume/preview")
+    public String previewResume(@AuthenticationPrincipal User user,
+                                Model model){
+        model.addAttribute("developer", user.getDeveloper());
+        return "developer/preview/preview";
+    }
 
 }

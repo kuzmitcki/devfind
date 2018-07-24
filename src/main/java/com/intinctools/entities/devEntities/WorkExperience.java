@@ -12,25 +12,31 @@ import javax.persistence.*;
 @Setter
 @NoArgsConstructor
 public class WorkExperience {
-
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     private String jobTitle;
+
     private String company;
+
     private String city;
 
     private String monthFrom;
+
     private String monthTo;
+
     private String yearFrom;
+
     private String yearTo;
+
     private String description;
 
     @ManyToOne
     private Developer developer;
 
-    public WorkExperience(String jobTitle, String company, String city, String monthFrom, String monthTo, String yearFrom, String yearTo, String description, Developer developer) {
+    public WorkExperience(String jobTitle, String company, String city, String monthFrom, String monthTo,
+                          String yearFrom, String yearTo, String description, Developer developer) {
         this.jobTitle = jobTitle;
         this.company = company;
         this.city = city;

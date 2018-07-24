@@ -13,24 +13,31 @@ import javax.persistence.*;
 @NoArgsConstructor
 @ToString
 public class Education {
-
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     private String degree;
+
     private String place;
+
     private String fieldOfStudy;
+
     private String cityOfEducation;
+
     private String monthFrom;
+
     private String monthTo;
+
     private String yearFrom;
+
     private String yearTo;
 
     @ManyToOne
     private Developer developer;
 
-    public Education(String degree, String place, String fieldOfStudy, String cityOfEducation, String monthFrom, String monthTo, String yearFrom, String yearTo, Developer developer) {
+    public Education(String degree, String place, String fieldOfStudy, String cityOfEducation, String monthFrom,
+                     String monthTo, String yearFrom, String yearTo, Developer developer) {
         this.degree = degree;
         this.place = place;
         this.fieldOfStudy = fieldOfStudy;

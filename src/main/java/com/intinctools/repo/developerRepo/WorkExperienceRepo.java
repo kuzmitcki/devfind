@@ -7,7 +7,10 @@ import java.util.Set;
 
 public interface WorkExperienceRepo extends JpaRepository<WorkExperience, Long> {
     WorkExperience getById(Long id);
+
     Set<WorkExperience> findByJobTitleIgnoreCaseLike(String jobTitleLike);
+
     Set<WorkExperience> findByCompanyIgnoreCase(String company);
+
     Set<WorkExperience> findByDescriptionIgnoreCaseLike(String descriptionLike);
 }

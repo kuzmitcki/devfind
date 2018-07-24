@@ -9,6 +9,7 @@
                   <div style="padding-bottom: 10px;color: #000;font-weight: 700; float: top  !important; font-size: 23px;line-height: 28px; margin: 10px; padding-left: 28%;;">Education redactor
             </#if>
             </div>
+
             <div class="row h-100 justify-content-center align-items-center">
                 <form style="background-color: white; padding: 30px;" class="col-5"  method="post" action="${path}">
                     <div style="color: #000;font-weight: 700;" class="form-group">
@@ -17,11 +18,15 @@
                     <div class="form-group">
                         <div class="form-group">
                             <label for="inputDegree" style="color: #4b4b4b;font-size: .875rem;letter-spacing: 0;line-height: 1.25rem;font-weight: 700;display: block;">Degree
-                                <div>
-                                    <span style="color: #767676;font-family: Helvetica Neue,Helvetica,Arial,Liberation Sans,Roboto,Noto,sans-serif;font-size: .75rem;letter-spacing: 0;line-height: 1.25rem;font-weight: 400;display: inline-block">e.g. BA, BS, JD, PhD.</span>
-                                </div>
                             </label>
-                            <input style=" border-radius: 8px;" type="text" value="<#if isResume><#else>${educ.degree!}</#if>" class="form-control" name="degree" id="inputDegree" >
+                            <select name="degree" id="inputDegree"   style="border-radius: 8px" class="custom-select">
+                                <option selected value="1"><#if isResume>Any degree<#else>${educ.degree!}</#if></option>
+                                <option value="Diploma">Diploma</option>
+                                <option value="Associates">Associates</option>
+                                <option value="Bachelors">Bachelors</option>
+                                <option value="Masters">Masters</option>
+                                <option value="Doctorate">Doctorate</option>
+                            </select>
                         </div>
                     </div>
                     <div class="form-group">
@@ -1001,7 +1006,7 @@
                        Email Address
                        <span style="color: #666; font-size: 11px">only provided to employers you apply or respond to.</span>
 
-                       <strong style="line-height: 1.25rem;font-weight: 400;">${developer.email!}</strong>
+                       <strong style="line-height: 1.25rem;font-weight: 400;">${user.email!}</strong>
                    </label>
                </div>
                <label style="margin-top: 10px; font-size: 0.875rem; font-weight: 400;display: inline-block; max-width: 100%;margin-bottom: 5px;">Phone Number (optional)

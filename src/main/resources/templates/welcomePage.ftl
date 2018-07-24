@@ -5,8 +5,7 @@
     <title>Title</title>
 </head>
 <body>
-<a href="/employee">Employee</a>
-<a href="/developer">Developer</a>
+some text
 
 </body>
 </html>

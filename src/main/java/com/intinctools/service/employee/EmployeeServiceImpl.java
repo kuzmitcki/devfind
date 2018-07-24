@@ -3,16 +3,15 @@ package com.intinctools.service.employee;
 import com.intinctools.entities.devEntities.*;
 import com.intinctools.entities.empEntites.Employee;
 import com.intinctools.entities.empEntites.Job;
-import com.intinctools.entities.userEntites.Role;
 import com.intinctools.entities.userEntites.User;
 import com.intinctools.repo.UserRepo;
 import com.intinctools.repo.developerRepo.*;
 import com.intinctools.repo.employeeRepo.EmployeeRepo;
 import com.intinctools.repo.employeeRepo.JobRepo;
-import com.intinctools.service.UserService;
+import com.intinctools.service.mail.MailSender;
+import com.intinctools.service.user.UserService;
+import com.intinctools.service.words.WordsSpliterator;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Isolation;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
@@ -20,25 +19,38 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicLong;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 
 @Service
 public class EmployeeServiceImpl extends UserService implements EmployeeService {
-
     private final UserRepo userRepo;
+
     private final JobRepo jobRepo;
+
+    private final WordsSpliterator wordsSpliterator;
+
     private final SpecializationRepo specializationRepo;
+
     private final DeveloperRepo developerRepo;
+
     private final EmployeeRepo employeeRepo;
+
     private final WorkExperienceRepo workExperienceRepo;
+
     private final DesiredJobRepo desiredJobRepo;
+
     private final EducationRepo educationRepo;
 
-    public EmployeeServiceImpl(final UserRepo userRepo, JobRepo jobRepo, SpecializationRepo specializationRepo, DeveloperRepo developerRepo,
-                               EmployeeRepo employeeRepo, WorkExperienceRepo workExperienceRepo, DesiredJobRepo desiredJobRepo, EducationRepo educationRepo) {
-        super(userRepo);
+    public EmployeeServiceImpl(final UserRepo userRepo, final JobRepo jobRepo, MailSender sender, final WordsSpliterator wordsSpliterator, final SpecializationRepo specializationRepo,
+                               final DeveloperRepo developerRepo, final EmployeeRepo employeeRepo, final WorkExperienceRepo workExperienceRepo,
+                               final DesiredJobRepo desiredJobRepo, final EducationRepo educationRepo) {
+        super(userRepo, sender);
         this.userRepo = userRepo;
         this.jobRepo = jobRepo;
+        this.wordsSpliterator = wordsSpliterator;
         this.specializationRepo = specializationRepo;
         this.developerRepo = developerRepo;
         this.employeeRepo = employeeRepo;
@@ -48,22 +60,7 @@ public class EmployeeServiceImpl extends UserService implements EmployeeService 
     }
 
     @Override
-    @Transactional(isolation = Isolation.SERIALIZABLE)
-    public boolean saveEmployee(final User user, final String email) {
-        User userFromDb = userRepo.findByUsername(user.getUsername());
-        if (userFromDb != null) {
-            return false;
-        }
-        user.setEnable(true);
-        user.setRoles(Collections.singleton(Role.EMPLOYEE));
-        user.setEmployee(new Employee(email));
-        userRepo.save(user);
-        return true;
-    }
-
-    @Override
-    @Transactional(isolation = Isolation.SERIALIZABLE)
-    public void editJobLocation(User user, String country, String location, Long id) {
+    public void editJobLocation(final User user, final String country, final String location, final Long id) {
         Job job = jobRepo.getById(id);
         job.setJobLocation(location);
         job.setCountry(country);
@@ -73,8 +70,8 @@ public class EmployeeServiceImpl extends UserService implements EmployeeService 
     }
 
     @Override
-    @Transactional(isolation = Isolation.SERIALIZABLE)
-    public void editJobDescription(User user, String description, Long id) {
+    public void editJobDescription(final User user, final String description,
+                                   final Long id) {
         Job job = jobRepo.getById(id);
         job.setFullDescription(description);
         Employee employee = job.getEmployee();
@@ -83,8 +80,8 @@ public class EmployeeServiceImpl extends UserService implements EmployeeService 
     }
 
     @Override
-    @Transactional(isolation = Isolation.SERIALIZABLE)
-    public void editJobDesiredDescription(User user, String experience, Long id) {
+    public void editJobDesiredDescription(final User user, final String experience,
+                                          final Long id) {
         Job job = jobRepo.getById(id);
         job.setDesiredExperience(experience);
         Employee employee = job.getEmployee();
@@ -93,8 +90,7 @@ public class EmployeeServiceImpl extends UserService implements EmployeeService 
     }
 
     @Override
-    @Transactional(isolation = Isolation.SERIALIZABLE)
-    public void editJobTitle(User user, String title, Long id) {
+    public void editJobTitle(final User user, final String title, final Long id) {
         Job job = jobRepo.getById(id);
         job.setTitle(title);
         Employee employee = job.getEmployee();
@@ -103,17 +99,15 @@ public class EmployeeServiceImpl extends UserService implements EmployeeService 
     }
 
     @Override
-    @Transactional(isolation = Isolation.SERIALIZABLE)
-    public void editEmployeeCompany(User user, String company) {
+    public void editEmployeeCompany(final User user, final String company) {
         Employee employee = user.getEmployee();
         employee.setCompany(company);
         employeeRepo.save(employee);
     }
 
     @Override
-    @Transactional(isolation = Isolation.SERIALIZABLE)
-    public void setEmployeeDescription(User user, String desiredExperience,
-                                       String fullDescription, HttpServletRequest request) {
+    public void setEmployeeDescription(final User user, final String desiredExperience,
+                                       final String fullDescription, final HttpServletRequest request) {
         Job job = (Job) request.getSession().getAttribute("job");
         job.setFullDescription(fullDescription);
         job.setDesiredExperience(desiredExperience);
@@ -128,23 +122,21 @@ public class EmployeeServiceImpl extends UserService implements EmployeeService 
     }
 
     @Override
-    @Transactional(isolation = Isolation.SERIALIZABLE)
-    public void setEmployeeJobSalary(String jobType, String fromSalary, String toSalary,
-                                     String salaryPeriod, String qualifications,
-                                     RedirectAttributes redirectJob, HttpServletRequest request) {
+    public void setEmployeeJobSalary(final String jobType, final String fromSalary, final String toSalary,
+                                     final Long salaryPeriod, final String qualifications,
+                                     final RedirectAttributes redirectJob, final HttpServletRequest request) {
         Job job = (Job) request.getSession().getAttribute("attribute");
         job.setJobType(jobType);
-        job.setFromSalary(Long.valueOf(fromSalary));
-        job.setToSalary(Long.valueOf(toSalary));
+        job.setFromSalary(Long.valueOf(fromSalary) * salaryPeriod);
+        job.setToSalary(Long.valueOf(toSalary) * salaryPeriod);
         job.setSalaryPeriod(salaryPeriod);
         job.setQualifications(qualifications);
         redirectJob.addFlashAttribute("job", job);
     }
 
     @Override
-    @Transactional(isolation = Isolation.SERIALIZABLE)
-    public void setEmployeeBasicInformation(User user, RedirectAttributes redirectedJob, String jobTitle,
-                                            String company, String jobLocation, String country) {
+    public void setEmployeeBasicInformation(final User user, final RedirectAttributes redirectedJob, final String jobTitle,
+                                            final String company, final String jobLocation, final String country) {
         Job job = new Job();
         job.setTitle(jobTitle);
         job.setCountry(country);
@@ -157,26 +149,25 @@ public class EmployeeServiceImpl extends UserService implements EmployeeService 
     }
 
     @Override
-    @Transactional(isolation = Isolation.SERIALIZABLE)
-    public void setEmployeeAccountInformation(User user, String company, String name, String phone, String email) {
+    public void setEmployeeAccountInformation(final User user, final String company, final String name,
+                                               String phone,  String email) {
         Employee employee = user.getEmployee();
         employee.setName(name);
-        if (phone.equals("")){
+        if (phone.isEmpty()) {
             phone = employee.getPhone();
         }
-        if (email.equals("")){
-            email = employee.getEmail();
+        if (email.isEmpty()) {
+            email = user.getEmail();
         }
         employee.setCompany(company);
         employee.setPhone(phone);
-        employee.setEmail(email);
+        user.setEmail(email);
         user.setEmployee(employee);
         userRepo.save(user);
     }
 
     @Override
-    @Transactional(isolation = Isolation.SERIALIZABLE)
-    public void editJobQualification(User user, String qualification, Long id) {
+    public void editJobQualification(final User user, final String qualification, final Long id) {
         Job job = jobRepo.getById(id);
         job.setQualifications(qualification);
         Employee employee = job.getEmployee();
@@ -184,367 +175,237 @@ public class EmployeeServiceImpl extends UserService implements EmployeeService 
         userRepo.save(user);
     }
 
-
     @Override
-    @Transactional(isolation = Isolation.SERIALIZABLE)
-    public boolean checkEmployeeEditing(User user, Long id) {
+    public boolean checkEmployeeEditing(final User user, final Long id) {
         return !user.getEmployee().equals(jobRepo.getById(id).getEmployee());
     }
 
-
     @Override
-    @Transactional(isolation = Isolation.SERIALIZABLE)
-    public Set<Developer> searchForResumeByTitleAndDesiredTitle(String title) {
-        if (title.equals("")){
+    public Set<Developer> searchForResumeByTitleAndDesiredTitle(final String title) {
+        if (title.isEmpty()) {
             return new HashSet<>(developerRepo.findAll());
         }
-        Set<WorkExperience> workExperiences = workExperienceRepo.findByJobTitleIgnoreCaseLike("%" + title + "%");
-        Set<DesiredJob> desiredJobs = desiredJobRepo.findByDesiredJobTitleIgnoreCaseLike("%" + title + "%");
-        Set<Developer> developers = new HashSet<>();
-        for (WorkExperience workExperience : workExperiences) {
-            developers.add(workExperience.getDeveloper());
-        }
-        for (DesiredJob job : desiredJobs) {
-            developers.add(job.getDeveloper());
-        }
-        return developers;
+        return Stream.concat(desiredJobRepo.findByDesiredJobTitleIgnoreCaseLike("%" + title + "%").stream().map(DesiredJob::getDeveloper),
+                             workExperienceRepo.findByJobTitleIgnoreCaseLike("%" + title + "%").stream().map(WorkExperience::getDeveloper))
+                             .collect(Collectors.toSet());
     }
 
     @Override
-    @Transactional(isolation = Isolation.SERIALIZABLE)
-    public Set<Developer> searchForResumeByWorkTitle(String title) {
-        if (title.equals("")){
+    public Set<Developer> searchForResumeByWorkTitle(final String title) {
+        if (title.isEmpty()) {
             return new HashSet<>(developerRepo.findAll());
         }
-        Set<WorkExperience> workExperiences = workExperienceRepo.findByJobTitleIgnoreCaseLike("%" + title + "%");
-        Set<Developer> developers = new HashSet<>();
-        for (WorkExperience workExperience : workExperiences) {
-            developers.add(workExperience.getDeveloper());
-        }
-        return developers;
+        return workExperienceRepo.findByJobTitleIgnoreCaseLike("%" + title + "%").stream().map(WorkExperience::getDeveloper).collect(Collectors.toSet());
     }
 
     @Override
-    @Transactional(isolation = Isolation.SERIALIZABLE)
-    public Set<Developer> searchForResumeByCompany(String company) {
-        if (company.equals("")){
+    public Set<Developer> searchForResumeByCompany(final String company) {
+        if (company.isEmpty()) {
             return new HashSet<>(developerRepo.findAll());
         }
-        Set<WorkExperience> workExperiences = workExperienceRepo.findByCompanyIgnoreCase(company);
-        Set<Developer> developers = new HashSet<>();
-        for (WorkExperience workExperience : workExperiences) {
-            developers.add(workExperience.getDeveloper());
-        }
-        return developers;
+        return   workExperienceRepo.findByCompanyIgnoreCase(company).stream().map(WorkExperience::getDeveloper).collect(Collectors.toSet());
     }
 
     @Override
-    @Transactional(isolation = Isolation.SERIALIZABLE)
-    public Set<Developer> searchForResumeByWorkDescription(String description) {
-        if (description.equals("")){
+    public Set<Developer> searchForResumeByWorkDescription(final String description) {
+        if (description.isEmpty()) {
             return new HashSet<>(developerRepo.findAll());
         }
-        Set<WorkExperience> workExperiences = workExperienceRepo.findByDescriptionIgnoreCaseLike("%" + description + "%");
-        Set<Developer> developers = new HashSet<>();
-        for (WorkExperience workExperience : workExperiences) {
-            developers.add(workExperience.getDeveloper());
-        }
-        return developers;
+        return  workExperienceRepo.findByDescriptionIgnoreCaseLike("%" + description + "%").stream().
+                map(WorkExperience::getDeveloper).collect(Collectors.toSet());
     }
 
     @Override
-    @Transactional(isolation = Isolation.SERIALIZABLE)
-    public Set<Developer> searchForResumeBySkills(String skills) {
-        if (skills.equals("")){
-            Set<Specialization> specializations = new HashSet<>(specializationRepo.findAll());
-            Set<Developer> developers = new HashSet<>();
-            for (Specialization specialization : specializations) {
-                developers.add(specialization.getDeveloper());
-            }
-            return developers;
+    public Set<Developer> searchForResumeBySkills(final String skills) {
+        if (skills.isEmpty()) {
+            return specializationRepo.findAll().stream().map(Specialization::getDeveloper).collect(Collectors.toSet());
         }
-        skills = skills.trim().replaceAll(" +", " ");
-        String[] words = skills.split("\\s");
         Set<Specialization> specializations = new HashSet<>();
-        Set<Developer> developers = new HashSet<>();
-        for (String word : words) {
+        for (String word : wordsSpliterator.wordsSpliterator(skills)) {
             specializations.addAll(specializationRepo.findBySkillIgnoreCase(word));
         }
-        for (Specialization specialization : specializations) {
-            developers.add(specialization.getDeveloper());
-        }
-        return developers;
+        return specializations.stream().map(Specialization::getDeveloper).collect(Collectors.toSet());
     }
 
-
     @Override
-    @Transactional(isolation = Isolation.SERIALIZABLE)
-    public Set<Developer> searchForResumeByEducationPlace(String place) {
-        if (place.equals("")){
+    public Set<Developer> searchForResumeByEducationPlace(final String place) {
+        if (place.isEmpty()) {
             return new HashSet<>(developerRepo.findAll());
         }
-        Set<Education> educations = educationRepo.findByPlaceIgnoreCaseLike("%" + place + "%");
-        Set<Developer> developers = new HashSet<>();
-        for (Education education : educations) {
-            developers.add(education.getDeveloper());
-        }
-        return developers;
-    }
-
-
-
-    // DO THIS METHOD
-    @Override
-    @Transactional(isolation = Isolation.SERIALIZABLE)
-    public Set<Developer> searchForResumeByEducationDegree(String degree) {
-            return new HashSet<>(developerRepo.findAll());
+        return educationRepo.findByPlaceIgnoreCaseLike("%" + place + "%").stream().map(Education::getDeveloper).collect(Collectors.toSet());
     }
 
     @Override
-    @Transactional(isolation = Isolation.SERIALIZABLE)
-    public Set<Developer> searchForResumeByFieldOfStudy(String fieldOfStudy) {
-        if (fieldOfStudy.equals("")){
+    public Set<Developer> searchForResumeByEducationDegree(final String degree) {
+        if (degree.equals("1")) {
             return new HashSet<>(developerRepo.findAll());
         }
-        Set<Education> educations = educationRepo.findByFieldOfStudyIgnoreCaseLike("%" + fieldOfStudy + "%");
-        Set<Developer> developers = new HashSet<>();
-        for (Education education : educations) {
-            developers.add(education.getDeveloper());
-        }
-        return developers;
+        return educationRepo.findByDegreeIgnoreCase(degree).stream().map(Education::getDeveloper).collect(Collectors.toSet());
     }
 
     @Override
-    @Transactional(isolation = Isolation.SERIALIZABLE)
-    public Set<Developer> searchForResumeByCountry(String country) {
-        if (country.equals("")){
+    public Set<Developer> searchForResumeByFieldOfStudy(final String fieldOfStudy) {
+        if (fieldOfStudy.equals("")) {
+            return new HashSet<>(developerRepo.findAll());
+        }
+        return educationRepo.findByFieldOfStudyIgnoreCaseLike("%" + fieldOfStudy + "%").
+                stream().map(Education::getDeveloper).collect(Collectors.toSet());
+    }
+
+    @Override
+    public Set<Developer> searchForResumeByCountry(final String country) {
+        if (country.isEmpty()) {
             return new HashSet<>(developerRepo.findAll());
         }
         return developerRepo.findByCountryIgnoreCase(country);
     }
 
     @Override
-    @Transactional(isolation = Isolation.SERIALIZABLE)
-    public Set<Developer> searchForResumeByCity(String city) {
-        if (city.equals("")){
+    public Set<Developer> searchForResumeByCity(final String city) {
+        if (city.isEmpty()) {
             return new HashSet<>(developerRepo.findAll());
         }
         return developerRepo.findByCityIgnoreCase(city);
     }
 
     @Override
-    public Set<Developer> searchForResumeByZipPostalCode(String zipPostalCode) {
-        if (zipPostalCode.equals("")){
+    public Set<Developer> searchForResumeByZipPostalCode(final String zipPostalCode) {
+        if (zipPostalCode.isEmpty()) {
             return new HashSet<>(developerRepo.findAll());
         }
         return developerRepo.findByZipPostalCode(zipPostalCode);
     }
 
     @Override
-    @Transactional(isolation = Isolation.SERIALIZABLE)
-    public Set<Developer> searchForResumeByDescription(String description) {
-        if (searchForResumeByTitleAndDesiredTitle(description).isEmpty()){
-            if (searchForResumeByCompany(description).isEmpty()){
-                if (searchForResumeBySkills(description).isEmpty()){
+    public Set<Developer> searchForResumeByDescription(final String description) {
+        if (searchForResumeByTitleAndDesiredTitle(description).isEmpty()) {
+            if (searchForResumeByCompany(description).isEmpty()) {
+                if (searchForResumeBySkills(description).isEmpty()) {
                    return Collections.emptySet();
-                }else {
+                } else {
                     return searchForResumeBySkills(description);
                 }
-            }else {
+            } else {
                 return searchForResumeByCompany(description);
             }
         }
-        Set<Developer> developers = searchForResumeByTitleAndDesiredTitle(description);
-        developers.addAll(searchForResumeByCompany(description));
-        developers.addAll(searchForResumeBySkills(description));
-        return developers;
+        return Stream.concat(Stream.concat(searchForResumeByTitleAndDesiredTitle(description).stream(),
+                searchForResumeByCompany(description).stream()),
+                searchForResumeBySkills(description).stream()).distinct().collect(Collectors.toSet());
     }
 
     @Override
-    @Transactional(isolation = Isolation.SERIALIZABLE)
-    public Set<Developer> searchForDeveloperByLocation(String location) {
-        Set<Developer> developers = searchForResumeByCountry(location);
-        developers.addAll(searchForResumeByZipPostalCode(location));
-        developers.addAll(searchForResumeByCity(location));
-        return developers;
+    public Set<Developer> searchForDeveloperByLocation(final String location) {
+        return Stream.concat(Stream.concat(searchForResumeByCountry(location).stream(),
+                searchForResumeByZipPostalCode(location).stream()),
+                searchForResumeByCity(location).stream()).distinct().collect(Collectors.toSet());
     }
 
     @Override
-    @Transactional(isolation = Isolation.SERIALIZABLE)
-    public Set<Developer> searchForResume(String whatDescription, String whereDescription) {
-        if (!whatDescription.equals("") && whereDescription.equals("")){
+    public Set<Developer> searchForResume(final String whatDescription, final String whereDescription) {
+        if (whereDescription.isEmpty()) {
             return searchForResumeByDescription(whatDescription);
         }
-        if (!whereDescription.equals("") && whatDescription.equals("")){
-            return searchForDeveloperByLocation(whereDescription);
-        }
-        if (whatDescription.equals("") && whereDescription.equals("")){
-            return Collections.emptySet();
-        }
-        Set<Developer> location = searchForDeveloperByLocation(whereDescription);
-        Set<Developer> description = searchForResumeByDescription(whatDescription);
-        Set<Developer> developers = new HashSet<>();
-        for (Developer descriptionDev : description) {
-            for (Developer locationDev : location) {
-                if (descriptionDev == locationDev){
-                    developers.add(descriptionDev);
-                }
-            }
-        }
-        return developers;
+        return  searchForDeveloperByLocation(whereDescription).stream().filter(searchForResumeByDescription(whatDescription)::contains).collect(Collectors.toSet());
     }
 
-
     @Override
-    @Transactional(isolation = Isolation.SERIALIZABLE)
-    public Set<Developer> searchForResumeByAdditionalInformation(String additional) {
-        if (additional.equals("")){
+    public Set<Developer> searchForResumeByAdditionalInformation(final String additional) {
+        if (additional.isEmpty()) {
             return new HashSet<>(developerRepo.findAll());
         }
         return developerRepo.findByAdditionalInformationIgnoreCaseLike("%" + additional + "%");
     }
 
-
     @Override
-    @Transactional(isolation = Isolation.SERIALIZABLE)
-    public Set<Developer> searchForResumeBySummary(String summary) {
-        if (summary.equals("")){
+    public Set<Developer> searchForResumeBySummary(final String summary) {
+        if (summary.isEmpty()) {
             return new HashSet<>(developerRepo.findAll());
         }
         return developerRepo.findBySummaryIgnoreCaseLike("%" + summary + "%");
     }
 
     @Override
-    @Transactional(isolation = Isolation.SERIALIZABLE)
-    public Set<Developer> searchForDeveloperByExperience(Long experience) {
-        if (experience == 15){
+    public Set<Developer> searchForDeveloperByExperience(final Long experience) {
+        if (experience == 15) {
             return new HashSet<>(developerRepo.findAll());
         }
-        List<Developer> developersFromDb = developerRepo.findAll();
-        Set<Developer> developers = new HashSet<>();
-        for (Developer developer : developersFromDb) {
+        Set<Developer> developers = new HashSet<>(developerRepo.findAll());
+        Set<Developer> devs = new HashSet<>();
+        for (Developer developer : developers) {
             long dbExperience = 0;
-            Set<WorkExperience> workExperiences = developer.getWorkExperiences();
-            for (WorkExperience workExperience : workExperiences) {
-                 dbExperience = dbExperience + Long.parseLong(workExperience.getYearTo()) - Long.parseLong(workExperience.getYearFrom());
+            for (WorkExperience workExperience : developer.getWorkExperiences()) {
+                dbExperience = dbExperience + Long.parseLong(workExperience.getYearFrom()) - Long.parseLong(workExperience.getYearTo());
             }
-            if (dbExperience >= experience){
-                developers.add(developer);
+            if (dbExperience >=experience) {
+                devs.add(developer);
             }
-
         }
-        return developers;
+        return devs;
     }
 
     @Override
-    @Transactional(isolation = Isolation.SERIALIZABLE)
-    public Set<Developer> searchForResumeByWords(String allWords) {
-        long number = 0;
-        allWords = allWords.trim().replaceAll(" +", " ");
-        String[] words = allWords.split("\\s");
+    public Set<Developer> searchForResumeByWords(final String allWords) {
+        AtomicLong number = new AtomicLong(0);
         Set<Developer> developers = new HashSet<>();
-        for (String word : words) {
-            if (!searchForResumeBySkills(word).isEmpty() ||
-                    !searchForResumeByAdditionalInformation(word).isEmpty() ||
-                    !searchForResumeBySummary(word).isEmpty() ||
-                    !searchForResumeByWorkDescription(word).isEmpty() ){
-                number++;
+        for (String word : wordsSpliterator.wordsSpliterator(allWords)) {
+            if (!searchForResumeBySkills(word).isEmpty()
+                    || !searchForResumeByAdditionalInformation(word).isEmpty()
+                    || !searchForResumeBySummary(word).isEmpty()
+                    || !searchForResumeByWorkDescription(word).isEmpty()) {
+                number.incrementAndGet();
             }
-            developers.addAll(searchForResumeBySkills(word));
-
-            developers.addAll(searchForResumeByAdditionalInformation(word));
-            developers.addAll(searchForResumeBySummary(word));
-            developers.addAll( searchForResumeByWorkDescription(word));
+            developers.addAll(Stream.concat(Stream.concat(Stream.concat(searchForResumeBySkills(word).stream(),
+                    searchForResumeByWorkDescription(word).stream()),
+                    searchForResumeByAdditionalInformation(word).stream()),
+                    searchForResumeBySummary(word).stream()).collect(Collectors.toSet()));
         }
-        if (number < words.length) {
+        if (number.get() < wordsSpliterator.wordsSpliterator(allWords).size()) {
             return Collections.emptySet();
         }
         return developers;
     }
 
     @Override
-    @Transactional(isolation = Isolation.SERIALIZABLE)
-    public Set<Developer> searchForResumeByPhrase(String phrase) {
-        Set<Developer> developers = new HashSet<>();
-        developers.addAll(searchForResumeBySkills(phrase));
-        developers.addAll(searchForResumeByAdditionalInformation(phrase));
-        developers.addAll(searchForResumeBySummary(phrase));
-        developers.addAll( searchForResumeByWorkDescription(phrase));
-        return developers;
+    public Set<Developer> searchForResumeByPhrase(final String phrase) {
+        return Stream.concat(Stream.concat(Stream.concat(searchForResumeBySkills(phrase).stream(),
+                searchForResumeByWorkDescription(phrase).stream()),
+                searchForResumeByAdditionalInformation(phrase).stream()),
+                searchForResumeBySummary(phrase).stream()).distinct().collect(Collectors.toSet());
     }
 
     @Override
-    @Transactional(isolation = Isolation.SERIALIZABLE)
-    public Set<Developer> searchForResumeByOneWord(String oneWord) {
-        oneWord = oneWord.trim().replaceAll(" +", " ");
-        String[] words = oneWord.split("\\s");
+    public Set<Developer> searchForResumeByOneWord(final String oneWord) {
+        List<String> words = wordsSpliterator.wordsSpliterator(oneWord);
         Set<Developer> developers = new HashSet<>();
         for (String word : words) {
-            developers.addAll(searchForResumeBySkills(word));
-            developers.addAll(searchForResumeByAdditionalInformation(word));
-            developers.addAll(searchForResumeBySummary(word));
-            developers.addAll( searchForResumeByWorkDescription(word));
+            developers.addAll(Stream.concat(Stream.concat(Stream.concat(searchForResumeBySkills(word).stream(),
+                    searchForResumeByWorkDescription(word).stream()),
+                    searchForResumeByAdditionalInformation(word).stream()),
+                    searchForResumeBySummary(word).stream()).collect(Collectors.toSet()));
         }
         return developers;
     }
 
     @Override
-    @Transactional(isolation = Isolation.SERIALIZABLE)
-    public Set<Developer> searchForResumeAdvanced(User user, String allWords, String phrase, String oneWord,
-                                                  String title, String company, Long experience, String place,
-                                                  String degree, String field, String location) {
-        Set<Developer> oneWordDevelopers = searchForResumeByOneWord(oneWord);
-        Set<Developer> allWordDevelopers = searchForResumeByWords(allWords);
-        Set<Developer> phraseDevelopers = searchForResumeByPhrase(phrase);
-        Set<Developer> titleDevelopers = searchForResumeByWorkTitle(title);
-        Set<Developer> companyDevelopers = searchForResumeByCompany(company);
-        Set<Developer> educationPlaceDevelopers = searchForResumeByEducationPlace(place);
-        Set<Developer> educationDegreeDevelopers = searchForResumeByEducationDegree(degree);
-        Set<Developer> educationFieldOfStudyDevelopers = searchForResumeByFieldOfStudy(field);
-        Set<Developer> locationDevelopers = searchForDeveloperByLocation(location);
-        Set<Developer> experienceDevelopers = searchForDeveloperByExperience(experience);
-        Set<Developer> developers = new HashSet<>();
-
-
-        for (Developer oneWordDeveloper : oneWordDevelopers) {
-            for (Developer allWordDeveloper : allWordDevelopers) {
-                if (oneWordDeveloper.equals(allWordDeveloper)){
-                    for (Developer phraseDeveloper : phraseDevelopers) {
-                        if (allWordDeveloper.equals(phraseDeveloper)){
-                            for (Developer titleDeveloper : titleDevelopers) {
-                                if (phraseDeveloper.equals(titleDeveloper)){
-                                    for (Developer companyDeveloper : companyDevelopers) {
-                                        if (titleDeveloper.equals(companyDeveloper)){
-                                            for (Developer educationPlaceDeveloper : educationPlaceDevelopers) {
-                                                if (companyDeveloper.equals(educationPlaceDeveloper)){
-                                                    for (Developer educationDegreeDeveloper : educationDegreeDevelopers) {
-                                                        if (educationPlaceDeveloper.equals(educationDegreeDeveloper)){
-                                                            for (Developer educationFieldOfStudyDeveloper : educationFieldOfStudyDevelopers) {
-                                                                if (educationDegreeDeveloper.equals(educationFieldOfStudyDeveloper)){
-                                                                    for (Developer locationDeveloper : locationDevelopers) {
-                                                                        if (educationFieldOfStudyDeveloper.equals(locationDeveloper)){
-                                                                            for (Developer experienceDeveloper : experienceDevelopers) {
-                                                                                if (locationDeveloper.equals(experienceDeveloper)){
-                                                                                    developers.add(oneWordDeveloper);
-                                                                                }
-                                                                            }
-                                                                        }
-                                                                    }
-                                                                }
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        return developers;
+    public Set<Developer> searchForResumeAdvanced(final User user, final String allWords,
+                                                  final String phrase, final String oneWord,
+                                                  final String title, final String company,
+                                                  final Long experience, final String place,
+                                                  final String degree, final String field,
+                                                  final String location) {
+        return searchForResumeByOneWord(oneWord).stream()
+                    .filter(searchForResumeByWords(allWords)::contains)
+                    .filter(searchForResumeByPhrase(phrase)::contains)
+                    .filter(searchForResumeByWorkTitle(title)::contains)
+                    .filter(searchForResumeByCompany(company)::contains)
+                    .filter(searchForResumeByEducationPlace(place)::contains)
+                    .filter(searchForResumeByEducationDegree(degree)::contains)
+                    .filter(searchForResumeByFieldOfStudy(field)::contains)
+                    .filter(searchForDeveloperByLocation(location)::contains)
+                    .filter(searchForResumeByEducationDegree(degree)::contains)
+                    .filter(searchForDeveloperByExperience(experience)::contains).collect(Collectors.toSet());
     }
+
+
 }

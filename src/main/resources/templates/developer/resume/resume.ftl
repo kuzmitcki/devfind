@@ -1,14 +1,10 @@
 <#import "../../macros/page.ftl" as p>
 <@p.page>
 
-<div>
-    <form method="post" action="/logout">
-        <input type="hidden" name="_csrf" value="${_csrf.token}" />
-        <button type="submit" style="border-radius: 18px;  margin-top: 10px;" class="btn btn-primary">Log out</button>
-    </form>
-</div>
 
-<div style="margin: 8% 18% 2%;">
+${message!}
+
+<div style="margin-left: 25% !important; margin: 8% 13% 8%;">
     <div style=" margin-bottom: 1.5%;border-radius:8px;width: 66.666667%;border:1px solid #e0e0e0;background-color: white">
         <div style="padding-left: 10px;font-size: 18px;margin: 10px;font-weight: 700;">
             Summary
@@ -44,19 +40,19 @@
                     </div>
                     <div class="form-group">
                         <label  for="inputCity" style="color: #4b4b4b;font-size: .875rem;letter-spacing: 0;line-height: 1.25rem;font-weight: 700;display: block;">City (optional)</label>
-                        <input  value="${developer.city}"  style="border-radius: 8px;" type="text" class="form-control" name="city" id="inputCity">
+                        <input  value="${developer.city!}"  style="border-radius: 8px;" type="text" class="form-control" name="city" id="inputCity">
                     </div>
                     <div class="form-group">
                         <label  for="inputTelephone" style="color: #4b4b4b;font-size: .875rem;letter-spacing: 0;line-height: 1.25rem;font-weight: 700;display: block;">Telephone (optional)</label>
-                        <input value="${developer.telephone}"   style="border-radius: 8px;" type="text" class="form-control" name="telephone" id="inputTelephone">
+                        <input value="${developer.telephone!}"   style="border-radius: 8px;" type="text" class="form-control" name="telephone" id="inputTelephone">
                     </div>
                     <div class="form-group">
                         <label  for="zipPostalCode" style="color: #4b4b4b;font-size: .875rem;letter-spacing: 0;line-height: 1.25rem;font-weight: 700;display: block;">Postal code (optional)</label>
-                        <input value="${developer.zipPostalCode}"  style="border-radius: 8px;" type="text" class="form-control" name="zipPostalCode" id="zipPostalCode">
+                        <input value="${developer.zipPostalCode!}"  style="border-radius: 8px;" type="text" class="form-control" name="zipPostalCode" id="zipPostalCode">
                     </div>
                     <div class="form-group">
                         <label  for="inputEmail" style="color: #4b4b4b;font-size: .875rem;letter-spacing: 0;line-height: 1.25rem;font-weight: 700;display: block;">Email (optional)</label>
-                        <input value="${developer.email}" required  style="border-radius: 8px;" type="text" class="form-control" name="email" id="inputEmail">
+                        <input value="${user.email!}" required  style="border-radius: 8px;" type="text" class="form-control" name="email" id="inputEmail">
                     </div>
                     <div style="font-size: 0.85rem" class="form-group">
                         <input type="hidden" name="_csrf" value="${_csrf.token}" />
@@ -66,7 +62,7 @@
                 </form>
             </div>
             <div style="padding-left: 20px; padding-bottom: 10px;" class="container">
-                <strong style="line-height: 1.25rem;font-weight: 400;">${developer.email!}</strong>
+                <strong style="line-height: 1.25rem;font-weight: 400;">${user.email!}</strong>
                     <div style="font-size: 14px; color: #00c">
                         <a href="/edit-developer">Add phone number</a>
                     </div>
@@ -104,7 +100,7 @@
                        <label for="fromSalary" style="margin-left: 7px;color: #000;font-size: .875rem;letter-spacing: 0;line-height: 1.25rem;font-weight: 700;display: block;">
                            Desired Salary
                        </label>
-                       <input value="<#if developer.desiredJob??>${developer.desiredJob.desiredSalary!  }<#else></#if>" placeholder="Example: 50,000" style="margin-left: 7px;border-radius: 8px" type="text" class="form-control" name="salary" id="fromSalary">
+                       <input pattern="^[ 0-9]+$" value="<#if developer.desiredJob??>${developer.desiredJob.desiredSalary!}<#else></#if> placeholder="Example: 50,000 style="margin-left: 7px;border-radius: 8px" type="text" class="form-control" name="salary" id="fromSalary">
                    </div>
                    <div class="form-group col-md-3">
                        <select name="salaryPeriod" style="margin-top: 28px;margin-left: 20px;width: 175%; border-radius: 8px" id="inputPeriod" class="custom-select">

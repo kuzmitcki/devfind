@@ -8,10 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Set;
 
 public interface EmployeeService {
-    boolean saveEmployee(User user, String email);
-
     void editJobLocation(User user, String country, String location, Long id);
-
 
     void editJobDescription(User user, String description, Long id);
 
@@ -27,7 +24,7 @@ public interface EmployeeService {
                                 String fullDescription, HttpServletRequest request);
 
     void setEmployeeJobSalary(String jobType, String fromSalary, String toSalary,
-                              String salaryPeriod, String qualifications,
+                              Long salaryPeriod, String qualifications,
                               RedirectAttributes redirectJob, HttpServletRequest request);
 
     void setEmployeeBasicInformation(User user, RedirectAttributes redirectedJob,
@@ -39,39 +36,44 @@ public interface EmployeeService {
     boolean checkEmployeeEditing(User user, Long id);
 
     Set<Developer> searchForResumeByTitleAndDesiredTitle(String title);
+
     Set<Developer> searchForResumeByWorkTitle(String title);
+
     Set<Developer> searchForResumeByWorkDescription(String description);
+
     Set<Developer> searchForResumeByCompany(String company);
+
     Set<Developer> searchForResumeBySkills(String skills);
 
     Set<Developer> searchForResumeByCountry(String country);
+
     Set<Developer> searchForResumeByCity(String city);
+
     Set<Developer> searchForResumeByZipPostalCode(String zipPostalCode);
 
-
     Set<Developer> searchForResumeByEducationPlace(String place);
-    Set<Developer> searchForResumeByEducationDegree(String degree);
-    Set<Developer> searchForResumeByFieldOfStudy(String fieldOfStudy);
 
+    Set<Developer> searchForResumeByEducationDegree(String degree);
+
+    Set<Developer> searchForResumeByFieldOfStudy(String fieldOfStudy);
 
     Set<Developer> searchForDeveloperByExperience(Long experience);
 
     Set<Developer> searchForResumeByDescription(String description);
+
     Set<Developer> searchForDeveloperByLocation(String location);
 
     Set<Developer> searchForResume(String whatDescription, String whereDescription);
 
-
-
     Set<Developer> searchForResumeByAdditionalInformation(String additional);
+
     Set<Developer> searchForResumeBySummary(String  summary);
 
-
-
     Set<Developer> searchForResumeByWords(String allWords);
-    Set<Developer> searchForResumeByPhrase(String phrase);
-    Set<Developer> searchForResumeByOneWord(String oneWord);
 
+    Set<Developer> searchForResumeByPhrase(String phrase);
+
+    Set<Developer> searchForResumeByOneWord(String oneWord);
 
     Set<Developer> searchForResumeAdvanced(User user, String allWords, String phrase, String oneWord,
                                            String title, String company, Long experience, String place,

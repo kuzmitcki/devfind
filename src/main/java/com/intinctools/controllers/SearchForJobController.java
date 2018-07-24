@@ -2,54 +2,50 @@ package com.intinctools.controllers;
 
 
 import com.intinctools.entities.empEntites.Job;
+import com.intinctools.entities.userEntites.User;
 import com.intinctools.repo.employeeRepo.JobRepo;
 import com.intinctools.service.developer.DeveloperService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.intinctools.service.mail.Mail;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Set;
 
 @Controller
 @RequestMapping("job")
+@PreAuthorize("hasAuthority('DEVELOPER')")
 public class SearchForJobController {
-
-    private Logger logger = LoggerFactory.getLogger(SearchForJobController.class);
-
-
     private final DeveloperService developerService;
+
     private final JobRepo jobRepo;
 
-    public SearchForJobController(DeveloperService developerService, JobRepo jobRepo) {
+    private final Mail mailSender;
+
+    public SearchForJobController(DeveloperService developerService, JobRepo jobRepo, Mail mailSender) {
         this.developerService = developerService;
         this.jobRepo = jobRepo;
+        this.mailSender = mailSender;
     }
 
     @GetMapping("search")
-    @PreAuthorize("hasAuthority('DEVELOPER')")
     public String searchJobPage(){
         return "developer/search/usual";
     }
 
     @PostMapping("search")
-    @PreAuthorize("hasAuthority('DEVELOPER')")
-    public String searchJob(@RequestParam("whatDescription") String whatDescription,
-                            @RequestParam(value = "whereDescription", required = false) String whereDescription,
+    public String searchJob(@RequestParam(name = "whatDescription") String whatDescription,
+                            @RequestParam(name = "whereDescription", required = false) String whereDescription,
                             HttpServletRequest request){
         request.getSession().setAttribute("jobsRequest",  developerService.searchForJob(whatDescription, whereDescription));
         return "redirect:/job/results";
     }
 
-
     @GetMapping("results")
-    @PreAuthorize("hasAuthority('DEVELOPER')")
     public String searchResults(Model model,
                                 HttpServletRequest request){
         Set<Job> jobs = (Set<Job>) request.getSession().getAttribute("jobsRequest");
@@ -62,26 +58,38 @@ public class SearchForJobController {
         return "developer/results/results";
     }
 
-
     @GetMapping("search/advanced")
-    @PreAuthorize("hasAuthority('DEVELOPER')")
     public String advancedJobSearchPage(){
         return "developer/search/advanced";
     }
 
-
     @PostMapping("search/advanced")
-    @PreAuthorize("hasAuthority('DEVELOPER')")
     public String advancedSearch(@RequestParam("allWords") String allWords,
                                  @RequestParam("phrase") String phrase,
                                  @RequestParam("oneWord") String oneWord,
                                  @RequestParam(name = "title",required = false) String title,
                                  @RequestParam("jobType") String jobType,
                                  @RequestParam(name = "salary", required = false) String salary,
-                                 @RequestParam("salaryPeriod") String salaryPeriod,
-                                 HttpServletRequest request){
-        request.getSession().setAttribute("jobsRequest", developerService.searchForJobAdvanced(allWords, phrase, oneWord, title, jobType, salary, salaryPeriod));
+                                 HttpServletRequest request) {
+        request.getSession().setAttribute("jobsRequest", developerService.searchForJobAdvanced(allWords, phrase, oneWord, title, jobType, Long.valueOf(salary)));
         return "redirect:/job/results";
+    }
+
+    @GetMapping("/preview/{id}")
+    public String jobPreview(@PathVariable("id") Long id,
+                             Model model){
+        Job job = jobRepo.getOne(id);
+        model.addAttribute("employee", job.getEmployee());
+        model.addAttribute("job", job);
+        return "developer/preview/jobPreview";
+    }
+
+    @PostMapping("/send-resume/{id}")
+    public String sendResumeToEmployee(@AuthenticationPrincipal User user,
+                                       @PathVariable("id") Long id,
+                                       RedirectAttributes attributes){
+        mailSender.sendResumeToEmployee(user, id, attributes);
+        return "redirect:/job/preview/" + id;
     }
 }
 

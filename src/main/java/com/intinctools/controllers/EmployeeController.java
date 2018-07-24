@@ -4,8 +4,6 @@ import com.intinctools.entities.empEntites.Employee;
 import com.intinctools.entities.empEntites.Job;
 import com.intinctools.entities.userEntites.User;
 import com.intinctools.service.employee.EmployeeService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -17,41 +15,25 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.servlet.http.HttpServletRequest;
 
 @Controller
+@PreAuthorize("hasAuthority('EMPLOYEE')")
 public class EmployeeController {
     private final EmployeeService employeeService;
-    private Logger logger = LoggerFactory.getLogger(EmployeeController.class);
 
     @Autowired
     public EmployeeController(EmployeeService employeeService) {
         this.employeeService = employeeService;
-    }
 
-    @GetMapping("/employee")
-    public String employeeForm() {
-        return "employee/registration/employeeRegistration";
-    }
-
-    @PostMapping("/employee")
-    public String saveEmployee(User user,
-                                @RequestParam("email") String email,
-                                RedirectAttributes attribute) {
-        if (!employeeService.saveEmployee(user, email)) {
-            return "redirect:/employee";
-        }
-        attribute.addFlashAttribute("message", "User already exists");
-        return "redirect:/employee";
     }
 
     @GetMapping("job/wizard/information")
-    @PreAuthorize("hasAuthority('EMPLOYEE')")
     public String employeeAccountInformationPage(@AuthenticationPrincipal User user,
                                                  Model model){
+        model.addAttribute("user" , user);
         model.addAttribute("employee", user.getEmployee());
         return "employee/job/accountInformation";
     }
 
     @PostMapping("job/wizard/information")
-    @PreAuthorize("hasAuthority('EMPLOYEE')")
     public String employeeAccountInformation(@AuthenticationPrincipal User user,
                                              @RequestParam(name = "company") String company,
                                              @RequestParam(name = "name")    String name,
@@ -62,7 +44,6 @@ public class EmployeeController {
     }
 
     @GetMapping("job/wizard/job-description/basic")
-    @PreAuthorize("hasAuthority('EMPLOYEE')")
     public String jobDescriptionBasicPage(@AuthenticationPrincipal User user,
                                           Model model,
                                           @ModelAttribute("message") String message){
@@ -73,7 +54,6 @@ public class EmployeeController {
     }
 
     @PostMapping("job/wizard/job-description/basic")
-    @PreAuthorize("hasAuthority('EMPLOYEE')")
     public String jobDescriptionBasic(@AuthenticationPrincipal User user,
                                       RedirectAttributes redirectedJob,
                                       @RequestParam("jobTitle")    String jobTitle,
@@ -85,7 +65,6 @@ public class EmployeeController {
     }
 
     @GetMapping("job/wizard/job-description/details")
-    @PreAuthorize("hasAuthority('EMPLOYEE')")
     public String jobDescriptionDetailsPage(@AuthenticationPrincipal User user,
                                             @ModelAttribute("job") Job job,
                                             RedirectAttributes attribute,
@@ -101,11 +80,10 @@ public class EmployeeController {
     }
 
     @PostMapping("job/wizard/job-description/details")
-    @PreAuthorize("hasAuthority('EMPLOYEE')")
     public String jobDescriptionDetails(@RequestParam("jobType")        String jobType,
                                         @RequestParam("fromSalary")     String fromSalary,
                                         @RequestParam("toSalary")       String toSalary,
-                                        @RequestParam("salaryPeriod")   String salaryPeriod,
+                                        @RequestParam("salaryPeriod")   Long salaryPeriod,
                                         @RequestParam("qualifications") String qualifications,
                                         RedirectAttributes redirectJob,
                                         HttpServletRequest request) {
@@ -114,7 +92,6 @@ public class EmployeeController {
     }
 
     @GetMapping("job/wizard/description")
-    @PreAuthorize("hasAuthority('EMPLOYEE')")
     public String jobDescriptionPage(@AuthenticationPrincipal User user,
                                      @ModelAttribute("job") Job job,
                                      HttpServletRequest request,
@@ -131,7 +108,6 @@ public class EmployeeController {
     }
 
     @PostMapping("job/wizard/description")
-    @PreAuthorize("hasAuthority('EMPLOYEE')")
     public String jobDescription(@AuthenticationPrincipal User user,
                                  @RequestParam("desiredExperience") String desiredExperience,
                                  @RequestParam("fullDescription")   String fullDescription,
@@ -141,7 +117,6 @@ public class EmployeeController {
     }
 
     @GetMapping("employee/jobs")
-    @PreAuthorize("hasAuthority('EMPLOYEE')")
     public String jobsPage(@AuthenticationPrincipal User user,
                            Model model){
         model.addAttribute("employee", user.getEmployee());
@@ -149,7 +124,6 @@ public class EmployeeController {
     }
 
     @PostMapping("edit-employee/company")
-    @PreAuthorize("hasAuthority('EMPLOYEE')")
     public String editCompany(@AuthenticationPrincipal User user,
                               @RequestParam("company") String company){
         employeeService.editEmployeeCompany(user, company);
@@ -157,7 +131,6 @@ public class EmployeeController {
     }
 
     @PostMapping("edit-employee/job/title/{id}")
-    @PreAuthorize("hasAuthority('EMPLOYEE')")
     public String editJobTitle(@AuthenticationPrincipal User user,
                                @RequestParam("title") String title,
                                @PathVariable("id") Long id){
@@ -169,7 +142,6 @@ public class EmployeeController {
     }
 
     @PostMapping("edit-employee/job/location/{id}")
-    @PreAuthorize("hasAuthority('EMPLOYEE')")
     public String editJobLocation(@AuthenticationPrincipal  User user,
                                   @RequestParam("country")  String country,
                                   @RequestParam("location") String location,
@@ -182,7 +154,6 @@ public class EmployeeController {
     }
 
     @PostMapping("/edit-employee/job/description/{id}")
-    @PreAuthorize("hasAuthority('EMPLOYEE')")
     public String editJobDescription(@AuthenticationPrincipal  User user,
                                      @RequestParam("description")  String description,
                                      @PathVariable("id") Long id){
@@ -194,7 +165,6 @@ public class EmployeeController {
     }
 
     @PostMapping("/edit-employee/job/experience/{id}")
-    @PreAuthorize("hasAuthority('EMPLOYEE')")
     public String editJobDesiredExperience(@AuthenticationPrincipal  User user,
                                            @RequestParam("experience")  String experience,
                                            @PathVariable("id") Long id){
@@ -207,7 +177,6 @@ public class EmployeeController {
 
 
     @PostMapping("/edit-employee/job/qualification/{id}")
-    @PreAuthorize("hasAuthority('EMPLOYEE')")
     public String editJobQualification(@AuthenticationPrincipal  User user,
                                        @RequestParam("qualification")  String qualification,
                                        @PathVariable("id") Long id){
@@ -217,6 +186,7 @@ public class EmployeeController {
         employeeService.editJobQualification(user, qualification, id);
         return "redirect:/employee/jobs";
     }
+
 
 
 }

@@ -1,9 +1,11 @@
 package com.intinctools.entities.empEntites;
 
 
+import com.intinctools.entities.userEntites.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.util.Objects;
@@ -13,21 +15,25 @@ import java.util.Set;
 @Getter
 @Setter
 @NoArgsConstructor
+@ToString
 public class Employee {
+
         @Id
         @GeneratedValue(strategy = GenerationType.AUTO)
         private long id;
 
-        private String email;
         private String phone;
+
         private String name;
+
         private String company;
 
+        @OneToOne
+        private User user;
 
         @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
         @JoinColumn(name = "employee_id")
         private Set<Job> jobs;
-
 
         @Override
         public boolean equals(Object o) {
@@ -42,14 +48,7 @@ public class Employee {
             return Objects.hash(id);
         }
 
-        public Employee(String email) {
-                this.email = email;
-            }
 
-        @Override
-        public String toString() {
-            return "Employee{" +
-                    "id=" + id +
-                    '}';
-        }
+
+
 }

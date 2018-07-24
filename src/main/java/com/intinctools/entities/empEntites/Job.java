@@ -3,33 +3,44 @@ package com.intinctools.entities.empEntites;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import java.util.Objects;
 
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
+@ToString
 public class Job {
-
     @Id
     @GeneratedValue
     private Long id;
 
     private String title;
+
     private String fullDescription;
 
     private String desiredExperience;
+
     private Long fromSalary;
+
     private Long toSalary;
+
     private String jobType;
+
     private String qualifications;
-    private String salaryPeriod;
+
+    private Long salaryPeriod;
+
     private String jobLocation;
+
     private String country;
+
     @ManyToOne
     private Employee employee;
 
@@ -37,7 +48,8 @@ public class Job {
         this.title = title;
     }
 
-    public Job(String title, String fullDescription, String desiredExperience, Long fromSalary, Long toSalary, String jobType, String salaryPeriod, String jobLocation, String country) {
+    public Job(String title, String fullDescription, String desiredExperience, Long fromSalary, Long toSalary,
+               String jobType, Long salaryPeriod, String jobLocation, String country) {
         this.title = title;
         this.fullDescription = fullDescription;
         this.desiredExperience = desiredExperience;
@@ -50,17 +62,16 @@ public class Job {
     }
 
     @Override
-    public String toString() {
-        return "Job{" +
-                "title='" + title + '\'' +
-                ", fullDescription='" + fullDescription + '\'' +
-                ", desiredExperience='" + desiredExperience + '\'' +
-                ", fromSalary=" + fromSalary +
-                ", toSalary=" + toSalary +
-                ", jobType='" + jobType + '\'' +
-                ", salaryPeriod='" + salaryPeriod + '\'' +
-                ", jobLocation='" + jobLocation + '\'' +
-                ", country='" + country + '\'' +
-                '}';
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Job job = (Job) o;
+        return Objects.equals(id, job.id);
     }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
+
 }

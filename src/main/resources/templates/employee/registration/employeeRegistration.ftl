@@ -1,4 +1,4 @@
-<#import "../../macros/registration.ftl" as r>
+<#import "../../registration.ftl" as r>
 <#import "../../macros/page.ftl" as p>
 <@p.page>
     ${messsage!}

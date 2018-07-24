@@ -7,5 +7,4 @@ import java.util.Set;
 
 public interface SpecializationRepo extends JpaRepository<Specialization, Long> {
     Set<Specialization> findBySkillIgnoreCase(String skill);
-
 }

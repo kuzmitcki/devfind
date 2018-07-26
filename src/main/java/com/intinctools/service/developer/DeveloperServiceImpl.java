@@ -83,15 +83,15 @@ public class DeveloperServiceImpl extends UserService implements DeveloperServic
     public void setEducation(final User user, final String degree, final String place, final String fieldOfStudy,
                              final String city, final String monthFrom, final String monthTo,
                              final String yearFrom, final String yearTo) {
-      if (!degree.isEmpty() && !fieldOfStudy.isEmpty() && !place.isEmpty()) {
-          Developer developer = user.getDeveloper();
-          Set<Education> educations = new HashSet<>(developer.getEducation());
-          developer.getEducation().clear();
-          educations.add(new Education(degree, place, fieldOfStudy, city, monthFrom, monthTo, yearFrom, yearTo, developer));
-          developer.setEducation(educations);
-          user.setDeveloper(developer);
-          userRepo.save(user);
-      }
+        if (!degree.isEmpty() && !fieldOfStudy.isEmpty() && !place.isEmpty()) {
+            Developer developer = user.getDeveloper();
+            Set<Education> educations = new HashSet<>(developer.getEducation());
+            developer.getEducation().clear();
+            educations.add(new Education(degree, place, fieldOfStudy, city, monthFrom, monthTo, yearFrom, yearTo, developer));
+            developer.setEducation(educations);
+            user.setDeveloper(developer);
+            userRepo.save(user);
+        }
     }
 
     @Override
@@ -104,13 +104,13 @@ public class DeveloperServiceImpl extends UserService implements DeveloperServic
             user.setDeveloper(developer);
             userRepo.save(user);
         } else {
-                Set<WorkExperience> workExperiences = new HashSet<>(developer.getWorkExperiences());
-                developer.getWorkExperiences().clear();
-                developer.setJobExperience(true);
-                workExperiences.add(new WorkExperience(jobTitle, company, city, monthFrom, monthTo, yearFrom, yearTo, description, developer));
-                developer.setWorkExperiences(workExperiences);
-                user.setDeveloper(developer);
-                userRepo.save(user);
+            Set<WorkExperience> workExperiences = new HashSet<>(developer.getWorkExperiences());
+            developer.getWorkExperiences().clear();
+            developer.setJobExperience(true);
+            workExperiences.add(new WorkExperience(jobTitle, company, city, monthFrom, monthTo, yearFrom, yearTo, description, developer));
+            developer.setWorkExperiences(workExperiences);
+            user.setDeveloper(developer);
+            userRepo.save(user);
 
         }
 
@@ -287,7 +287,8 @@ public class DeveloperServiceImpl extends UserService implements DeveloperServic
         if (company.isEmpty()) {
             return employeeRepo.findAll().stream().map(Employee::getJobs).flatMap(Collection::stream).collect(Collectors.toSet());
         }
-        return employeeRepo.findByCompanyIgnoreCaseLike("%" + company + "%").stream().map(Employee::getJobs).flatMap(Collection::stream).collect(Collectors.toSet());
+        return employeeRepo.findByCompanyIgnoreCaseLike("%" + company + "%").stream().map(Employee::getJobs).
+                                                                                                    flatMap(Collection::stream).collect(Collectors.toSet());
     }
 
     @Override
@@ -308,7 +309,8 @@ public class DeveloperServiceImpl extends UserService implements DeveloperServic
         if (!whereDescription.isEmpty()) {
             return searchForJob(whatDescription);
         }
-        return searchForJob(whatDescription).stream().filter(searchForJobByLocation(whereDescription)::contains).collect(Collectors.toSet());
+        return searchForJob(whatDescription).stream().filter(searchForJobByLocation(whereDescription)::contains)
+                            .collect(Collectors.toSet());
     }
 
     @Override
@@ -332,7 +334,7 @@ public class DeveloperServiceImpl extends UserService implements DeveloperServic
         Set<Job> jobs = new HashSet<>();
         for (String word :  wordsSpliterator.wordsSpliterator(oneWord)) {
             jobs.addAll(Stream.concat(Stream.concat(searchForJobByDesiredExperience(word).stream(),searchForJobByQualifications(word).stream()),
-                    searchForJobByTitle(word).stream()).collect(Collectors.toSet()));
+                        searchForJobByTitle(word).stream()).collect(Collectors.toSet()));
         }
         return jobs;
     }
@@ -348,7 +350,7 @@ public class DeveloperServiceImpl extends UserService implements DeveloperServic
                 number.incrementAndGet();
             }
             jobs.addAll(Stream.concat(Stream.concat(searchForJobByDesiredExperience(word).stream(), searchForJobByQualifications(word).stream()),
-                    searchForJobByDescription(word).stream()).collect(Collectors.toSet()));
+                        searchForJobByDescription(word).stream()).collect(Collectors.toSet()));
         }
         if (number.get() < wordsSpliterator.wordsSpliterator(allWords).size()) {
             return Collections.emptySet();
@@ -359,7 +361,7 @@ public class DeveloperServiceImpl extends UserService implements DeveloperServic
     @Override
     public Set<Job> searchFroJobByPhrase(final String phrase) {
         return Stream.concat(Stream.concat(searchForJobByDesiredExperience(phrase).stream(), searchForJobByQualifications(phrase).stream()),
-                searchForJobByDescription(phrase).stream()).collect(Collectors.toSet());
+                             searchForJobByDescription(phrase).stream()).collect(Collectors.toSet());
     }
 
     @Override
@@ -397,12 +399,12 @@ public class DeveloperServiceImpl extends UserService implements DeveloperServic
     public Set<Job> searchForJobAdvanced(final String allWords, final String phrase, final String oneWord, final String title,
                                          final String jobType, final String salary) {
         return searchForJobByOneWord(oneWord).stream().
-                            filter(searchFroJobByPhrase(phrase)::contains).
-                            filter(searchForJobByAllWords(allWords)::contains).
-                            filter(searchForJobByWordsInTitle(title)::contains).
-                            filter(searchForJobByJobType(jobType)::contains).
-                            filter(searchForJobBySalaryAndPeriod(salary)::contains).
-                            collect(Collectors.toSet());
+                        filter(searchFroJobByPhrase(phrase)::contains).
+                        filter(searchForJobByAllWords(allWords)::contains).
+                        filter(searchForJobByWordsInTitle(title)::contains).
+                        filter(searchForJobByJobType(jobType)::contains).
+                        filter(searchForJobBySalaryAndPeriod(salary)::contains).
+                        collect(Collectors.toSet());
     }
 }
 

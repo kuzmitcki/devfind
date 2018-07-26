@@ -18,35 +18,35 @@ import java.util.Set;
 @ToString
 public class Employee {
 
-        @Id
-        @GeneratedValue(strategy = GenerationType.AUTO)
-        private long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private long id;
 
-        private String phone;
+    private String phone;
 
-        private String name;
+    private String name;
 
-        private String company;
+    private String company;
 
-        @OneToOne
-        private User user;
+    @OneToOne
+    private User user;
 
-        @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-        @JoinColumn(name = "employee_id")
-        private Set<Job> jobs;
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @JoinColumn(name = "employee_id")
+    private Set<Job> jobs;
 
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
-            Employee employee = (Employee) o;
-            return id == employee.id;
-        }
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Employee employee = (Employee) o;
+        return id == employee.id;
+    }
 
-        @Override
-        public int hashCode() {
-            return Objects.hash(id);
-        }
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
 
 
 

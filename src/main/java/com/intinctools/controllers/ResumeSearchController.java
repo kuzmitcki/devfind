@@ -1,10 +1,13 @@
 package com.intinctools.controllers;
 
+import com.intinctools.entities.devEntities.DesiredJob;
 import com.intinctools.entities.devEntities.Developer;
 import com.intinctools.entities.userEntites.User;
 import com.intinctools.repo.developerRepo.DeveloperRepo;
 import com.intinctools.service.employee.EmployeeService;
 import com.intinctools.service.mail.MailSender;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -13,7 +16,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("resume")
@@ -23,6 +28,7 @@ public class ResumeSearchController {
 
     private final DeveloperRepo developerRepo;
 
+    private final Logger l = LoggerFactory.getLogger(ResumeSearchController.class);
     private final MailSender mailSender;
 
     public ResumeSearchController(final EmployeeService employeeService,
@@ -51,7 +57,7 @@ public class ResumeSearchController {
                               HttpServletRequest request) {
         Set<Developer> developers = (Set<Developer>) request.getSession().getAttribute("devs");
         if (developers == null) {
-            model.addAttribute("developers", developerRepo.findAll());
+            model.addAttribute("developers", new HashSet<>(developerRepo.findAll()));
         } else {
             model.addAttribute("developers", developers);
         }

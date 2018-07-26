@@ -3,10 +3,10 @@ package com.intinctools.entities.userEntites;
 import org.springframework.security.core.GrantedAuthority;
 
 public enum Role implements GrantedAuthority {
-        DEVELOPER, EMPLOYEE, ADMIN;
+    DEVELOPER, EMPLOYEE, ADMIN;
 
-        @Override
-        public String getAuthority() {
+    @Override
+    public String getAuthority() {
         return name();
     }
 }

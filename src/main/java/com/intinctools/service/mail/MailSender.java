@@ -62,7 +62,7 @@ public class MailSender implements Mail {
             );
             send(developer.getUser().getEmail(), "Job", message);
         }
-        attributes.addFlashAttribute("message", "You successfully send message with offer to " + user.getEmail() + ". Please expect a reply.");
+        attributes.addFlashAttribute("message", "You successfully send message with offer to " + developer.getUser().getEmail() + ". Please expect a reply.");
     }
 
     @Override
@@ -100,8 +100,8 @@ public class MailSender implements Mail {
                     user.getDeveloper().getId(),
                     user.getEmail()
             );
-          send(employee.getUser().getEmail(), "Job", message);
+            send(employee.getUser().getEmail(), "Job", message);
         }
-        attributes.addFlashAttribute("message", "You successfully send message with your resume " + employee.getUser().getEmail() + ". Please expect a reply.");
+        attributes.addFlashAttribute("message", "You successfully send message with your resume to " + employee.getUser().getEmail() + ". Please expect a reply.");
     }
 }

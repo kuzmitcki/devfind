@@ -88,7 +88,7 @@
         <div class="row" style="padding-left: 9%">
             <#list developers as developer>
                 <div style="width: 30%;background-color: white;padding-top: 1%;padding-bottom: 1%;margin: 10% 1% 0;" class="jumbotron">
-                    <h1 style="font-size: 15px"><#if developer.desiredJob??>${developer.desiredJob.desiredJobTitle!}<#else>${developer.user.email!}</#if> - ${developer.country!}, ${developer.city!}</h1>
+                    <h1 style="font-size: 15px"><#if (developer.desiredJob)??>${developer.desiredJob.desiredJobTitle!}<#else>${developer.user.email!}</#if> - ${developer.country!}, ${developer.city!}</h1>
                     <#list developer.workExperiences as work>
                         <p style="font-size: 12px" class="lead">${work.jobTitle!} - ${work.city!}</p>
                     </#list>

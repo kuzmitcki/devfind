@@ -11,7 +11,8 @@ import javax.persistence.*;
 @Setter
 @NoArgsConstructor
 public class Specialization {
-        @Id @GeneratedValue(strategy = GenerationType.AUTO)
+        @Id
+        @GeneratedValue(strategy = GenerationType.AUTO)
         private Long id;
 
         private String skill;
@@ -28,6 +29,6 @@ public class Specialization {
 
         @Override
         public String toString() {
-            return skill;
+                return skill;
         }
 }

@@ -62,7 +62,7 @@
         </div>
         <div style="padding-top: 11px;padding-left: 20px;">
             <div>
-                <pre style="font-family: Helvetica Neue,Helvetica,Arial,Liberation Sans,Roboto,Noto,sans-serif;font-size: .875rem;letter-spacing: 0;line-height: 1.25rem;font-weight: 400;">${developer.summary!}</pre>
+                <pre style="padding-right: 15px;font-family: Helvetica Neue,Helvetica,Arial,Liberation Sans,Roboto,Noto,sans-serif;font-size: .875rem;letter-spacing: 0;line-height: 1.25rem;font-weight: 400;">${developer.summary!}</pre>
             </div>
             <div id="summaryBox" style="padding-top: 20px;display: none;">
                 <form method="post" action="/edit-developer/summary">
@@ -136,18 +136,15 @@
                     </#list>
         </div>
         <div style="padding-left: 10px;font-size: 18px;margin: 10px;font-weight: 700;">
-            Skills  <span style=" font-weight: 600; color: gainsboro;">________________________________________________</span>
+            Skills  <span style=" font-weight: 600; color: gainsboro;">______________________________________________________________</span>
         </div>
         <div style="padding: 20px;">
                     <#list developer.specializations as specialization>
-                        <div style="padding-top: 10px">
-                            <div style="font-family: Helvetica Neue,Helvetica,Arial,Liberation Sans,Roboto,Noto,sans-serif;font-size: .875rem;letter-spacing: 0;line-height: 1.25rem;font-weight: 400;">
-                                ${specialization.skill} (${specialization.experience})
-                            </div>
-                            <div style="color: gainsboro">
-                                ___________________________________________________________________________
-                            </div>
-                        </div>
+
+                            <span style="font-family: Helvetica Neue,Helvetica,Arial,Liberation Sans,Roboto,Noto,sans-serif;font-size: .875rem;letter-spacing: 0;line-height: 1.25rem;font-weight: 400;">
+                                ${specialization.skill} (${specialization.experience})<#sep>, </#sep>
+                            </span>
+
                     </#list>
         </div>
         <div style="padding-left: 10px;font-size: 18px;margin: 10px;font-weight: 700;">

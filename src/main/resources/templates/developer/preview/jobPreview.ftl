@@ -52,7 +52,7 @@
         <div  class="row h-100 justify-content-center align-items-center">
             <div style="width: 90%; background-color: white">
                 <div style="margin-left: 25px;margin-top: 20px;">
-                    <div>
+                    <div style="color: red; margin-bottom: 1%">
                         ${message!}
                     </div>
                     <div>

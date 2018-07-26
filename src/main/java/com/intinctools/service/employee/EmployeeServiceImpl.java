@@ -152,7 +152,7 @@ public class EmployeeServiceImpl extends UserService implements EmployeeService 
 
     @Override
     public void setEmployeeAccountInformation(final User user, final String company, final String name,
-                                               String phone,  String email) {
+                                              String phone,  String email) {
         Employee employee = user.getEmployee();
         employee.setName(name);
         if (phone.isEmpty()) {
@@ -188,8 +188,8 @@ public class EmployeeServiceImpl extends UserService implements EmployeeService 
             return new HashSet<>(developerRepo.findAll());
         }
         return Stream.concat(desiredJobRepo.findByDesiredJobTitleIgnoreCaseLike("%" + title + "%").stream().map(DesiredJob::getDeveloper),
-                             workExperienceRepo.findByJobTitleIgnoreCaseLike("%" + title + "%").stream().map(WorkExperience::getDeveloper))
-                             .collect(Collectors.toSet());
+                workExperienceRepo.findByJobTitleIgnoreCaseLike("%" + title + "%").stream().map(WorkExperience::getDeveloper))
+                .collect(Collectors.toSet());
     }
 
     @Override
@@ -283,7 +283,7 @@ public class EmployeeServiceImpl extends UserService implements EmployeeService 
         if (searchForResumeByTitleAndDesiredTitle(description).isEmpty()) {
             if (searchForResumeByCompany(description).isEmpty()) {
                 if (searchForResumeBySkills(description).isEmpty()) {
-                   return Collections.emptySet();
+                    return Collections.emptySet();
                 } else {
                     return searchForResumeBySkills(description);
                 }
@@ -397,16 +397,16 @@ public class EmployeeServiceImpl extends UserService implements EmployeeService 
                                                   final String degree, final String field,
                                                   final String location) {
         return searchForResumeByOneWord(oneWord).stream()
-                    .filter(searchForResumeByWords(allWords)::contains)
-                    .filter(searchForResumeByPhrase(phrase)::contains)
-                    .filter(searchForResumeByWorkTitle(title)::contains)
-                    .filter(searchForResumeByCompany(company)::contains)
-                    .filter(searchForResumeByEducationPlace(place)::contains)
-                    .filter(searchForResumeByEducationDegree(degree)::contains)
-                    .filter(searchForResumeByFieldOfStudy(field)::contains)
-                    .filter(searchForDeveloperByLocation(location)::contains)
-                    .filter(searchForResumeByEducationDegree(degree)::contains)
-                    .filter(searchForDeveloperByExperience(experience)::contains).collect(Collectors.toSet());
+                .filter(searchForResumeByWords(allWords)::contains)
+                .filter(searchForResumeByPhrase(phrase)::contains)
+                .filter(searchForResumeByWorkTitle(title)::contains)
+                .filter(searchForResumeByCompany(company)::contains)
+                .filter(searchForResumeByEducationPlace(place)::contains)
+                .filter(searchForResumeByEducationDegree(degree)::contains)
+                .filter(searchForResumeByFieldOfStudy(field)::contains)
+                .filter(searchForDeveloperByLocation(location)::contains)
+                .filter(searchForResumeByEducationDegree(degree)::contains)
+                .filter(searchForDeveloperByExperience(experience)::contains).collect(Collectors.toSet());
     }
 
 

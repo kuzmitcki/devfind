@@ -46,33 +46,33 @@ public class User implements UserDetails {
 
         @Override
         public Collection<? extends GrantedAuthority> getAuthorities() {
-            return getRoles();
+                return getRoles();
         }
 
         @Override
         public String getUsername() {
-            return username;
+                return username;
         }
 
         @Override
         public boolean isAccountNonExpired() {
-            return true;
+                return true;
         }
 
         @Override
         public boolean isAccountNonLocked() {
-            return true;
+                return true;
         }
 
         @Override
         public boolean isCredentialsNonExpired() {
-            return true;
+                return true;
         }
 
         @Override
         public boolean isEnabled() {
-            return isEnable();
-    }
+                return isEnable();
+        }
 
         public boolean isDeveloperRole(){
                 return roles.contains(Role.DEVELOPER);

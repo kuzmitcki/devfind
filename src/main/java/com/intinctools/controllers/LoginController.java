@@ -1,12 +1,9 @@
 package com.intinctools.controllers;
 
 
-import com.intinctools.entities.userEntites.Role;
+import  com.intinctools.entities.userEntites.Role;
 import com.intinctools.entities.userEntites.User;
-import com.intinctools.repo.UserRepo;
 import com.intinctools.service.user.UserService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -16,8 +13,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import java.util.Collections;
 
 
 @Controller
@@ -66,18 +61,18 @@ public class LoginController {
     @GetMapping("/check")
     public String check(@AuthenticationPrincipal User user,
                         Model model){
-         if (user.getActivationCode() == null){
-             if (user.getRoles().contains(Role.DEVELOPER)){
-                 if (user.getDeveloper().getFirstName() == null || user.getDeveloper().getLastName() == null){
-                     return "developer/welcome";
-                 }
-                 return "redirect:/developer/resume";
-             } else {
-                 if(user.getEmployee().getJobs().isEmpty()){
-                     return "employee/welcome";
-                 }
-                 return "redirect:/employee/jobs";
-             }
+        if (user.getActivationCode() == null){
+            if (user.getRoles().contains(Role.DEVELOPER)){
+                if (user.getDeveloper().getFirstName() == null || user.getDeveloper().getLastName() == null){
+                    return "developer/welcome";
+                }
+                return "redirect:/developer/resume";
+            } else {
+                if(user.getEmployee().getJobs().isEmpty()){
+                    return "employee/welcome";
+                }
+                return "redirect:/employee/jobs";
+            }
         }
         model.addAttribute("message", "Please activate your account");
         return "check";

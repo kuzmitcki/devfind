@@ -224,7 +224,7 @@ public class DeveloperController {
                                  @RequestParam("salary") String salary,
                                  @RequestParam("jobType") String jobType,
                                  @RequestParam("salaryPeriod") String salaryPeriod){
-       developerService.setDesiredJob(user, title, salary, jobType, salaryPeriod);
+        developerService.setDesiredJob(user, title, salary, jobType, salaryPeriod);
         return "redirect:/developer/resume";
     }
 

@@ -27,8 +27,8 @@ public interface DeveloperService {
     void editResumeBasicInformation(User user, String country, String city, String telephone, String zipPostalCode, String email);
 
     void setDeveloperEducation(User user, String degree, String place, String field,
-                                String city, String monthFrom, String monthTo,
-                                String yearFrom, String yearTo, Long id);
+                               String city, String monthFrom, String monthTo,
+                               String yearFrom, String yearTo, Long id);
 
     void deleteDeveloperEducation(User user, Long id);
 

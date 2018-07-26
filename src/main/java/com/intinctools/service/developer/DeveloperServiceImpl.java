@@ -40,7 +40,7 @@ public class DeveloperServiceImpl extends UserService implements DeveloperServic
 
     private final EmployeeRepo employeeRepo;
 
-    private final static double SALARY_COEFFICIENT = 0.1;
+    private final static double SALARY_COEFFICIENT = 0.2;
 
     public DeveloperServiceImpl(final UserRepo userRepo, MailSender mailSender, final WorkExperienceRepo workExperienceRepo,
                                 final EducationRepo educationRepo, final WordsSpliterator wordsSpliterator,
@@ -384,15 +384,18 @@ public class DeveloperServiceImpl extends UserService implements DeveloperServic
     }
 
     @Override
-    public Set<Job> searchForJobBySalaryAndPeriod(final Long salary) {
-        return jobRepo.findByToSalaryBetween(salary, (long) (salary + (salary * SALARY_COEFFICIENT))).stream().
-                filter(jobRepo.findByFromSalaryBetween((long) (salary - (salary * SALARY_COEFFICIENT)), salary)::contains)
+    public Set<Job> searchForJobBySalaryAndPeriod(final String salary) {
+        if (salary.isEmpty()){
+            return new HashSet<>(jobRepo.findAll());
+        }
+        return jobRepo.findByToSalaryBetween(Long.valueOf(salary), (long) (Long.valueOf(salary) + (Long.valueOf(salary) * SALARY_COEFFICIENT))).stream().
+                filter(jobRepo.findByFromSalaryBetween((long) (Long.valueOf(salary) - (Long.valueOf(salary) * SALARY_COEFFICIENT)), Long.valueOf(salary))::contains)
                 .collect(Collectors.toSet());
     }
 
     @Override
     public Set<Job> searchForJobAdvanced(final String allWords, final String phrase, final String oneWord, final String title,
-                                         final String jobType, final Long salary) {
+                                         final String jobType, final String salary) {
         return searchForJobByOneWord(oneWord).stream().
                             filter(searchFroJobByPhrase(phrase)::contains).
                             filter(searchForJobByAllWords(allWords)::contains).

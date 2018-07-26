@@ -74,5 +74,8 @@ public class User implements UserDetails {
             return isEnable();
     }
 
+        public boolean isDeveloperRole(){
+                return roles.contains(Role.DEVELOPER);
+        }
 
 }

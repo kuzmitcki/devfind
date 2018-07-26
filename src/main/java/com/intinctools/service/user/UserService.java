@@ -12,7 +12,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 
 import java.util.Collections;
 import java.util.UUID;
@@ -24,14 +23,15 @@ public class UserService implements UserDetailsService{
     private final MailSender mailSender;
 
     @Autowired
-    public UserService(UserRepo userRepo, MailSender mailSender) {
+    public UserService(final UserRepo userRepo,
+                       final MailSender mailSender) {
         this.userRepo = userRepo;
         this.mailSender = mailSender;
     }
 
     @Override
-    public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
-        return userRepo.findByUsername(s);
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        return userRepo.findByUsername(username);
     }
 
     public boolean activateUser(String code) {
@@ -44,7 +44,7 @@ public class UserService implements UserDetailsService{
         return true;
     }
 
-    public boolean saveUser(User user, String devOrEmp) {
+    public boolean saveUser(final User user, final String devOrEmp) {
         User userFromDb = userRepo.findByUsername(user.getUsername());
         if (userFromDb != null) {
             return false;
@@ -68,6 +68,4 @@ public class UserService implements UserDetailsService{
         mailSender.sendActivationCode(user);
         return true;
     }
-
-
 }

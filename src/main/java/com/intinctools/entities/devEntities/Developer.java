@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -40,6 +41,7 @@ public class Developer {
 
         private String telephone;
 
+        @Type(type = "text")
         private String additionalInformation;
 
         @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
@@ -61,16 +63,16 @@ public class Developer {
         @OneToOne
         private User user;
 
-         @Override
-         public boolean equals(Object o) {
+        @Override
+        public boolean equals(Object o) {
             if (this == o) return true;
             if (o == null || getClass() != o.getClass()) return false;
             Developer developer = (Developer) o;
             return id == developer.id;
          }
 
-         @Override
-         public int hashCode() {
+        @Override
+        public int hashCode() {
         return Objects.hash(id);
     }
 }

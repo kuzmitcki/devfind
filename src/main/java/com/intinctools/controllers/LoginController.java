@@ -1,9 +1,12 @@
 package com.intinctools.controllers;
 
 
+import com.intinctools.entities.userEntites.Role;
 import com.intinctools.entities.userEntites.User;
 import com.intinctools.repo.UserRepo;
 import com.intinctools.service.user.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -12,29 +15,23 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.util.Collections;
 
 
 @Controller
 public class LoginController {
-    private final UserRepo employeeRepo;
-
     private final UserService userService;
 
     @Autowired
-    public LoginController(UserRepo employeeRepo, UserService userService) {
-        this.employeeRepo = employeeRepo;
+    public LoginController(final UserService userService) {
         this.userService = userService;
     }
 
-    @GetMapping("/login")
+    @GetMapping()
     public String login() {
         return "login";
-    }
-
-    @GetMapping
-    public String startPage(Model model) {
-        model.addAttribute("users", employeeRepo.findAll());
-        return "welcomePage";
     }
 
     @GetMapping("/registration")
@@ -45,25 +42,24 @@ public class LoginController {
     @PostMapping("/registration")
     public String saveDeveloper(User user,
                                 @RequestParam(name = "role", required = false) String devOrEmp,
-                                Model model) {
+                                Model model,
+                                RedirectAttributes attribute) {
         if (!userService.saveUser(user, devOrEmp)) {
             model.addAttribute("message", "User exists!");
             return "registration";
         }
-
+        attribute.addFlashAttribute("activate", "Check your email to activate account");
         return "redirect:/login";
     }
 
     @GetMapping("/activate/{code}")
     public String activate(Model model, @PathVariable String code) {
         boolean isActivated = userService.activateUser(code);
-
         if (isActivated) {
             model.addAttribute("message", "User successfully activated");
         } else {
             model.addAttribute("message", "Activation code is not found!");
         }
-
         return "login";
     }
 
@@ -71,7 +67,17 @@ public class LoginController {
     public String check(@AuthenticationPrincipal User user,
                         Model model){
          if (user.getActivationCode() == null){
-           return "redirect:/";
+             if (user.getRoles().contains(Role.DEVELOPER)){
+                 if (user.getDeveloper().getFirstName() == null || user.getDeveloper().getLastName() == null){
+                     return "developer/welcome";
+                 }
+                 return "redirect:/developer/resume";
+             } else {
+                 if(user.getEmployee().getJobs().isEmpty()){
+                     return "employee/welcome";
+                 }
+                 return "redirect:/employee/jobs";
+             }
         }
         model.addAttribute("message", "Please activate your account");
         return "check";

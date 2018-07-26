@@ -16,7 +16,6 @@ public interface DeveloperService {
                            String monthFrom, String monthTo, String yearFrom,
                            String yearTo, String description, String check);
 
-
     boolean checkDeveloperEditingWork(User user, Long id);
 
     boolean checkDeveloperEditingEducation(User user, Long id);
@@ -71,8 +70,8 @@ public interface DeveloperService {
 
     Set<Job> searchForJobByJobType(String jobType);
 
-    Set<Job> searchForJobBySalaryAndPeriod(Long salary);
+    Set<Job> searchForJobBySalaryAndPeriod(String salary);
 
     Set<Job> searchForJobAdvanced(String allWords, String phrase, String oneWord,
-                                  String title, String jobType, Long salary);
+                                  String title, String jobType, String salary);
 }

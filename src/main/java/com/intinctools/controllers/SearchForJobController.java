@@ -26,7 +26,9 @@ public class SearchForJobController {
 
     private final Mail mailSender;
 
-    public SearchForJobController(DeveloperService developerService, JobRepo jobRepo, Mail mailSender) {
+    public SearchForJobController(final DeveloperService developerService,
+                                  final JobRepo jobRepo,
+                                  final Mail mailSender) {
         this.developerService = developerService;
         this.jobRepo = jobRepo;
         this.mailSender = mailSender;
@@ -46,8 +48,8 @@ public class SearchForJobController {
     }
 
     @GetMapping("results")
-    public String searchResults(Model model,
-                                HttpServletRequest request){
+    public String searchResults(HttpServletRequest request,
+                                Model model){
         Set<Job> jobs = (Set<Job>) request.getSession().getAttribute("jobsRequest");
         if (jobs == null){
             model.addAttribute("jobs", jobRepo.findAll());
@@ -71,7 +73,7 @@ public class SearchForJobController {
                                  @RequestParam("jobType") String jobType,
                                  @RequestParam(name = "salary", required = false) String salary,
                                  HttpServletRequest request) {
-        request.getSession().setAttribute("jobsRequest", developerService.searchForJobAdvanced(allWords, phrase, oneWord, title, jobType, Long.valueOf(salary)));
+        request.getSession().setAttribute("jobsRequest", developerService.searchForJobAdvanced(allWords, phrase, oneWord, title, jobType, salary));
         return "redirect:/job/results";
     }
 

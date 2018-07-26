@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -23,8 +24,10 @@ public class Job {
 
     private String title;
 
+    @Type(type = "text")
     private String fullDescription;
 
+    @Type(type = "text")
     private String desiredExperience;
 
     private Long fromSalary;
@@ -33,6 +36,7 @@ public class Job {
 
     private String jobType;
 
+    @Type(type = "text")
     private String qualifications;
 
     private Long salaryPeriod;
@@ -73,5 +77,4 @@ public class Job {
     public int hashCode() {
         return Objects.hash(id);
     }
-
 }

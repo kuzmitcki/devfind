@@ -28,7 +28,8 @@ public class DeveloperController {
     private final EducationRepo educationRepo;
 
     @Autowired
-    public DeveloperController(final DeveloperService developerService, MailSender mailSender, WorkExperienceRepo workExperienceRepo, EducationRepo educationRepo) {
+    public DeveloperController(final DeveloperService developerService, final MailSender mailSender,
+                               final WorkExperienceRepo workExperienceRepo, final EducationRepo educationRepo) {
         this.developerService = developerService;
         this.mailSender = mailSender;
         this.workExperienceRepo = workExperienceRepo;
@@ -98,6 +99,10 @@ public class DeveloperController {
                                   @RequestParam(name = "monthTo") String monthTo,
                                   @RequestParam(name = "yearFrom") String yearFrom,
                                   @RequestParam(name = "yearTo") String yearTo){
+        if (!user.getDeveloper().getWorkExperiences().isEmpty()){
+            developerService.setEducation(user, degree, place, field, city, monthFrom, monthTo, yearFrom, yearTo);
+            return "redirect:/developer/resume";
+        }
         developerService.setEducation(user, degree, place, field, city, monthFrom, monthTo, yearFrom, yearTo);
         return   "redirect:/resume/wizard/experience";
     }

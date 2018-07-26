@@ -44,9 +44,11 @@ public class EmployeeServiceImpl extends UserService implements EmployeeService 
 
     private final EducationRepo educationRepo;
 
-    public EmployeeServiceImpl(final UserRepo userRepo, final JobRepo jobRepo, MailSender sender, final WordsSpliterator wordsSpliterator, final SpecializationRepo specializationRepo,
-                               final DeveloperRepo developerRepo, final EmployeeRepo employeeRepo, final WorkExperienceRepo workExperienceRepo,
-                               final DesiredJobRepo desiredJobRepo, final EducationRepo educationRepo) {
+    public EmployeeServiceImpl(final UserRepo userRepo, final JobRepo jobRepo, MailSender sender,
+                               final WordsSpliterator wordsSpliterator, final SpecializationRepo specializationRepo,
+                               final DeveloperRepo developerRepo, final EmployeeRepo employeeRepo,
+                               final WorkExperienceRepo workExperienceRepo, final DesiredJobRepo desiredJobRepo,
+                               final EducationRepo educationRepo) {
         super(userRepo, sender);
         this.userRepo = userRepo;
         this.jobRepo = jobRepo;

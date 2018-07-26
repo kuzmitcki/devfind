@@ -4,6 +4,7 @@ package com.intinctools.entities.devEntities;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 
@@ -30,6 +31,7 @@ public class WorkExperience {
 
     private String yearTo;
 
+    @Type(type = "text")
     private String description;
 
     @ManyToOne

@@ -61,11 +61,11 @@
         </div>
         <div style="padding-top: 11px;padding-left: 20px;">
             <div>
-                <pre style="font-family: Helvetica Neue,Helvetica,Arial,Liberation Sans,Roboto,Noto,sans-serif;font-size: .875rem;letter-spacing: 0;line-height: 1.25rem;font-weight: 400;">${developer.summary!}</pre>
+                <pre class="more" style="margin-right: 10px;font-family: Helvetica Neue,Helvetica,Arial,Liberation Sans,Roboto,Noto,sans-serif;font-size: .875rem;letter-spacing: 0;line-height: 1.25rem;font-weight: 400;">${developer.summary!}</pre>
             </div>
             <div id="summaryBox" style="padding-top: 20px;display: none;">
                 <form method="post" action="/edit-developer/summary">
-                    <textarea autofocus name="summary" style="border-radius: 8px" class="form-control" id="textArea" rows="3">${developer.summary!}</textarea>
+                    <textarea autofocus name="summary" style="height:260px;border-radius: 8px;font-size: 13px" class="form-control" id="textArea" rows="3">${developer.summary!}</textarea>
                     <div class="form-group">
                         <input type="hidden" name="_csrf" value="${_csrf.token}" />
                         <button type="submit" style="border-radius: 18px;  margin-top: 10px;" class="btn btn-primary">Save</button>
@@ -217,11 +217,9 @@
                             ${experience.monthFrom} ${experience.yearFrom} to ${experience.monthTo} ${experience.yearTo}
                         </div>
                         <div style="padding-top: 20px;">
-                            <pre style="font-family: Helvetica Neue,Helvetica,Arial,Liberation Sans,Roboto,Noto,sans-serif;font-size: .875rem;letter-spacing: 0;line-height: 1.25rem;font-weight: 400;">${experience.description}</pre>
+                            <pre class="more" style="font-family: Helvetica Neue,Helvetica,Arial,Liberation Sans,Roboto,Noto,sans-serif;font-size: .875rem;letter-spacing: 0;line-height: 1.25rem;font-weight: 400;">${experience.description}</pre>
                         </div>
-                        <div style="color: gainsboro">
-                            ___________________________________________________________________________
-                        </div>
+                        <hr style="width:100%;font-weight: 600;color: gainsboro">
                     </div>
                 </#list>
         </div>
@@ -244,9 +242,7 @@
                                 ${education.place} - ${education.cityOfEducation}<br>
                                 ${education.monthFrom} ${education.yearFrom} to ${education.monthTo} ${education.yearTo}
                             </div>
-                            <div style="color: gainsboro">
-                                ___________________________________________________________________________
-                            </div>
+                            <hr style="width:100%;font-weight: 600;color: gainsboro">
                         </div>
                     </#list>
         </div>
@@ -302,9 +298,7 @@
                             <div style="font-family: Helvetica Neue,Helvetica,Arial,Liberation Sans,Roboto,Noto,sans-serif;font-size: .875rem;letter-spacing: 0;line-height: 1.25rem;font-weight: 400;">
                                 ${specialization.skill} (${specialization.experience})
                             </div>
-                            <div style="color: gainsboro">
-                                ___________________________________________________________________________
-                            </div>
+                            <hr style="width:100%;font-weight: 600;color: gainsboro">
                         </div>
                     </#list>
         </div>
@@ -316,11 +310,11 @@
         </div>
         <div style="padding: 20px;">
             <div>
-                <pre style="font-family: Helvetica Neue,Helvetica,Arial,Liberation Sans,Roboto,Noto,sans-serif;font-size: .875rem;letter-spacing: 0;line-height: 1.25rem;font-weight: 400;">${developer.additionalInformation!}</pre>
+                <pre  class="more" style="font-family: Helvetica Neue,Helvetica,Arial,Liberation Sans,Roboto,Noto,sans-serif;font-size: .875rem;letter-spacing: 0;line-height: 1.25rem;font-weight: 400;">${developer.additionalInformation!}</pre>
             </div>
             <div id="additionalBox" style="padding-top: 20px;display: none;">
                 <form method="post" action="/edit-developer/additional">
-                    <textarea autofocus name="additional" style="border-radius: 8px" class="form-control" id="textArea" rows="3">${developer.additionalInformation!}</textarea>
+                    <textarea autofocus name="additional" style="height:260px;border-radius: 8px;font-size: 13px" class="form-control" id="textArea" rows="3">${developer.additionalInformation!}</textarea>
                     <div class="form-group">
                         <input type="hidden" name="_csrf" value="${_csrf.token}" />
                         <button type="submit" style="border-radius: 18px;  margin-top: 10px;" class="btn btn-primary">Save</button>
@@ -332,14 +326,6 @@
     </div>
 
 </div>
-
-
-
-
-
-
-
-
 
 
 
@@ -373,7 +359,7 @@
     };
     function openBox(id, button) {
         var div = document.getElementById(id);
-        if(div.style.display == 'block') {
+        if(div.style.display === 'block') {
             div.style.display = 'none';
             button.innerHTML = 'Edit';
         }
@@ -382,6 +368,45 @@
             button.innerHTML = 'Cancel';
         }
     }
+</script>
+
+<script>
+    $(document).ready(function() {
+        // Configure/customize these variables.
+        var showChar = 500;  // How many characters are shown by default
+        var ellipsestext = "...";
+        var moretext = "Show less";
+        var lesstext = "Show more";
+
+
+        $('.more').each(function() {
+            var content = $(this).html();
+
+            if(content.length > showChar) {
+
+                var c = content.substr(0, showChar);
+                var h = content.substr(showChar, content.length - showChar);
+
+                var html = c + '<span class="moreellipses">' + ellipsestext+ '&nbsp;</span><span class="morecontent"><span>' + h + '</span>&nbsp;&nbsp;<a href="" class="morelink">' + moretext + '</a></span>';
+
+                $(this).html(html);
+            }
+
+        });
+
+        $(".morelink").click(function(){
+            if($(this).hasClass("less")) {
+                $(this).removeClass("less");
+                $(this).html(moretext);
+            } else {
+                $(this).addClass("less");
+                $(this).html(lesstext);
+            }
+            $(this).parent().prev().toggle();
+            $(this).prev().toggle();
+            return false;
+        });
+    });
 </script>
 
 

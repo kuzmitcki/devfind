@@ -35,6 +35,12 @@
             margin-top: 10px;
             display: none;
         }
+        .morecontent pre {
+            display: none;
+        }
+        .morelink {
+            display: block;
+        }
     </style>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
 </head>

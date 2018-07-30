@@ -1,8 +1,6 @@
 <#import "../macros/page.ftl" as p>
 <#include "../macros/security.ftl">
-
 <@p.page>
-
 <nav class="navbar navbar-expand-lg navbar-light bg-light mt-2">
     <a class="navbar-brand" href="/">Home</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -56,33 +54,17 @@
             <span style=" font-weight: 400; color: black;">${developer.user.email!}</span></br>
             <span style=" font-weight: 400; color: black;">Status: <#if enable??>Waiting for job offers<#else>Has work</#if></span></br>
             <span style=" font-weight: 400; color: red;">${message!}</span>
-
-
         </div>
-
-
         <div style="padding-left: 10px;font-size: 18px;margin: 10px;font-weight: 700;">
-            Summary <span style=" font-weight: 600; color: gainsboro;">___________________________________________________________</span>
-
+            Summary <hr style="width: auto;font-weight: 600;color: gainsboro;margin-top: -1%;margin-left: 12%;margin-right: 6%;;">
         </div>
         <div style="padding-top: 11px;padding-left: 20px;">
             <div>
-                <pre style="font-family: Helvetica Neue,Helvetica,Arial,Liberation Sans,Roboto,Noto,sans-serif;font-size: .875rem;letter-spacing: 0;line-height: 1.25rem;font-weight: 400;">${developer.summary!}</pre>
-            </div>
-            <div id="summaryBox" style="padding-top: 20px;display: none;">
-                <form method="post" action="/edit-developer/summary">
-                    <textarea autofocus name="summary" style="border-radius: 8px" class="form-control" id="textArea" rows="3">${developer.summary!}</textarea>
-                    <div class="form-group">
-                        <input type="hidden" name="_csrf" value="${_csrf.token}" />
-                        <button type="submit" style="border-radius: 18px;  margin-top: 10px;" class="btn btn-primary">Save</button>
-                        <a style="border-radius: 18px;  margin-top: 10px;" class="btn btn-primary" id="summary" href="">Cancel</a>
-                    </div>
-                </form>
+                <pre style="padding-right: 10px;font-family: Helvetica Neue,Helvetica,Arial,Liberation Sans,Roboto,Noto,sans-serif;font-size: .875rem;letter-spacing: 0;line-height: 1.25rem;font-weight: 400;">${developer.summary!}</pre>
             </div>
         </div>
-
         <div style="padding-left: 10px;font-size: 18px;margin-top: 10px;margin-left: 10px;font-weight: 700;">Desired Job
-            <span style=" font-weight: 600; color: gainsboro;">_________________________________________________________</span>
+            <hr style="margin-right: 6%;width: auto;font-weight: 600;color: gainsboro;margin-top: -1%;margin-left: 15%;">
         </div>
         <#if developer.desiredJob??>
             <div style="padding-left: 10px;font-size: 14px;margin-bottom: 20px;margin-top: 10px;margin-left: 10px;font-weight: 700;">
@@ -104,13 +86,8 @@
             </div>
         </div>
         </#if>
-
-
-
-
-
         <div style="padding-left: 10px;font-size: 18px;margin: 10px;font-weight: 700;">
-            Work Experience <span style=" font-weight: 600; color: gainsboro;">____________________________________________________</span>
+            Work Experience<hr style="margin-right: 4.5%;width: auto;font-weight: 600;color: gainsboro;margin-top: -1%;margin-left: 21%;">
         </div>
         <div style="padding: 20px;">
                 <#list developer.workExperiences as experience>
@@ -123,16 +100,12 @@
                         <div style="padding-top: 20px;">
                             <pre style="font-family: Helvetica Neue,Helvetica,Arial,Liberation Sans,Roboto,Noto,sans-serif;font-size: .875rem;letter-spacing: 0;line-height: 1.25rem;font-weight: 400;">${experience.description}</pre>
                         </div>
-                        <div style="color: gainsboro">
-                            ___________________________________________________________________________
-                        </div>
+                        <hr style="width:100%;font-weight: 600;color: gainsboro">
                     </div>
                 </#list>
         </div>
-
-
         <div style="padding-left: 10px;font-size: 18px;margin: 10px;font-weight: 700;">
-            Education  <span style=" font-weight: 600; color: gainsboro;">__________________________________________________________</span>
+            Education  <hr style="margin-right: 6%;width: auto;font-weight: 600;color: gainsboro;margin-top: -1%;margin-left: 13%;">
         </div>
         <div style="padding: 20px;">
                     <#list developer.education as education>
@@ -142,18 +115,12 @@
                                 ${education.place} - ${education.cityOfEducation}<br>
                                 ${education.monthFrom} ${education.yearFrom} to ${education.monthTo} ${education.yearTo}
                             </div>
-                            <div style="color: gainsboro">
-                                ___________________________________________________________________________
-                            </div>
+                            <hr style="width: 100%;font-weight: 600;color: gainsboro">
                         </div>
                     </#list>
         </div>
-
-
-
-
         <div style="padding-left: 10px;font-size: 18px;margin: 10px;font-weight: 700;">
-            Skills  <span style=" font-weight: 600; color: gainsboro;">________________________________________________</span>
+            Skills  <hr style="margin-right: 6%;width: auto;font-weight: 600;color: gainsboro;margin-top: -1%;margin-left: 7%;">
         </div>
         <div style="padding: 20px;">
                     <#list developer.specializations as specialization>
@@ -161,26 +128,17 @@
                             <div style="font-family: Helvetica Neue,Helvetica,Arial,Liberation Sans,Roboto,Noto,sans-serif;font-size: .875rem;letter-spacing: 0;line-height: 1.25rem;font-weight: 400;">
                                 ${specialization.skill} (${specialization.experience})
                             </div>
-                            <div style="color: gainsboro">
-                                ___________________________________________________________________________
-                            </div>
+                            <hr style="width: 100%;font-weight: 600;color: gainsboro">
                         </div>
                     </#list>
         </div>
-
-
-
-
-
-
         <div style="padding-left: 10px;font-size: 18px;margin: 10px;font-weight: 700;">
-            Additional information  <span style=" font-weight: 600; color: gainsboro;">___________________________________________________________</span>
+            Additional information  <hr style="margin-left: 27%;margin-right: 6%;width: auto;font-weight: 600;color: gainsboro;margin-top: -1%">
         </div>
         <div style="padding: 20px;">
             <div>
                 <pre style="font-family: Helvetica Neue,Helvetica,Arial,Liberation Sans,Roboto,Noto,sans-serif;font-size: .875rem;letter-spacing: 0;line-height: 1.25rem;font-weight: 400;">${developer.additionalInformation!}</pre>
             </div>
-
         </div>
         <#if enable??>
             <form style="margin: 3%" method="post" action="/resume/offer/${developer.id}">
@@ -190,6 +148,4 @@
         <#else>
         </#if>
     </div>
-
-
 </@p.page>

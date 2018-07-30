@@ -3,7 +3,7 @@
     <#if isResume>
                 <div style="margin-left: 15px;">
                  <div style="margin-left: 15px;">
-                     <div style="color: #000;font-weight: 700; float: top  !important; font-size: 23px;line-height: 28px; margin: 20px; padding-left: 28%;;">Create an Indeed Resume
+                     <div style="padding-top: 8%;color: #000;font-weight: 700; float: top  !important; font-size: 23px;line-height: 28px; margin: 20px; padding-left: 28%;;">Create an Indeed Resume
                          <span style="font-size: 14px; color:#666; margin: 10%">Step 2 of 3</span>
                      </div>
                  </div>
@@ -22,7 +22,7 @@
                             <label for="inputDegree" style="color: #4b4b4b;font-size: .875rem;letter-spacing: 0;line-height: 1.25rem;font-weight: 700;display: block;">Degree
                             </label>
                             <select name="degree" id="inputDegree"   style="border-radius: 8px" class="custom-select">
-                                <option selected value="1"><#if isResume>Any degree<#else>${educ.degree!}</#if></option>
+                                <option selected value="1"><#if isResume>No education<#else>${educ.degree!}</#if></option>
                                 <option value="Diploma">Diploma</option>
                                 <option value="Associates">Associates</option>
                                 <option value="Bachelors">Bachelors</option>
@@ -363,7 +363,7 @@
         <div class="container h-100 " style="font-family: Helvetica Neue,Helvetica,Arial,Liberation Sans,Roboto,Noto,sans-serif;">
             <div style="margin-left: 15px;">
                 <#if isResumeAdd>
-                    <div style="color: #000;font-weight: 700; float: top  !important; font-size: 23px;line-height: 28px; margin: 10px; padding-left: 28%;;">Create an Indeed Resume
+                    <div style="padding-top: 8%;color: #000;font-weight: 700; float: top  !important; font-size: 23px;line-height: 28px; margin: 10px; padding-left: 28%;;">Create an Indeed Resume
                         <span style="font-size: 14px; color:#666; margin: 10%">Step 3 of 3</span>
                         <div style="margin-top: 2%;width: 435px;color: #767676;font-family: Helvetica Neue,Helvetica,Arial,Liberation Sans,Roboto,Noto,sans-serif;font-size: .75rem;letter-spacing: 0;line-height: 1.25rem;font-weight: 400;display: inline-block" class="alert alert-primary" role="alert">
                             Filling out 2 or more work experiences will double your chances of being contacted by an employer.

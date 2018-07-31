@@ -1,9 +1,9 @@
-package com.instinctools.controllers;
+package com.instinctools.controllers.Employee;
 
 import com.instinctools.entities.devEntities.Developer;
 import com.instinctools.entities.userEntites.User;
 import com.instinctools.repo.developerRepo.DeveloperRepo;
-import com.instinctools.service.employee.EmployeeService;
+import com.instinctools.service.employee.search.ResumeSearch;
 import com.instinctools.service.mail.MailSender;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -20,16 +20,16 @@ import java.util.Set;
 @RequestMapping("resume")
 @PreAuthorize("hasAuthority('EMPLOYEE')")
 public class ResumeSearchController {
-    private final EmployeeService employeeService;
+    private final ResumeSearch resumeSearch;
 
     private final DeveloperRepo developerRepo;
 
     private final MailSender mailSender;
 
-    public ResumeSearchController(final EmployeeService employeeService,
+    public ResumeSearchController(final ResumeSearch resumeSearch,
                                   final DeveloperRepo developerRepo,
                                   final MailSender mailSender) {
-        this.employeeService = employeeService;
+        this.resumeSearch = resumeSearch;
         this.developerRepo = developerRepo;
         this.mailSender = mailSender;
     }
@@ -43,7 +43,7 @@ public class ResumeSearchController {
     public String findResume(final @RequestParam("whatDescription") String whatDescription,
                              final @RequestParam(value = "whereDescription") String whereDescription,
                              final HttpServletRequest request) {
-        request.getSession().setAttribute("devs", employeeService.searchForResume(whatDescription, whereDescription));
+        request.getSession().setAttribute("devs", resumeSearch.searchForResume(whatDescription, whereDescription));
         return "redirect:/resume/results";
     }
 
@@ -77,7 +77,7 @@ public class ResumeSearchController {
                                      final @RequestParam(name = "field", required = false) String field,
                                      final @RequestParam(name = "location", required = false) String location,
                                      final HttpServletRequest request) {
-        request.getSession().setAttribute("devs", employeeService.searchForResumeAdvanced(user, allWords, phrase, oneWord, title, company,
+        request.getSession().setAttribute("devs", resumeSearch.searchForResumeAdvanced(user, allWords, phrase, oneWord, title, company,
                                                                                              experience, place, degree, field, location));
         return "redirect:/resume/results";
     }

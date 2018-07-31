@@ -27,10 +27,10 @@ public class Employee {
 
     private String company;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     private User user;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @OneToMany(orphanRemoval = true, fetch = FetchType.LAZY)
     @JoinColumn(name = "employee_id")
     private Set<Job> jobs;
 
@@ -46,8 +46,4 @@ public class Employee {
     public int hashCode() {
         return Objects.hash(id);
     }
-
-
-
-
 }

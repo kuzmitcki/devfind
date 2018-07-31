@@ -25,7 +25,6 @@ public class DesiredJob {
 
     private String desiredSalaryPeriod;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     private Developer developer;
-
 }

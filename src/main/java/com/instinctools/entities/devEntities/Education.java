@@ -33,11 +33,11 @@ public class Education {
 
     private String yearTo;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Developer developer;
 
-    public Education(String degree, String place, String fieldOfStudy, String cityOfEducation, String monthFrom,
-                     String monthTo, String yearFrom, String yearTo, Developer developer) {
+    public Education(final String degree, final  String place, final  String fieldOfStudy, final  String cityOfEducation, final  String monthFrom,
+                     final  String monthTo, final  String yearFrom, final  String yearTo, final  Developer developer) {
         this.degree = degree;
         this.place = place;
         this.fieldOfStudy = fieldOfStudy;

@@ -1,40 +1,11 @@
-package com.instinctools.service.employee;
+package com.instinctools.service.employee.search;
 
 import com.instinctools.entities.devEntities.Developer;
 import com.instinctools.entities.userEntites.User;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.Set;
 
-public interface EmployeeService {
-    void editJobLocation(User user, String country, String location, Long id);
-
-    void editJobDescription(User user, String description, Long id);
-
-    void editJobDesiredDescription(User user, String experience, Long id);
-
-    void editJobTitle(User user, String title, Long id);
-
-    void editEmployeeCompany(User user, String company);
-
-    void editJobQualification(User user, String qualification, Long id);
-
-    void setEmployeeDescription(User user, String desiredExperience,
-                                String fullDescription, HttpServletRequest request);
-
-    void setEmployeeJobSalary(String jobType, String fromSalary, String toSalary,
-                              Long salaryPeriod, String qualifications,
-                              RedirectAttributes redirectJob, HttpServletRequest request);
-
-    void setEmployeeBasicInformation(User user, RedirectAttributes redirectedJob,
-                                     String jobTitle, String company, String jobLocation, String country);
-
-    void setEmployeeAccountInformation(User user, String company, String name, String phone, String email);
-
-
-    boolean checkEmployeeEditing(User user, Long id);
-
+public interface ResumeSearch {
     Set<Developer> searchForResumeByTitleAndDesiredTitle(String title);
 
     Set<Developer> searchForResumeByWorkTitle(String title);

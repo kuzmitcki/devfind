@@ -230,7 +230,7 @@
             Education <a  style="font-size: 15px;float: right;font-weight: 300;margin-right: 30px;" href="/resume/wizard/education"><input type="image" src="https://image.flaticon.com/icons/svg/969/969621.svg" style="size:height: auto;width: 1.8rem;float:"></a>
         </div>
         <div style="padding: 20px;">
-                    <#list developer.education as education>
+                    <#list educations as education>
                         <div style="padding-top: 10px">
                             <a  style="font-size: 15px;float: right;font-weight: 300;margin-right: 20px;" href="/edit-developer/education/${education.id!}"><input type="image" src="https://image.flaticon.com/icons/svg/660/660756.svg" style="height: 1.1rem;width: 1.5rem;float:"></a>
                             <form method="post" action="/edit-developer/education-delete/${education.id!}">
@@ -288,7 +288,7 @@
             </form>
         </div>
         <div style="padding: 20px;">
-                    <#list developer.specializations as specialization>
+                    <#list specializations as specialization>
                         <div style="padding-top: 10px">
                             <a  style="font-size: 15px;float: right;font-weight: 300;margin-right: 20px;" href="/edit-developer/skill/${specialization.id!}"><input type="image" src="https://image.flaticon.com/icons/svg/660/660756.svg" style="height: 1.1rem;width: 1.5rem;float:"></a>
                             <form method="post" action="/edit-developer/skill-delete/${specialization.id!}">

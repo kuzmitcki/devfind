@@ -705,7 +705,7 @@
                 <#if isResumeAdd>
                 <div class="col-auto my-1">
                     <div class="custom-control custom-checkbox mr-sm-2">
-                        <input type="checkbox" name="check" class="custom-control-input" id="customControlAutosizing">
+                        <input type="checkbox" name="checkDeveloper" class="custom-control-input" id="customControlAutosizing">
                         <label style="font-size: 0.875rem;padding-bottom: 4%;" class="custom-control-label" for="customControlAutosizing">I don't have any work experience yet</label>
                     </div>
                 </div>

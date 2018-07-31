@@ -6,10 +6,7 @@ import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.annotations.Type;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
@@ -45,12 +42,8 @@ public class Job {
 
     private String country;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Employee employee;
-
-    public Job(String title) {
-        this.title = title;
-    }
 
     public Job(String title, String fullDescription, String desiredExperience, Long fromSalary, Long toSalary,
                String jobType, Long salaryPeriod, String jobLocation, String country) {

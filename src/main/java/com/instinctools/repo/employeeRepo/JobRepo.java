@@ -1,5 +1,6 @@
 package com.instinctools.repo.employeeRepo;
 
+import com.instinctools.entities.empEntites.Employee;
 import com.instinctools.entities.empEntites.Job;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -23,4 +24,6 @@ public interface JobRepo extends JpaRepository<Job, Long> {
     Set<Job> findByToSalaryBetween(Long toSalary, Long toSalaryWithCoefficient);
 
     Set<Job> findByFromSalaryBetween(Long fromSalaryWithCoefficient, Long fromSalary);
+
+    Set<Job> findByEmployee(Employee employee);
 }

@@ -1,9 +1,9 @@
-package com.instinctools.controllers;
+package com.instinctools.controllers.Developer;
 
 import com.instinctools.entities.empEntites.Job;
 import com.instinctools.entities.userEntites.User;
 import com.instinctools.repo.employeeRepo.JobRepo;
-import com.instinctools.service.developer.DeveloperService;
+import com.instinctools.service.developer.search.JobSearch;
 import com.instinctools.service.mail.Mail;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -19,16 +19,13 @@ import java.util.Set;
 @RequestMapping("job")
 @PreAuthorize("hasAuthority('DEVELOPER')")
 public class SearchForJobController {
-    private final DeveloperService developerService;
-
+    private final JobSearch jobSearchForJob;
     private final JobRepo jobRepo;
-
     private final Mail mailSender;
 
-    public SearchForJobController(final DeveloperService developerService,
-                                  final JobRepo jobRepo,
+    public SearchForJobController(JobSearch jobSearchForJob, final JobRepo jobRepo,
                                   final Mail mailSender) {
-        this.developerService = developerService;
+        this.jobSearchForJob = jobSearchForJob;
         this.jobRepo = jobRepo;
         this.mailSender = mailSender;
     }
@@ -42,7 +39,7 @@ public class SearchForJobController {
     public String searchJob(final @RequestParam(name = "whatDescription") String whatDescription,
                             final @RequestParam(name = "whereDescription", required = false) String whereDescription,
                             final HttpServletRequest request) {
-        request.getSession().setAttribute("jobsRequest",  developerService.searchForJob(whatDescription, whereDescription));
+        request.getSession().setAttribute("jobsRequest",  jobSearchForJob.searchForJob(whatDescription, whereDescription));
         return "redirect:/job/results";
     }
 
@@ -71,7 +68,7 @@ public class SearchForJobController {
                                  final @RequestParam("jobType") String jobType,
                                  final @RequestParam(name = "salary", required = false) String salary,
                                  final HttpServletRequest request) {
-        request.getSession().setAttribute("jobsRequest", developerService.searchForJobAdvanced(allWords, phrase, oneWord, title, jobType, salary));
+        request.getSession().setAttribute("jobsRequest", jobSearchForJob.searchForJobAdvanced(allWords, phrase, oneWord, title, jobType, salary));
         return "redirect:/job/results";
     }
 

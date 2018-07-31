@@ -34,19 +34,6 @@ public class WorkExperience {
     @Type(type = "text")
     private String description;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Developer developer;
-
-    public WorkExperience(String jobTitle, String company, String city, String monthFrom, String monthTo,
-                          String yearFrom, String yearTo, String description, Developer developer) {
-        this.jobTitle = jobTitle;
-        this.company = company;
-        this.city = city;
-        this.monthFrom = monthFrom;
-        this.monthTo = monthTo;
-        this.yearFrom = yearFrom;
-        this.yearTo = yearTo;
-        this.description = description;
-        this.developer = developer;
-    }
 }

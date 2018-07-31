@@ -11,24 +11,25 @@ import javax.persistence.*;
 @Setter
 @NoArgsConstructor
 public class Specialization {
-        @Id
-        @GeneratedValue(strategy = GenerationType.AUTO)
-        private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
 
-        private String skill;
+    private String skill;
 
-        private String experience;
+    private String experience;
 
-        @ManyToOne
-        private Developer developer;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Developer developer;
 
-        public Specialization(String skill, String experience) {
-                this.skill = skill;
-                this.experience = experience;
-        }
+    public Specialization(final  String skill, final  String experience, final Developer developer) {
+        this.skill = skill;
+        this.experience = experience;
+        this.developer = developer;
+    }
 
-        @Override
-        public String toString() {
-                return skill;
-        }
+    @Override
+    public String toString() {
+        return skill;
+    }
 }

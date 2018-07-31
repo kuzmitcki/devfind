@@ -8,6 +8,7 @@ import lombok.ToString;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
@@ -20,7 +21,7 @@ import java.util.Set;
 public class Developer {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    private Long id;
 
     private String firstName;
 
@@ -44,23 +45,23 @@ public class Developer {
     @Type(type = "text")
     private String additionalInformation;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @JoinColumn(name = "developer_id")
     private Set<Specialization> specializations;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true,  fetch = FetchType.LAZY)
     @JoinColumn(name = "developer_id")
-    private Set<Education> education;
+    private Set<Education> education = new HashSet<>();
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @JoinColumn(name = "developer_id")
     private Set<WorkExperience> workExperiences;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "desiredJob_id")
     private DesiredJob desiredJob;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     private User user;
 
     @Override
@@ -68,7 +69,7 @@ public class Developer {
                 if (this == o) return true;
                 if (o == null || getClass() != o.getClass()) return false;
                 Developer developer = (Developer) o;
-                return id == developer.id;
+                return Objects.equals(id, developer.id);
         }
 
     @Override

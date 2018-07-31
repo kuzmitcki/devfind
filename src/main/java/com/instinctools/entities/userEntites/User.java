@@ -31,15 +31,15 @@ public class User implements UserDetails {
         @Email
         private String  email;
 
-        @OneToOne(cascade = CascadeType.ALL)
+        @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
         @JoinColumn(name = "developer_id")
         private Developer developer;
 
-        @OneToOne(cascade = CascadeType.ALL)
+        @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
         @JoinColumn(name = "employee_id")
         private Employee employee;
 
-        @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
+        @ElementCollection(targetClass = Role.class, fetch = FetchType.LAZY)
         @CollectionTable(name = "roles", joinColumns = @JoinColumn(name = "user_id"))
         @Enumerated(EnumType.STRING)
         private Set<Role> roles;

@@ -336,9 +336,9 @@ public class DeveloperServiceImpl extends UserService implements DeveloperServic
     public Set<Job> searchForJobByOneWord(final String oneWord) {
         Set<Job> jobs = new HashSet<>();
         for (String word :  wordsSpliterator.wordsSpliterator(oneWord)) {
-            jobs.addAll(Stream.of(searchForJobByDesiredExperience(word),
-                                  searchForJobByQualifications(word),
-                                  searchForJobByTitle(word))
+                jobs.addAll(Stream.of(searchForJobByDesiredExperience(word),
+                        searchForJobByQualifications(word),
+                        searchForJobByTitle(word))
                         .flatMap(Set::stream).collect(Collectors.toSet()));
         }
         return jobs;

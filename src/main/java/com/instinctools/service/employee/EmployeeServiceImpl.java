@@ -263,9 +263,10 @@ public class EmployeeServiceImpl extends UserService implements EmployeeService 
 
     @Override
     public Set<Developer> searchForDeveloperByLocation(final String location) {
+        if (location.isEmpty()){
+            return new HashSet<>(developerRepo.findAll());
+        }
         return developerRepo.findByCityIgnoreCaseOrZipPostalCodeIgnoreCaseOrCountryIgnoreCase(location, location, location);
-
-
     }
 
     @Override
@@ -376,7 +377,6 @@ public class EmployeeServiceImpl extends UserService implements EmployeeService 
                 .filter(searchForResumeByEducationDegree(degree)::contains)
                 .filter(searchForResumeByFieldOfStudy(field)::contains)
                 .filter(searchForDeveloperByLocation(location)::contains)
-                .filter(searchForResumeByEducationDegree(degree)::contains)
                 .filter(searchForDeveloperByExperience(experience)::contains).collect(Collectors.toSet());
     }
 }

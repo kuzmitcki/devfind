@@ -52,7 +52,7 @@
             <span style=" font-weight: 400; color: black;"> ${developer.firstName!} ${developer.lastName!}</span></br>
             <span style=" font-weight: 400; color: black;">${developer.country!}, ${developer.city!}</span></br>
             <span style=" font-weight: 400; color: black;">${developer.user.email!}</span></br>
-            <span style=" font-weight: 400; color: black;">Status: <#if enable??>Waiting for job offers<#else>Has work</#if></span></br>
+            <span style=" font-weight: 400; color: red;">Status: <#if enable??>Waiting for job offers<#else>Has work</#if></span></br>
             <span style=" font-weight: 400; color: red;">${message!}</span>
         </div>
         <div style="padding-left: 10px;font-size: 18px;margin: 10px;font-weight: 700;">

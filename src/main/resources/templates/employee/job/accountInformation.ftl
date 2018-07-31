@@ -41,7 +41,7 @@
              </li>
                </#if>
         </ul>
-        <div class="navbar-text mr-3">${email}</div>
+        <div class="navbar-text mr-3">${email!}</div>
         <form method="post" action="/logout">
             <input style="border-radius: 9px" class="btn btn-primary" type="submit" value="Sign out">
             <input type="hidden" name="_csrf" value="${_csrf.token}" />

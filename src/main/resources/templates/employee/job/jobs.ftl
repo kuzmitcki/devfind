@@ -374,7 +374,7 @@
                     </div>
 
                     <div style="padding-top: 1%; padding-right: 3%">
-                        <pre style="font-family: Helvetica Neue,Helvetica,Arial,Liberation Sans,Roboto,Noto,sans-serif;font-size: .875rem;letter-spacing: 0;line-height: 1.25rem;font-weight: 400;">${job.desiredExperience!}</pre>
+                        <pre style="margin-left: -3px;font-family: Helvetica Neue,Helvetica,Arial,Liberation Sans,Roboto,Noto,sans-serif;font-size: .875rem;letter-spacing: 0;line-height: 1.25rem;font-weight: 400;">${job.desiredExperience!}</pre>
                     </div>
                 </div>
                 <div style="padding-top: 4%">

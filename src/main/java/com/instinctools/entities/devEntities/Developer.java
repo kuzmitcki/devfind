@@ -1,23 +1,21 @@
 package com.instinctools.entities.devEntities;
 
 import com.instinctools.entities.userEntites.User;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.Data;
 import org.hibernate.annotations.Type;
-
-import javax.persistence.*;
+import javax.persistence.JoinColumn;
+import javax.persistence.Id;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.OneToOne;
+import javax.persistence.CascadeType;
+import javax.persistence.FetchType;
+import javax.persistence.OneToMany;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
-
-@Entity
-@Getter
-@Setter
-@NoArgsConstructor
-    @ToString
+@Data
 public class Developer {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

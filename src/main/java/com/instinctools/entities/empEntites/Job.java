@@ -1,19 +1,14 @@
 package com.instinctools.entities.empEntites;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.Data;
 import org.hibernate.annotations.Type;
-
-import javax.persistence.*;
+import javax.persistence.Id;
+import javax.persistence.GeneratedValue;
+import javax.persistence.FetchType;
+import javax.persistence.ManyToOne;
 import java.util.Objects;
 
-@Entity
-@Getter
-@Setter
-@NoArgsConstructor
-@ToString
+@Data
 public class Job {
     @Id
     @GeneratedValue

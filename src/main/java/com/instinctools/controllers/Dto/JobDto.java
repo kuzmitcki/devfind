@@ -1,7 +1,5 @@
 package com.instinctools.controllers.Dto;
 
-
-
 import lombok.Data;
 import org.hibernate.annotations.Type;
 

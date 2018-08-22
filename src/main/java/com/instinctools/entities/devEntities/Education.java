@@ -1,16 +1,13 @@
 package com.instinctools.entities.devEntities;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.Data;
+import javax.persistence.Id;
+import javax.persistence.GeneratedValue;
+import javax.persistence.FetchType;
+import javax.persistence.ManyToOne;
+import javax.persistence.GenerationType;
 
-import javax.persistence.*;
-
-@Entity
-@Getter
-@Setter
-@NoArgsConstructor
+@Data
 public class Education {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -34,19 +31,4 @@ public class Education {
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Developer developer;
-
-    @Override
-    public String toString() {
-        return "Education{" +
-                "id=" + id +
-                ", degree='" + degree + '\'' +
-                ", place='" + place + '\'' +
-                ", fieldOfStudy='" + fieldOfStudy + '\'' +
-                ", cityOfEducation='" + cityOfEducation + '\'' +
-                ", monthFrom='" + monthFrom + '\'' +
-                ", monthTo='" + monthTo + '\'' +
-                ", yearFrom='" + yearFrom + '\'' +
-                ", yearTo='" + yearTo + '\'' +
-                '}';
-    }
 }

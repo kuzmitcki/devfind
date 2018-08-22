@@ -2,19 +2,27 @@ package com.instinctools.entities.userEntites;
 
 import com.instinctools.entities.devEntities.Developer;
 import com.instinctools.entities.empEntites.Employee;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-
-import javax.persistence.*;
+import javax.persistence.JoinColumn;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.OneToOne;
+import javax.persistence.CascadeType;
+import javax.persistence.FetchType;
+import javax.persistence.ElementCollection;
+import javax.persistence.CollectionTable;
+import javax.persistence.Enumerated;
+import javax.persistence.EnumType;
 import javax.validation.constraints.Email;
 import java.util.Collection;
 import java.util.Set;
 
 @Entity
-@Getter
-@Setter
+@Data
 public class User implements UserDetails {
         @Id
         @GeneratedValue(strategy = GenerationType.AUTO)
@@ -77,5 +85,4 @@ public class User implements UserDetails {
         public boolean isDeveloperRole(){
                 return roles.contains(Role.DEVELOPER);
         }
-
 }

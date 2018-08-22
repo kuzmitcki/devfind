@@ -1,9 +1,6 @@
 package com.instinctools.controllers.Dto;
 
-
-import com.instinctools.entities.devEntities.Developer;
 import lombok.Data;
-
 
 @Data
 public class EducationDto {

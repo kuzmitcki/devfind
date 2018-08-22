@@ -5,7 +5,13 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.GeneratedValue;
+import javax.persistence.FetchType;
+import javax.persistence.OneToOne;
+import javax.persistence.GenerationType;
+
 
 @Entity
 @Getter

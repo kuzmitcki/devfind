@@ -1,13 +1,9 @@
 package com.instinctools.controllers.Dto;
 
 import com.instinctools.entities.devEntities.Developer;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
-@Getter
-@Setter
-@AllArgsConstructor
+@Data
 public class DesiredJobDto {
     private String desiredJobTitle;
 

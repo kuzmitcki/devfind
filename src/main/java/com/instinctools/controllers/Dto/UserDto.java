@@ -1,7 +1,6 @@
 package com.instinctools.controllers.Dto;
 
-import lombok.*;
-import org.hibernate.annotations.Type;
+import lombok.Data;
 
 @Data
 public class UserDto {

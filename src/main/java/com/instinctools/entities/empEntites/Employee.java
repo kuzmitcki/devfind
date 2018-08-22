@@ -2,8 +2,7 @@ package com.instinctools.entities.empEntites;
 
 
 import com.instinctools.entities.userEntites.User;
-import lombok.*;
-
+import lombok.Data;
 import javax.persistence.JoinColumn;
 import javax.persistence.Entity;
 import javax.persistence.Id;

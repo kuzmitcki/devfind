@@ -25,8 +25,10 @@ public class ResumeController {
 
 
     @Autowired
-    public ResumeController(final MailSender mailSender, final SpecializationRepo specializationRepo,
-                            final WorkExperienceRepo workExperienceRepo, final EducationRepo educationRepo) {
+    public ResumeController(final MailSender mailSender,
+                            final SpecializationRepo specializationRepo,
+                            final WorkExperienceRepo workExperienceRepo,
+                            final EducationRepo educationRepo) {
         this.mailSender = mailSender;
         this.specializationRepo = specializationRepo;
         this.workExperienceRepo = workExperienceRepo;
@@ -39,9 +41,12 @@ public class ResumeController {
         model.addAttribute("user", user);
         model.addAttribute("developer", user.getDeveloper());
         model.addAttribute("telephone", user.getDeveloper().getTelephone());
-        model.addAttribute("specializations", specializationRepo.findByDeveloper(user.getDeveloper()));
-        model.addAttribute("educations", educationRepo.findByDeveloper(user.getDeveloper()));
-        model.addAttribute("workExperiences", workExperienceRepo.findByDeveloper(user.getDeveloper()));
+        model.addAttribute("specializations",
+                specializationRepo.findByDeveloper(user.getDeveloper()));
+        model.addAttribute("educations",
+                educationRepo.findByDeveloper(user.getDeveloper()));
+        model.addAttribute("workExperiences",
+                workExperienceRepo.findByDeveloper(user.getDeveloper()));
         return "developer/resume/resume";
     }
 

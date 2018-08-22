@@ -348,11 +348,7 @@
             openBox("contactBox", this);
             return false;
         };
-        document.getElementById("workExperience").onclick = function (ev) {
-            openBox("workExperienceBox", this);
-            return false;
-        };
-        document.getElementById("desired").onclick = function (ev) {
+        document.getElementById("desired").onclick = function () {
             openBox("desiredBox", this);
             return false;
         }

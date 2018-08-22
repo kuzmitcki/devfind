@@ -23,15 +23,19 @@ public class DeveloperEditingService implements EditDeveloper {
     private final Mail mailSender;
     private final WorkExperienceRepo workExperienceRepo;
 
-    public DeveloperEditingService(UserRepo userRepo, MailSender mailSender, WorkExperienceRepo workExperienceRepo) {
+    public DeveloperEditingService(final UserRepo userRepo,
+                                   final MailSender mailSender,
+                                   final WorkExperienceRepo workExperienceRepo) {
         this.userRepo = userRepo;
         this.mailSender = mailSender;
         this.workExperienceRepo = workExperienceRepo;
     }
 
     @Override
-    public void editResumeBasicInformation(final User user, String email, final UserDto userDTO, final HttpServletRequest request) {
-
+    public void editResumeBasicInformation(final User user,
+                                           final String email,
+                                           final UserDto userDTO,
+                                           final HttpServletRequest request) {
         Developer developer = user.getDeveloper();
         developer.setCountry(userDTO.getCountry());
         developer.setCity(userDTO.getCity());
@@ -55,7 +59,9 @@ public class DeveloperEditingService implements EditDeveloper {
     }
 
     @Override
-    public void editDeveloperWorkExperience(final User user, final Long id, WorkExperienceDto workExperienceDTO) {
+    public void editDeveloperWorkExperience(final User user,
+                                            final Long id,
+                                            final WorkExperienceDto workExperienceDTO) {
         WorkExperience workExperience = workExperienceRepo.getOne(id);
 
         ModelMapper mapper = new ModelMapper();

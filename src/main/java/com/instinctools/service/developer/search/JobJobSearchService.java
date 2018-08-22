@@ -24,7 +24,9 @@ public class JobJobSearchService implements JobSearch {
     private final EmployeeRepo employeeRepo;
     private final WordsSpliterator wordsSpliterator;
 
-    public JobJobSearchService(JobRepo jobRepo, EmployeeRepo employeeRepo, WordsSpliterator wordsSpliterator) {
+    public JobJobSearchService(final JobRepo jobRepo,
+                               final EmployeeRepo employeeRepo,
+                               final WordsSpliterator wordsSpliterator) {
         this.jobRepo = jobRepo;
         this.employeeRepo = employeeRepo;
         this.wordsSpliterator = wordsSpliterator;
@@ -113,12 +115,12 @@ public class JobJobSearchService implements JobSearch {
     @Override
     public Set<Job> searchForJobByAllWords(final String allWords) {
         Set<Job> jobs = new HashSet<>();
-        Integer number = 0;
+        int number = 0;
         for (String word : wordsSpliterator.wordsSpliterator(allWords)) {
             if (!searchForJobByDesiredExperience(word).isEmpty()
                 || !searchForJobByQualifications(word).isEmpty()
                 || !searchForJobByDescription(word).isEmpty()) {
-                number ++;
+                number++;
             }
 
             jobs.addAll(Stream.of(searchForJobByDesiredExperience(word),

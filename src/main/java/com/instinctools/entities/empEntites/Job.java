@@ -6,9 +6,12 @@ import javax.persistence.Id;
 import javax.persistence.GeneratedValue;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
+import javax.persistence.Entity;
+
 import java.util.Objects;
 
 @Data
+@Entity
 public class Job {
     @Id
     @GeneratedValue
@@ -40,23 +43,15 @@ public class Job {
     @ManyToOne(fetch = FetchType.LAZY)
     private Employee employee;
 
-    public Job(String title, String fullDescription, String desiredExperience, Long fromSalary, Long toSalary,
-               String jobType, Long salaryPeriod, String jobLocation, String country) {
-        this.title = title;
-        this.fullDescription = fullDescription;
-        this.desiredExperience = desiredExperience;
-        this.fromSalary = fromSalary;
-        this.toSalary = toSalary;
-        this.jobType = jobType;
-        this.salaryPeriod = salaryPeriod;
-        this.jobLocation = jobLocation;
-        this.country = country;
-    }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+    public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         Job job = (Job) o;
         return Objects.equals(id, job.id);
     }

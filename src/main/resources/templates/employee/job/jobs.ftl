@@ -82,12 +82,12 @@
                     </form>
                 </div>
                 <div>
-                    <strong>Location: </strong> ${job.country}, ${job.jobLocation} <a style="font-size: 15px;float: right;font-weight: 300;margin-right: 30px;" id="location" href=""><input type="image" src="https://image.flaticon.com/icons/svg/660/660756.svg" style="height: auto;width: 1.2rem;float:"></a>
+                    <strong>Location: </strong> ${job.country}, ${job.jobLocation!} <a style="font-size: 15px;float: right;font-weight: 300;margin-right: 30px;" id="location" href=""><input type="image" src="https://image.flaticon.com/icons/svg/660/660756.svg" style="height: auto;width: 1.2rem;float:"></a>
                 </div>
                 <div id="locationBox" style="display: none;padding-bottom: 2%;padding-top: 2%;">
                     <form method="post" action="/edit-employee/job/location/${job.id!}">
                         <div class="form-group" style="width: 95%">
-                            <input value="${job.title!}"  style="border-radius: 8px;" type="text" class="form-control" name="location" id="inputLocation">
+                            <input value="${job.title!}"  style="border-radius: 8px;" type="text" class="form-control" name="jobLocation" id="inputLocation">
                         </div>
                         <div class="form-group" style="width: 95%">
                             <select  style="color: #4b4b4b; border-radius: 8px" class="custom-select" id="inputCountry" name="country">
@@ -347,7 +347,7 @@
                     <div id="descriptionBox" style="display: none;padding-bottom: 2%;padding-top: 2%;">
                         <form method="post" action="/edit-employee/job/description/${job.id!}">
                             <div class="form-group" style="width: 95%">
-                                <textarea  name="description" style="border-radius: 8px;font-size: 14px;height: 280px;" class="form-control" id="textArea" rows="3">${job.fullDescription!}</textarea>
+                                <textarea  name="fullDescription" style="border-radius: 8px;font-size: 14px;height: 280px;" class="form-control" id="textArea" rows="3">${job.fullDescription!}</textarea>
                             </div>
                             <div class="form-group">
                                 <input type="hidden" name="_csrf" value="${_csrf.token}" />
@@ -364,7 +364,7 @@
                     <div id="experienceBox" style="display: none;padding-bottom: 2%;padding-top: 2%;">
                         <form method="post" action="/edit-employee/job/experience/${job.id!}">
                             <div class="form-group" style="width: 95%">
-                                <textarea  name="experience" style="border-radius: 8px;font-size: 14px;height: 280px;" class="form-control" id="textArea" rows="3">${job.desiredExperience!}</textarea>
+                                <textarea  name="desiredExperience" style="border-radius: 8px;font-size: 14px;height: 280px;" class="form-control" id="textArea" rows="3">${job.desiredExperience!}</textarea>
                             </div>
                             <div class="form-group">
                                 <input type="hidden" name="_csrf" value="${_csrf.token}" />
@@ -382,7 +382,7 @@
                     <div id="qualificationBox" style="display: none;padding-bottom: 2%;padding-top: 2%;">
                         <form method="post" action="/edit-employee/job/qualification/${job.id!}">
                             <div class="form-group" style="width: 95%">
-                                <textarea  name="qualification" style="border-radius: 8px;font-size: 14px;height: 280px;" class="form-control" id="textArea" rows="3">${job.qualifications!}</textarea>
+                                <textarea  name="qualifications" style="border-radius: 8px;font-size: 14px;height: 280px;" class="form-control" id="textArea" rows="3">${job.qualifications!}</textarea>
                             </div>
                             <div class="form-group">
                                 <input type="hidden" name="_csrf" value="${_csrf.token}" />

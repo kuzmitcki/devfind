@@ -1,6 +1,10 @@
 package com.instinctools.service.developer.adding;
 
-import com.instinctools.controllers.Dto.*;
+import com.instinctools.controllers.Dto.UserDto;
+import com.instinctools.controllers.Dto.EducationDto;
+import com.instinctools.controllers.Dto.WorkExperienceDto;
+import com.instinctools.controllers.Dto.SkillDto;
+import com.instinctools.controllers.Dto.DesiredJobDto;
 import com.instinctools.entities.userEntites.User;
 
 public interface AddDeveloper {

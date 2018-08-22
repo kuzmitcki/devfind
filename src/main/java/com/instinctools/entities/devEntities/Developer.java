@@ -3,18 +3,13 @@ package com.instinctools.entities.devEntities;
 import com.instinctools.entities.userEntites.User;
 import lombok.Data;
 import org.hibernate.annotations.Type;
-import javax.persistence.JoinColumn;
-import javax.persistence.Id;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.OneToOne;
-import javax.persistence.CascadeType;
-import javax.persistence.FetchType;
-import javax.persistence.OneToMany;
+
+import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
+@Entity
 @Data
 public class Developer {
     @Id
@@ -63,15 +58,21 @@ public class Developer {
     private User user;
 
     @Override
-    public boolean equals(Object o) {
-                if (this == o) return true;
-                if (o == null || getClass() != o.getClass()) return false;
-                Developer developer = (Developer) o;
-                return Objects.equals(id, developer.id);
+    public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
         }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Developer developer = (Developer) o;
+        return Objects.equals(id, developer.id);
+    }
 
     @Override
     public int hashCode() {
-                return Objects.hash(id);
-        }
+        return Objects.hash(id);
+    }
 }
+
+

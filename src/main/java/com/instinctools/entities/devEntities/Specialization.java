@@ -1,9 +1,6 @@
 package com.instinctools.entities.devEntities;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
+import lombok.Data;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.GeneratedValue;
@@ -13,9 +10,7 @@ import javax.persistence.GenerationType;
 
 
 @Entity
-@Getter
-@Setter
-@NoArgsConstructor
+@Data
 public class Specialization {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -27,12 +22,6 @@ public class Specialization {
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Developer developer;
-
-    public Specialization(final  String skill, final  String experience, final Developer developer) {
-        this.skill = skill;
-        this.experience = experience;
-        this.developer = developer;
-    }
 
     @Override
     public String toString() {

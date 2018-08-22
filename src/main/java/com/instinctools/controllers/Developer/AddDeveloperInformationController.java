@@ -46,7 +46,8 @@ public class AddDeveloperInformationController {
     @GetMapping("resume/wizard/education")
     public String resumeEducationPage(@AuthenticationPrincipal  User user,
                                       final Model model) {
-        model.addAttribute("education", user.getDeveloper().getEducation().isEmpty());
+        model.addAttribute("education",
+                user.getDeveloper().getEducation().isEmpty());
         return "developer/resume/education";
     }
 

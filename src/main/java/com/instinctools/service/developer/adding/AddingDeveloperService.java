@@ -1,6 +1,10 @@
 package com.instinctools.service.developer.adding;
 
-import com.instinctools.controllers.Dto.*;
+import com.instinctools.controllers.Dto.UserDto;
+import com.instinctools.controllers.Dto.EducationDto;
+import com.instinctools.controllers.Dto.WorkExperienceDto;
+import com.instinctools.controllers.Dto.SkillDto;
+import com.instinctools.controllers.Dto.DesiredJobDto;
 import com.instinctools.entities.devEntities.Developer;
 import com.instinctools.entities.devEntities.DesiredJob;
 import com.instinctools.entities.devEntities.Education;
@@ -29,9 +33,12 @@ public class AddingDeveloperService  implements AddDeveloper {
     private final DesiredJobRepo desiredJobRepo;
     private final Logger l = LoggerFactory.getLogger(AddingDeveloperService.class);
 
-    public AddingDeveloperService(UserRepo userRepo, EducationRepo educationRepo, DeveloperRepo developerRepo,
-                                  WorkExperienceRepo workExperienceRepo, SpecializationRepo specializationRepo,
-                                  DesiredJobRepo desiredJobRepo) {
+    public AddingDeveloperService(final UserRepo userRepo,
+                                  final EducationRepo educationRepo,
+                                  final DeveloperRepo developerRepo,
+                                  final WorkExperienceRepo workExperienceRepo,
+                                  final SpecializationRepo specializationRepo,
+                                  final DesiredJobRepo desiredJobRepo) {
         this.userRepo = userRepo;
         this.educationRepo = educationRepo;
         this.developerRepo = developerRepo;
@@ -42,7 +49,8 @@ public class AddingDeveloperService  implements AddDeveloper {
 
 
     @Override
-    public void setBasicQualities(final User user, final UserDto userDTO) {
+    public void setBasicQualities(final User user,
+                                  final UserDto userDTO) {
         Developer developer = user.getDeveloper();
         if (!userDTO.getCountry().isEmpty() && userDTO.getCountry() != null) {
             if (userDTO.getZipPostalCode().isEmpty()) {
@@ -61,7 +69,8 @@ public class AddingDeveloperService  implements AddDeveloper {
     }
 
     @Override
-    public void setEducation(final User user, EducationDto educationDTO) {
+    public void setEducation(final User user,
+                             final EducationDto educationDTO) {
         if (!"1".equals(educationDTO.getDegree()) && !educationDTO.getFieldOfStudy().isEmpty() && !educationDTO.getPlace().isEmpty()) {
             final Developer developer = user.getDeveloper();
             ModelMapper mapper = new ModelMapper();
@@ -76,7 +85,9 @@ public class AddingDeveloperService  implements AddDeveloper {
     }
 
     @Override
-    public void setWorkExperience(final User user, final WorkExperienceDto workExperienceDTO, final String check) {
+    public void setWorkExperience(final User user,
+                                  final WorkExperienceDto workExperienceDTO,
+                                  final String check) {
         final Developer developer = user.getDeveloper();
         if (check != null) {
             developer.setJobExperience(false);
@@ -95,7 +106,8 @@ public class AddingDeveloperService  implements AddDeveloper {
     }
 
     @Override
-    public void setDeveloperSummary(final User user, final String summary) {
+    public void setDeveloperSummary(final User user,
+                                    final String summary) {
         Developer developer = user.getDeveloper();
         developer.setSummary(summary);
         developerRepo.save(developer);

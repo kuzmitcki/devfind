@@ -22,11 +22,11 @@ public interface JobSearch {
 
     Set<Job> searchForJobByDescription(String description);
 
-    Set<Job> searchForJobByOneWord (String oneWord);
+    Set<Job> searchForJobByOneWord(String oneWord);
 
-    Set<Job> searchForJobByAllWords (String allWords);
+    Set<Job> searchForJobByAllWords(String allWords);
 
-    Set<Job> searchFroJobByPhrase (String phrase);
+    Set<Job> searchFroJobByPhrase(String phrase);
 
     Set<Job> searchForJobByWordsInTitle(String title);
 

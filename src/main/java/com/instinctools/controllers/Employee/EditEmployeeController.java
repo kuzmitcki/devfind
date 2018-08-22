@@ -1,24 +1,24 @@
 package com.instinctools.controllers.Employee;
 
+import com.instinctools.controllers.Dto.JobDto;
+import com.instinctools.controllers.Dto.UserDto;
 import com.instinctools.entities.userEntites.User;
 import com.instinctools.service.employee.check.CheckEmployee;
 import com.instinctools.service.employee.edit.EditJob;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
 
 @Controller
+@PreAuthorize("hasAuthority('EMPLOYEE')")
 public class EditEmployeeController {
     private final EditJob editJob;
     private final CheckEmployee checkEmployee;
-    private final Logger logger = LoggerFactory.getLogger(EditEmployeeController.class);
 
     public EditEmployeeController(EditJob editJob, CheckEmployee checkEmployee) {
         this.editJob = editJob;
@@ -34,64 +34,75 @@ public class EditEmployeeController {
 
     @PostMapping("edit-employee/company")
     public String editCompany(final @AuthenticationPrincipal User user,
-                              final @RequestParam(name = "company") String company) {
-        editJob.editEmployeeCompany(user, company);
+                              final UserDto userDto,
+                              Model model) {
+        model.addAttribute("userDto", userDto);
+        editJob.editEmployeeCompany(user, userDto);
         return "redirect:/employee/jobs";
     }
 
     @PostMapping("edit-employee/job/title/{id}")
     public String editJobTitle(final @AuthenticationPrincipal User user,
-                               final @RequestParam(name = "title") String title,
-                               final @PathVariable(name = "id") Long id) {
+                               final @PathVariable(name = "id") Long id,
+                               final JobDto jobDto,
+                               Model model) {
         if (checkEmployee.checkEmployeeEditing(user, id)) {
             return "redirect:/employee/jobs";
         }
-        editJob.editJobTitle(user, title, id);
+        model.addAttribute("jobDto", jobDto);
+        editJob.editJobTitle(user, jobDto, id);
         return "redirect:/employee/jobs";
     }
 
     @PostMapping("edit-employee/job/location/{id}")
     public String editJobLocation(final @AuthenticationPrincipal User user,
-                                  final @RequestParam(name = "country") String country,
-                                  final @RequestParam(name = "location") String location,
-                                  final @PathVariable(name = "id") Long id) {
+                                  final @PathVariable(name = "id") Long id,
+                                  final JobDto jobDto,
+                                  Model model) {
         if (checkEmployee.checkEmployeeEditing(user, id)) {
             return "redirect:/employee/jobs";
         }
-        editJob.editJobLocation(user, country, location, id);
+        model.addAttribute("jobDto", jobDto);
+        editJob.editJobLocation(user, jobDto, id);
         return "redirect:/employee/jobs";
     }
 
     @PostMapping("/edit-employee/job/description/{id}")
     public String editJobDescription(final @AuthenticationPrincipal User user,
-                                     final @RequestParam(name = "description") String description,
-                                     final @PathVariable(name = "id") Long id) {
+                                     final @PathVariable(name = "id") Long id,
+                                     final JobDto jobDto,
+                                     Model model) {
         if (checkEmployee.checkEmployeeEditing(user, id)) {
             return "redirect:/employee/jobs";
         }
-        editJob.editJobDescription(user, description, id);
+        model.addAttribute("jobDto", jobDto);
+        editJob.editJobDescription(user, jobDto, id);
         return "redirect:/employee/jobs";
     }
 
     @PostMapping("/edit-employee/job/experience/{id}")
     public String editJobDesiredExperience(final @AuthenticationPrincipal User user,
-                                           final @RequestParam(name = "experience") String experience,
-                                           final @PathVariable(name = "id") Long id) {
+                                           final @PathVariable(name = "id") Long id,
+                                           final JobDto jobDto,
+                                           Model model) {
         if (checkEmployee.checkEmployeeEditing(user, id)) {
             return "redirect:/employee/jobs";
         }
-        editJob.editJobDesiredDescription(user, experience, id);
+        model.addAttribute("jobDto", jobDto);
+        editJob.editJobDesiredDescription(user, jobDto, id);
         return "redirect:/employee/jobs";
     }
 
     @PostMapping("/edit-employee/job/qualification/{id}")
     public String editJobQualification(final @AuthenticationPrincipal User user,
-                                       final @RequestParam(name = "qualification") String qualification,
-                                       final @PathVariable(name = "id") Long id) {
+                                       final @PathVariable(name = "id") Long id,
+                                       final JobDto jobDto,
+                                       Model model) {
         if (checkEmployee.checkEmployeeEditing(user, id)) {
             return "redirect:/employee/jobs";
         }
-        editJob.editJobQualification(user, qualification, id);
+        model.addAttribute("jobDto", jobDto);
+        editJob.editJobQualification(user, jobDto, id);
         return "redirect:/employee/jobs";
     }
 }

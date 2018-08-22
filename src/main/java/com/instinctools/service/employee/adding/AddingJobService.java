@@ -7,11 +7,8 @@ import com.instinctools.controllers.Dto.JobDto;
 import com.instinctools.entities.userEntites.User;
 import com.instinctools.repo.UserRepo;
 import com.instinctools.repo.employeeRepo.JobRepo;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashSet;
 import java.util.Set;
@@ -20,7 +17,6 @@ import java.util.Set;
 public class AddingJobService implements AddingJob {
     private final JobRepo jobRepo;
     private final UserRepo userRepo;
-    private final Logger logger  = LoggerFactory.getLogger(AddingJobService.class);
 
     public AddingJobService(JobRepo jobRepo, UserRepo userRepo) {
         this.jobRepo = jobRepo;
@@ -28,7 +24,9 @@ public class AddingJobService implements AddingJob {
     }
 
     @Override
-    public void setEmployeeDescription(final User user, final JobDto jobDto, final HttpServletRequest request) {
+    public void setEmployeeDescription(final User user,
+                                       final JobDto jobDto,
+                                       final HttpServletRequest request) {
         Job job = (Job) request.getSession().getAttribute("job");
         job.setFullDescription(jobDto.getFullDescription());
         job.setDesiredExperience(jobDto.getDesiredExperience());
@@ -43,7 +41,9 @@ public class AddingJobService implements AddingJob {
     }
 
     @Override
-    public void setEmployeeJobSalary(final JobDto jobDto, final RedirectAttributes redirectJob, final HttpServletRequest request) {
+    public void setEmployeeJobSalary(final JobDto jobDto,
+                                     final RedirectAttributes redirectJob,
+                                     final HttpServletRequest request) {
         Job job = (Job) request.getSession().getAttribute("attribute");
         job.setJobType(jobDto.getJobType());
         job.setFromSalary(jobDto.getFromSalary() * jobDto.getSalaryPeriod());
@@ -54,7 +54,9 @@ public class AddingJobService implements AddingJob {
     }
 
     @Override
-    public void setEmployeeBasicInformation(final User user, final RedirectAttributes redirectedJob, final JobDto jobDto) {
+    public void setEmployeeBasicInformation(final User user,
+                                            final RedirectAttributes redirectedJob,
+                                            final JobDto jobDto) {
         Job job = new Job();
 
         job.setTitle(jobDto.getTitle());
@@ -73,7 +75,8 @@ public class AddingJobService implements AddingJob {
     }
 
     @Override
-    public void setEmployeeAccountInformation(final User user, final UserDto userDto) {
+    public void setEmployeeAccountInformation(final User user,
+                                              final UserDto userDto) {
         Employee employee = user.getEmployee();
         employee.setName(userDto.getName());
         String telephone = userDto.getTelephone();

@@ -11,18 +11,21 @@ public class CheckDeveloperService implements CheckDeveloper {
     private final WorkExperienceRepo workExperienceRepo;
     private final EducationRepo educationRepo;
 
-    public CheckDeveloperService(WorkExperienceRepo workExperienceRepo, EducationRepo educationRepo) {
+    public CheckDeveloperService(final WorkExperienceRepo workExperienceRepo,
+                                 final EducationRepo educationRepo) {
         this.workExperienceRepo = workExperienceRepo;
         this.educationRepo = educationRepo;
     }
 
     @Override
-    public boolean checkDeveloperEditingWork(User user, Long id) {
+    public boolean checkDeveloperEditingWork(final User user,
+                                             final Long id) {
         return user.getDeveloper().equals(workExperienceRepo.getOne(id).getDeveloper());
     }
 
     @Override
-    public boolean checkDeveloperEditingEducation(User user, Long id) {
+    public boolean checkDeveloperEditingEducation(final User user,
+                                                  final Long id) {
         return user.getDeveloper().equals(educationRepo.getOne(id).getDeveloper());
 
     }

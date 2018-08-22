@@ -13,7 +13,8 @@ public class CheckEmployeeService implements CheckEmployee {
     }
 
     @Override
-    public boolean checkEmployeeEditing(final User user, final Long id) {
+    public boolean checkEmployeeEditing(final User user,
+                                        final Long id) {
         return user.getEmployee().equals(jobRepo.getOne(id).getEmployee());
     }
 

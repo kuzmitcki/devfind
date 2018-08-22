@@ -1,18 +1,20 @@
 package com.instinctools.service.employee.edit;
 
+import com.instinctools.controllers.Dto.JobDto;
+import com.instinctools.controllers.Dto.UserDto;
 import com.instinctools.entities.userEntites.User;
 
 public interface EditJob {
-    void editJobLocation(User user, String country, String location, Long id);
+    void editJobLocation(User user, JobDto jobDto, Long id);
 
-    void editJobDescription(User user, String description, Long id);
+    void editJobDescription(User user, JobDto jobDto, Long id);
 
-    void editJobDesiredDescription(User user, String experience, Long id);
+    void editJobDesiredDescription(User user, JobDto jobDto, Long id);
 
-    void editJobTitle(User user, String title, Long id);
+    void editJobTitle(User user, JobDto jobDto, Long id);
 
-    void editEmployeeCompany(User user, String company);
+    void editEmployeeCompany(User user, UserDto userDto);
 
-    void editJobQualification(User user, String qualification, Long id);
+    void editJobQualification(User user, JobDto jobDto, Long id);
 
 }

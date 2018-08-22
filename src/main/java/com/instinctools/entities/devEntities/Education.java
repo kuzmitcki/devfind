@@ -1,13 +1,11 @@
 package com.instinctools.entities.devEntities;
 
 import lombok.Data;
-import javax.persistence.Id;
-import javax.persistence.GeneratedValue;
-import javax.persistence.FetchType;
-import javax.persistence.ManyToOne;
-import javax.persistence.GenerationType;
+
+import javax.persistence.*;
 
 @Data
+@Entity
 public class Education {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

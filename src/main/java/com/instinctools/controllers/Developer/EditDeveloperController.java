@@ -27,7 +27,10 @@ public class EditDeveloperController {
     private final EducationRepo educationRepo;
     private final CheckDeveloper checkDeveloper;
 
-    public EditDeveloperController(EditDeveloper editDeveloper, WorkExperienceRepo workExperienceRepo, EducationRepo educationRepo, CheckDeveloper checkDeveloper) {
+    public EditDeveloperController(final EditDeveloper editDeveloper,
+                                   final WorkExperienceRepo workExperienceRepo,
+                                   final EducationRepo educationRepo,
+                                   final CheckDeveloper checkDeveloper) {
         this.editDeveloper = editDeveloper;
         this.workExperienceRepo = workExperienceRepo;
         this.educationRepo = educationRepo;

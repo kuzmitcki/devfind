@@ -2,10 +2,8 @@ package com.instinctools.entities.empEntites;
 
 
 import com.instinctools.entities.userEntites.User;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
+
 import javax.persistence.JoinColumn;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -18,10 +16,7 @@ import java.util.Objects;
 import java.util.Set;
 
 @Entity
-@Getter
-@Setter
-@NoArgsConstructor
-@ToString
+@Data
 public class Employee {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -42,8 +37,12 @@ public class Employee {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         Employee employee = (Employee) o;
         return id == employee.id;
     }

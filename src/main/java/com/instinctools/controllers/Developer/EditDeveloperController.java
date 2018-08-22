@@ -1,7 +1,7 @@
 package com.instinctools.controllers.Developer;
 
-import com.instinctools.entities.devEntities.dto.DeveloperDTO;
-import com.instinctools.entities.devEntities.dto.WorkExperienceDTO;
+import com.instinctools.controllers.Dto.UserDto;
+import com.instinctools.controllers.Dto.WorkExperienceDto;
 import com.instinctools.entities.userEntites.User;
 import com.instinctools.repo.developerRepo.EducationRepo;
 import com.instinctools.repo.developerRepo.WorkExperienceRepo;
@@ -36,13 +36,12 @@ public class EditDeveloperController {
 
     @PostMapping("/edit-developer/information")
     public String editContactInformation(final @AuthenticationPrincipal User user,
-                                         final @RequestParam(name = "country") String country,
-                                         final @RequestParam(name = "city") String city,
-                                         final @RequestParam(name = "telephone") String telephone,
-                                         final @RequestParam(name = "zipPostalCode") String zipPostalCode,
                                          final @RequestParam(name = "email") String email,
-                                         final HttpServletRequest request) {
-        editDeveloper.editResumeBasicInformation(user, email, new DeveloperDTO(country, city, telephone, zipPostalCode),request);
+                                         final UserDto userDTO,
+                                         final HttpServletRequest request,
+                                         final Model model) {
+        model.addAttribute("developerDto", userDTO);
+        editDeveloper.editResumeBasicInformation(user, email, userDTO, request);
         return "redirect:/developer/resume";
     }
 
@@ -60,16 +59,10 @@ public class EditDeveloperController {
     @PostMapping("/edit-developer/experience/{id}")
     public String workExperienceEdit(final @AuthenticationPrincipal User user,
                                      final @PathVariable("id") Long id,
-                                     final @RequestParam(name = "jobTitle") String jobTitle,
-                                     final @RequestParam(name = "company") String company,
-                                     final @RequestParam(name = "city") String city,
-                                     final @RequestParam(name = "monthFrom") String monthFrom,
-                                     final @RequestParam(name = "monthTo") String monthTo,
-                                     final @RequestParam(name = "yearFrom") String yearFrom,
-                                     final @RequestParam(name = "yearTo") String yearTo,
-                                     final @RequestParam(name = "description") String description) {
-        editDeveloper.editDeveloperWorkExperience(user, id, new WorkExperienceDTO(jobTitle, company, city, monthFrom,
-                                                                                  monthTo, yearFrom, yearTo, description, user.getDeveloper()));
+                                     final WorkExperienceDto workExperienceDto,
+                                     final Model model) {
+        model.addAttribute("workExperienceDto", workExperienceDto);
+        editDeveloper.editDeveloperWorkExperience(user, id, workExperienceDto);
         return "redirect:/developer/resume";
     }
 

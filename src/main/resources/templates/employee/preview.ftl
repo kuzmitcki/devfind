@@ -52,7 +52,7 @@
             <span style=" font-weight: 400; color: black;"> ${developer.firstName!} ${developer.lastName!}</span></br>
             <span style=" font-weight: 400; color: black;">${developer.country!}, ${developer.city!}</span></br>
             <span style=" font-weight: 400; color: black;">${developer.user.email!}</span></br>
-            <span style=" font-weight: 400; color: red;">Status: <#if enable??>Waiting for job offers<#else>Has work</#if></span></br>
+            <span style=" font-weight: 400; color: black;">Status: <#if enable??>Waiting for job offers<#else>Has work</#if></span></br>
             <span style=" font-weight: 400; color: red;">${message!}</span>
         </div>
         <div style="padding-left: 10px;font-size: 18px;margin: 10px;font-weight: 700;">
@@ -124,9 +124,12 @@
         </div>
         <div style="padding: 20px;">
                     <#list developer.specializations as specialization>
-                        <span style="font-family: Helvetica Neue,Helvetica,Arial,Liberation Sans,Roboto,Noto,sans-serif;font-size: .875rem;letter-spacing: 0;line-height: 1.25rem;font-weight: 400;">
-                                ${specialization.skill} (${specialization.experience})<#sep>, </#sep>
-                            </span>
+                        <div style="padding-top: 10px">
+                            <div style="font-family: Helvetica Neue,Helvetica,Arial,Liberation Sans,Roboto,Noto,sans-serif;font-size: .875rem;letter-spacing: 0;line-height: 1.25rem;font-weight: 400;">
+                                ${specialization.skill} (${specialization.experience})
+                            </div>
+                            <hr style="width: 100%;font-weight: 600;color: gainsboro">
+                        </div>
                     </#list>
         </div>
         <div style="padding-left: 10px;font-size: 18px;margin: 10px;font-weight: 700;">

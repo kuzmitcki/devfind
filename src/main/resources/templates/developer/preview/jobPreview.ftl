@@ -64,33 +64,33 @@
                     <div>
                         <strong>Location: </strong> ${job.country}, ${job.jobLocation}
                     </div>
-                    </div>
-                    <div style="margin-left: 25px;padding-top: 4%;">
-                        <strong>Job Description:</strong>
-                        <div style="padding-top: 1%;padding-right: 3%">
-                            <pre style="font-family: Helvetica Neue,Helvetica,Arial,Liberation Sans,Roboto,Noto,sans-serif;font-size: .875rem;letter-spacing: 0;line-height: 1.25rem;font-weight: 400;">${job.fullDescription!}</pre>
-                        </div>
-                    </div>
-                    <div style="margin-left: 25px;padding-top: 4%">
-                        <strong>Desired Experience:</strong>
-                        <div style="padding-top: 1%; padding-right: 3%">
-                            <pre style="font-family: Helvetica Neue,Helvetica,Arial,Liberation Sans,Roboto,Noto,sans-serif;font-size: .875rem;letter-spacing: 0;line-height: 1.25rem;font-weight: 400;">${job.desiredExperience!}</pre>
-                        </div>
-
-                    </div>
-                    <div style="margin-left: 25px;padding-top: 4%">
-                        <strong>Qualifications:</strong>
-                        <div style="padding-top: 1%;padding-right: 3%">
-                            <pre style="font-family: Helvetica Neue,Helvetica,Arial,Liberation Sans,Roboto,Noto,sans-serif;font-size: .875rem;letter-spacing: 0;line-height: 1.25rem;font-weight: 400;">${job.qualifications!}</pre>
-                        </div>
-                    </div>
-                    <form method="post" action="/job/send-resume/${job.id}" style="margin-left: 25px; padding-top: 5%">
-                        <div class="form-group">
-                            <input type="hidden" name="_csrf" value="${_csrf.token}" />
-                            <button type="submit" style="border-radius: 18px;width: auto"  class="btn btn-primary">Respond</button>
-                        </div>
-                    </form>
                 </div>
+                <div style="margin-left: 25px;padding-top: 4%;">
+                    <strong>Job Description:</strong>
+                    <div style="padding-top: 1%;padding-right: 3%">
+                        <pre style="font-family: Helvetica Neue,Helvetica,Arial,Liberation Sans,Roboto,Noto,sans-serif;font-size: .875rem;letter-spacing: 0;line-height: 1.25rem;font-weight: 400;">${job.fullDescription!}</pre>
+                    </div>
+                </div>
+                <div style="margin-left: 25px;padding-top: 4%">
+                    <strong>Desired Experience:</strong>
+                    <div style="padding-top: 1%; padding-right: 3%">
+                        <pre style="font-family: Helvetica Neue,Helvetica,Arial,Liberation Sans,Roboto,Noto,sans-serif;font-size: .875rem;letter-spacing: 0;line-height: 1.25rem;font-weight: 400;">${job.desiredExperience!}</pre>
+                    </div>
+
+                </div>
+                <div style="margin-left: 25px;padding-top: 4%">
+                    <strong>Qualifications:</strong>
+                    <div style="padding-top: 1%;padding-right: 3%">
+                        <pre style="font-family: Helvetica Neue,Helvetica,Arial,Liberation Sans,Roboto,Noto,sans-serif;font-size: .875rem;letter-spacing: 0;line-height: 1.25rem;font-weight: 400;">${job.qualifications!}</pre>
+                    </div>
+                </div>
+                <form method="post" action="/job/send-resume/${job.id}" style="margin-left: 25px; padding-top: 5%">
+                    <div class="form-group">
+                        <input type="hidden" name="_csrf" value="${_csrf.token}" />
+                        <button type="submit" style="border-radius: 18px;width: auto"  class="btn btn-primary">Respond</button>
+                    </div>
+                </form>
             </div>
+        </div>
 
 </@p.page>

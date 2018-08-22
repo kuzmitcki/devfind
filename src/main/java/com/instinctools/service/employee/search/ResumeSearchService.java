@@ -1,9 +1,12 @@
 package com.instinctools.service.employee.search;
 
+import com.instinctools.controllers.Dto.SearchDto;
 import com.instinctools.entities.devEntities.*;
 import com.instinctools.entities.userEntites.User;
 import com.instinctools.repo.developerRepo.*;
 import com.instinctools.service.words.WordsSpliterator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
@@ -16,6 +19,7 @@ import java.util.stream.Stream;
 
 @Service
 public class ResumeSearchService implements ResumeSearch {
+    private final Logger l = LoggerFactory.getLogger(ResumeSearchService.class);
     private final WordsSpliterator wordsSpliterator;
 
     private final SpecializationRepo specializationRepo;
@@ -128,12 +132,12 @@ public class ResumeSearchService implements ResumeSearch {
     }
 
     @Override
-    public Set<Developer> searchForResume(final String whatDescription, final String whereDescription) {
-        if (whereDescription.isEmpty()) {
-            return searchForResumeByDescription(whatDescription);
+    public Set<Developer> searchForResume(final SearchDto searchDto) {
+        if (searchDto.getWhereDescription().isEmpty()) {
+            return searchForResumeByDescription(searchDto.getWhatDescription());
         }
-        return searchForDeveloperByLocation(whereDescription).stream()
-                                                              .filter(searchForResumeByDescription(whatDescription)::contains)
+        return searchForDeveloperByLocation(searchDto.getWhereDescription()).stream()
+                                                              .filter(searchForResumeByDescription(searchDto.getWhatDescription())::contains)
                                                               .collect(Collectors.toSet());
     }
 
@@ -220,21 +224,16 @@ public class ResumeSearchService implements ResumeSearch {
     }
 
     @Override
-    public Set<Developer> searchForResumeAdvanced(final User user, final String allWords,
-                                                  final String phrase, final String oneWord,
-                                                  final String title, final String company,
-                                                  final Long experience, final String place,
-                                                  final String degree, final String field,
-                                                  final String location) {
-        return searchForResumeByOneWord(oneWord).stream()
-                .filter(searchForResumeByWords(allWords)::contains)
-                .filter(searchForResumeByPhrase(phrase)::contains)
-                .filter(searchForResumeByWorkTitle(title)::contains)
-                .filter(searchForResumeByCompany(company)::contains)
-                .filter(searchForResumeByEducationPlace(place)::contains)
-                .filter(searchForResumeByEducationDegree(degree)::contains)
-                .filter(searchForResumeByFieldOfStudy(field)::contains)
-                .filter(searchForDeveloperByLocation(location)::contains)
-                .filter(searchForDeveloperByExperience(experience)::contains).collect(Collectors.toSet());
+    public Set<Developer> searchForResumeAdvanced(final User user, final SearchDto searchDto) {
+        return searchForResumeByOneWord(searchDto.getOneWord()).stream()
+                .filter(searchForResumeByWords(searchDto.getAllWords())::contains)
+                .filter(searchForResumeByPhrase(searchDto.getPhrase())::contains)
+                .filter(searchForResumeByWorkTitle(searchDto.getTitle())::contains)
+                .filter(searchForResumeByCompany(searchDto.getCompany())::contains)
+                .filter(searchForResumeByEducationPlace(searchDto.getPlace())::contains)
+                .filter(searchForResumeByEducationDegree(searchDto.getDegree())::contains)
+                .filter(searchForResumeByFieldOfStudy(searchDto.getField())::contains)
+                .filter(searchForDeveloperByLocation(searchDto.getLocation())::contains)
+                .filter(searchForDeveloperByExperience(searchDto.getExperience())::contains).collect(Collectors.toSet());
     }
 }

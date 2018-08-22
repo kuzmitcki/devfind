@@ -1,12 +1,14 @@
 package com.instinctools.service.employee.adding;
 
+import com.instinctools.controllers.Dto.UserDto;
 import com.instinctools.entities.empEntites.Employee;
 import com.instinctools.entities.empEntites.Job;
-import com.instinctools.entities.empEntites.dto.JobDTO;
+import com.instinctools.controllers.Dto.JobDto;
 import com.instinctools.entities.userEntites.User;
 import com.instinctools.repo.UserRepo;
 import com.instinctools.repo.employeeRepo.JobRepo;
-import org.modelmapper.ModelMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -18,6 +20,7 @@ import java.util.Set;
 public class AddingJobService implements AddingJob {
     private final JobRepo jobRepo;
     private final UserRepo userRepo;
+    private final Logger logger  = LoggerFactory.getLogger(AddingJobService.class);
 
     public AddingJobService(JobRepo jobRepo, UserRepo userRepo) {
         this.jobRepo = jobRepo;
@@ -25,11 +28,10 @@ public class AddingJobService implements AddingJob {
     }
 
     @Override
-    public void setEmployeeDescription(final User user, final String desiredExperience,
-                                       final String fullDescription, final HttpServletRequest request) {
+    public void setEmployeeDescription(final User user, final JobDto jobDto, final HttpServletRequest request) {
         Job job = (Job) request.getSession().getAttribute("job");
-        job.setFullDescription(fullDescription);
-        job.setDesiredExperience(desiredExperience);
+        job.setFullDescription(jobDto.getFullDescription());
+        job.setDesiredExperience(jobDto.getDesiredExperience());
         Employee employee = user.getEmployee();
         Set<Job> jobs = new HashSet<>(employee.getJobs());
         employee.getJobs().clear();
@@ -41,43 +43,49 @@ public class AddingJobService implements AddingJob {
     }
 
     @Override
-    public void setEmployeeJobSalary(final String jobType, final String fromSalary, final String toSalary,
-                                     final Long salaryPeriod, final String qualifications,
-                                     final RedirectAttributes redirectJob, final HttpServletRequest request) {
+    public void setEmployeeJobSalary(final JobDto jobDto, final RedirectAttributes redirectJob, final HttpServletRequest request) {
         Job job = (Job) request.getSession().getAttribute("attribute");
-        job.setJobType(jobType);
-        job.setFromSalary(Long.valueOf(fromSalary) * salaryPeriod);
-        job.setToSalary(Long.valueOf(toSalary) * salaryPeriod);
-        job.setSalaryPeriod(salaryPeriod);
-        job.setQualifications(qualifications);
+        job.setJobType(jobDto.getJobType());
+        job.setFromSalary(jobDto.getFromSalary() * jobDto.getSalaryPeriod());
+        job.setToSalary(jobDto.getToSalary() * jobDto.getSalaryPeriod());
+        job.setSalaryPeriod(jobDto.getSalaryPeriod());
+        job.setQualifications(jobDto.getQualifications());
         redirectJob.addFlashAttribute("job", job);
     }
 
     @Override
-    public void setEmployeeBasicInformation(final User user, final RedirectAttributes redirectedJob, final JobDTO jobDTO, String company) {
+    public void setEmployeeBasicInformation(final User user, final RedirectAttributes redirectedJob, final JobDto jobDto) {
         Job job = new Job();
-        ModelMapper mapper = new ModelMapper();
-        mapper.map(jobDTO, job);
+
+        job.setTitle(jobDto.getTitle());
+        job.setJobLocation(jobDto.getJobLocation());
+        job.setCountry(jobDto.getCountry());
+
+
+
         Employee employee = user.getEmployee();
-        employee.setCompany(company);
+        employee.setCompany(jobDto.getCompany());
         user.setEmployee(employee);
+
         userRepo.save(user);
+
         redirectedJob.addFlashAttribute("job", job);
     }
 
     @Override
-    public void setEmployeeAccountInformation(final User user, final String company, final String name,
-                                              String phone,  String email) {
+    public void setEmployeeAccountInformation(final User user, final UserDto userDto) {
         Employee employee = user.getEmployee();
-        employee.setName(name);
-        if (phone.isEmpty()) {
-            phone = employee.getPhone();
+        employee.setName(userDto.getName());
+        String telephone = userDto.getTelephone();
+        String email = userDto.getEmail();
+        if (userDto.getTelephone().isEmpty()) {
+            telephone = employee.getPhone();
         }
         if (email.isEmpty()) {
             email = user.getEmail();
         }
-        employee.setCompany(company);
-        employee.setPhone(phone);
+        employee.setCompany(userDto.getCompany());
+        employee.setPhone(telephone);
         user.setEmail(email);
         user.setEmployee(employee);
         userRepo.save(user);

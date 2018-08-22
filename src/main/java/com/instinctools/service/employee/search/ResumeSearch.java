@@ -1,5 +1,6 @@
 package com.instinctools.service.employee.search;
 
+import com.instinctools.controllers.Dto.SearchDto;
 import com.instinctools.entities.devEntities.Developer;
 import com.instinctools.entities.userEntites.User;
 
@@ -28,7 +29,7 @@ public interface ResumeSearch {
 
     Set<Developer> searchForDeveloperByLocation(String location);
 
-    Set<Developer> searchForResume(String whatDescription, String whereDescription);
+    Set<Developer> searchForResume(SearchDto searchDto);
 
     Set<Developer> searchForResumeByAdditionalInformation(String additional);
 
@@ -40,8 +41,6 @@ public interface ResumeSearch {
 
     Set<Developer> searchForResumeByOneWord(String oneWord);
 
-    Set<Developer> searchForResumeAdvanced(User user, String allWords, String phrase, String oneWord,
-                                           String title, String company, Long experience, String place,
-                                           String degree, String field, String location);
+    Set<Developer> searchForResumeAdvanced(User user, SearchDto searchDto);
 
 }

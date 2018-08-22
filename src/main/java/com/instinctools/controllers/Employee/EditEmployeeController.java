@@ -3,17 +3,18 @@ package com.instinctools.controllers.Employee;
 import com.instinctools.entities.userEntites.User;
 import com.instinctools.service.employee.check.CheckEmployee;
 import com.instinctools.service.employee.edit.EditJob;
-import org.springframework.security.access.prepost.PreAuthorize;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
-@PreAuthorize("hasAuthority('EMPLOYEE')")
 public class EditEmployeeController {
     private final EditJob editJob;
     private final CheckEmployee checkEmployee;
+    private final Logger logger = LoggerFactory.getLogger(EditEmployeeController.class);
 
     public EditEmployeeController(EditJob editJob, CheckEmployee checkEmployee) {
         this.editJob = editJob;

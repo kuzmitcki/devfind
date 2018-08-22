@@ -23,7 +23,7 @@
                 </div>
                 <div class="col-auto my-1">
                     <div class="custom-control custom-checkbox mr-sm-2">
-                        <input checked type="checkbox"  name="checkDeveloper"  class="custom-control-input" id="customControlAutosizing">
+                        <input checked type="checkbox"  name="check"  class="custom-control-input" id="customControlAutosizing">
                         <label style="margin-bottom: 10px;padding-top: 2px;font-size: 14px" class="custom-control-label" for="customControlAutosizing">Remember me?</label>
                     </div>
                 </div>

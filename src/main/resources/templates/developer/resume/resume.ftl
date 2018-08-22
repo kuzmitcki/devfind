@@ -134,13 +134,13 @@
                     <label for="inputTitle" style="color: #000;font-size: .875rem;letter-spacing: 0;line-height: 1.25rem;font-weight: 700;display: block;">
                         Desired Job Title
                     </label>
-                    <input value="<#if developer.desiredJob??>${developer.desiredJob.desiredJobTitle!}<#else></#if>" style="border-radius: 8px;" type="text" class="form-control" name="title" id="inputTitle">
+                    <input value="<#if developer.desiredJob??>${developer.desiredJob.desiredJobTitle!}<#else></#if>" style="border-radius: 8px;" type="text" class="form-control" name="desiredJobTitle" id="inputTitle">
                 </div>
                 <div class="form-group">
                     <label for="inputJobType" style="color: #000;font-size: .875rem;letter-spacing: 0;line-height: 1.25rem;font-weight: 700;display: block;">
                         Desired Job Types
                     </label>
-                    <select   style="color: #4b4b4b; border-radius: 8px" class="custom-select" id="inputJobType" name="jobType">
+                    <select   style="color: #4b4b4b; border-radius: 8px" class="custom-select" id="inputJobType" name="desiredJobType">
                         <option>Full-time</option>
                         <option>Part-time</option>
                         <option>Temporary</option>
@@ -155,10 +155,10 @@
                         <label for="fromSalary" style="margin-left: 7px;color: #000;font-size: .875rem;letter-spacing: 0;line-height: 1.25rem;font-weight: 700;display: block;">
                             Desired Salary
                         </label>
-                        <input pattern="^[ 0-9]+$" value="<#if developer.desiredJob??>${developer.desiredJob.desiredSalary!}<#else></#if>"  placeholder="Example: 50,000" style="margin-left: 7px;border-radius: 8px" type="text" class="form-control" name="salary" id="fromSalary">
+                        <input pattern="^[ 0-9]+$" value="<#if developer.desiredJob??>${developer.desiredJob.desiredSalary!}<#else></#if>"  placeholder="Example: 50,000" style="margin-left: 7px;border-radius: 8px" type="text" class="form-control" name="desiredSalary" id="fromSalary">
                     </div>
                     <div class="form-group col-md-3">
-                        <select name="salaryPeriod" style="margin-top: 28px;margin-left: 20px;width: 175%; border-radius: 8px" id="inputPeriod" class="custom-select">
+                        <select name="desiredSalaryPeriod" style="margin-top: 28px;margin-left: 20px;width: 175%; border-radius: 8px" id="inputPeriod" class="custom-select">
                             <option selected>per year</option>
                             <option>per month</option>
                             <option>per week</option>
@@ -204,7 +204,7 @@
             Work Experience <a  style="font-size: 15px;float: right;font-weight: 300;margin-right: 30px;" href="/resume/wizard/experience"><input type="image" src="https://image.flaticon.com/icons/svg/969/969621.svg" style="height: auto;width: 1.8rem;float:"></a>
         </div>
         <div style="padding: 20px;">
-                <#list developer.workExperiences as experience>
+                <#list workExperiences as experience>
                     <div style="padding-top: 10px">
                         <a  style="font-size: 15px;float: right;font-weight: 300;margin-right: 20px;" id="workExperience" href="/edit-developer/experience/${experience.id!}"><input type="image" src="https://image.flaticon.com/icons/svg/660/660756.svg" style="height: 1.1rem;width: 1.5rem;float:"></a>
                         <form method="post" action="/edit-developer/work-delete/${experience.id!}">
@@ -288,7 +288,7 @@
             </form>
         </div>
         <div style="padding: 20px;">
-                    <#list specializations as specialization>
+                    <#list developer.specializations as specialization>
                         <div style="padding-top: 10px">
                             <a  style="font-size: 15px;float: right;font-weight: 300;margin-right: 20px;" href="/edit-developer/skill/${specialization.id!}"><input type="image" src="https://image.flaticon.com/icons/svg/660/660756.svg" style="height: 1.1rem;width: 1.5rem;float:"></a>
                             <form method="post" action="/edit-developer/skill-delete/${specialization.id!}">

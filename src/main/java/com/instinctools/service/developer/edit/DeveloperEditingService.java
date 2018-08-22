@@ -3,8 +3,8 @@ package com.instinctools.service.developer.edit;
 
 import com.instinctools.entities.devEntities.Developer;
 import com.instinctools.entities.devEntities.WorkExperience;
-import com.instinctools.entities.devEntities.dto.DeveloperDTO;
-import com.instinctools.entities.devEntities.dto.WorkExperienceDTO;
+import com.instinctools.controllers.Dto.UserDto;
+import com.instinctools.controllers.Dto.WorkExperienceDto;
 import com.instinctools.entities.userEntites.User;
 import com.instinctools.repo.UserRepo;
 import com.instinctools.repo.developerRepo.WorkExperienceRepo;
@@ -30,10 +30,14 @@ public class DeveloperEditingService implements EditDeveloper {
     }
 
     @Override
-    public void editResumeBasicInformation(final User user, String email, final DeveloperDTO developerDTO, final HttpServletRequest request) {
+    public void editResumeBasicInformation(final User user, String email, final UserDto userDTO, final HttpServletRequest request) {
+
         Developer developer = user.getDeveloper();
-        ModelMapper mapper = new ModelMapper();
-        mapper.map(developerDTO, developer);
+        developer.setCountry(userDTO.getCountry());
+        developer.setCity(userDTO.getCity());
+        developer.setTelephone(userDTO.getTelephone());
+        developer.setZipPostalCode(userDTO.getZipPostalCode());
+
         if (!user.getEmail().equals(email)) {
             request.getSession().setAttribute("email", email);
             user.setActivationCode(UUID.randomUUID().toString());
@@ -51,14 +55,13 @@ public class DeveloperEditingService implements EditDeveloper {
     }
 
     @Override
-    public void editDeveloperWorkExperience(final User user, final Long id, WorkExperienceDTO workExperienceDTO) {
+    public void editDeveloperWorkExperience(final User user, final Long id, WorkExperienceDto workExperienceDTO) {
         WorkExperience workExperience = workExperienceRepo.getOne(id);
 
         ModelMapper mapper = new ModelMapper();
         mapper.map(workExperienceDTO, workExperience);
+        workExperience.setDeveloper(user.getDeveloper());
 
-        Developer developer = workExperience.getDeveloper();
-        user.setDeveloper(developer);
-        userRepo.save(user);
+        workExperienceRepo.save(workExperience);
     }
 }

@@ -41,7 +41,7 @@
              </li>
                </#if>
         </ul>
-        <div class="navbar-text mr-3">${email!}</div>
+        <div class="navbar-text mr-3">${email}</div>
         <form method="post" action="/logout">
             <input style="border-radius: 9px" class="btn btn-primary" type="submit" value="Sign out">
             <input type="hidden" name="_csrf" value="${_csrf.token}" />
@@ -78,7 +78,7 @@
                           <label for="inputPhone" style="padding-top: 7%;color: #000;font-size: .875rem;letter-spacing: 0;line-height: 1.25rem;font-weight: 700;display: block;">
                               Phone number
                           </label>
-                          <input  style=" border-radius: 8px;" type="text" class="form-control" name="phone" id="inputPhone" >
+                          <input  style=" border-radius: 8px;" type="text" class="form-control" name="telephone" id="inputPhone" >
                       </div>
                   </div>
 

@@ -96,12 +96,12 @@
                 $ ${developer.desiredJob.desiredSalary!} ${developer.desiredJob.desiredSalaryPeriod!}
             </div>
         </div>
-        </#if>
+         </#if>
         <div style="padding-left: 10px;font-size: 18px;margin: 10px;font-weight: 700;">
             Work Experience <hr style="margin-right: 4.5%;width: auto;font-weight: 600;color: gainsboro;margin-top: -1%;margin-left: 21%;">
         </div>
         <div style="padding: 20px;">
-                <#list workExperiences as experience>
+                <#list developer.workExperiences as experience>
                     <div style="padding-top: 10px">
                         <strong>${experience.jobTitle}</strong><br>
                         <div style="padding-top: 1.4%;color: #767676;font-family: Helvetica Neue,Helvetica,Arial,Liberation Sans,Roboto,Noto,sans-serif;font-size: 14px;letter-spacing: 0;line-height: 1.25rem;font-weight: 400;display: inline-block">
@@ -119,7 +119,7 @@
             Education  <hr style="margin-right: 6%;width: auto;font-weight: 600;color: gainsboro;margin-top: -1%;margin-left: 13%;">
         </div>
         <div style="padding: 20px;">
-                    <#list education as education>
+                    <#list developer.education as education>
                         <div style="padding-top: 10px">
                             <div style="font-family: Helvetica Neue,Helvetica,Arial,Liberation Sans,Roboto,Noto,sans-serif;font-size: .875rem;letter-spacing: 0;line-height: 1.25rem;font-weight: 400;">
                                 ${education.degree} in ${education.fieldOfStudy}<br>
@@ -134,8 +134,8 @@
             Skills   <hr style="margin-right: 6%;width: auto;font-weight: 600;color: gainsboro;margin-top: -1%;margin-left: 7%;">
         </div>
         <div style="padding: 20px;">
-                    <#list specializations as specialization>
-                            <span style="font-family: Helvetica Neue,Helvetica,Arial,Liberation Sans,Roboto,Noto,sans-serif;font-size: .875rem;letter-spacing: 0;line-height: 1.25rem;font-weight: 400;">
+                    <#list developer.specializations as specialization>
+                        <span style="font-family: Helvetica Neue,Helvetica,Arial,Liberation Sans,Roboto,Noto,sans-serif;font-size: .875rem;letter-spacing: 0;line-height: 1.25rem;font-weight: 400;">
                                 ${specialization.skill} (${specialization.experience})<#sep>, </#sep>
                             </span>
 

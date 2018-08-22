@@ -37,7 +37,7 @@
               <#if isDeveloper>
               <#else>
              <li class="nav-item">
-                <a class="nav-link" href="/job/wizard/job-description/basic">Post job</a>
+                 <a class="nav-link" href="/job/wizard/job-description/basic">Post job</a>
              </li>
               </#if>
         </ul>
@@ -60,7 +60,7 @@
                          <label for="inputTitle" style="padding-top: 7%;color: #000;font-size: .875rem;letter-spacing: 0;line-height: 1.25rem;font-weight: 700;display: block;">
                              Job Title  <img style="margin-left: 5px;width: 14px" src="https://cdn3.iconfinder.com/data/icons/web-interface-6/10/star-red-512.png">
                          </label>
-                         <input required style=" border-radius: 8px;" type="text" class="form-control" name="jobTitle" id="inputTitle" >
+                         <input required style=" border-radius: 8px;" type="text" class="form-control" name="title" id="inputTitle" >
                      </div>
                  </div>
                  <div class="form-group">

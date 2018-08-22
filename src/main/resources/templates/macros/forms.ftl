@@ -51,7 +51,7 @@
                                 <span style="color: #767676;font-family: Helvetica Neue,Helvetica,Arial,Liberation Sans,Roboto,Noto,sans-serif;font-size: .75rem;letter-spacing: 0;line-height: 1.25rem;font-weight: 400;display: inline-block">e.g. Seattle, WA.</span>
                             </div>
                         </label>
-                        <input style="color: #4b4b4b; border-radius: 8px" value="<#if isResume><#else>${educ.cityOfEducation!}</#if>" class="form-control" id="city" type="text" name="city">
+                        <input style="color: #4b4b4b; border-radius: 8px" value="<#if isResume><#else>${educ.cityOfEducation!}</#if>" class="form-control" id="city" type="text" name="cityOfEducation">
                     </div>
                     <div class="form-row">
                         <div class="form-group col-md-3">
@@ -705,7 +705,7 @@
                 <#if isResumeAdd>
                 <div class="col-auto my-1">
                     <div class="custom-control custom-checkbox mr-sm-2">
-                        <input type="checkbox" name="checkDeveloper" class="custom-control-input" id="customControlAutosizing">
+                        <input type="checkbox" name="check" class="custom-control-input" id="customControlAutosizing">
                         <label style="font-size: 0.875rem;padding-bottom: 4%;" class="custom-control-label" for="customControlAutosizing">I don't have any work experience yet</label>
                     </div>
                 </div>
@@ -998,7 +998,7 @@
                </div>
                <div class="form-group">
                    <label  for="inputCode" style="color: #4b4b4b;font-size: .875rem;letter-spacing: 0;line-height: 1.25rem;font-weight: 700;display: block;">Zip/postal code (optional)</label>
-                   <input  style="border-radius: 8px;" type="text" class="form-control" name="zipPostal" id="inputCode">
+                   <input  style="border-radius: 8px;" type="text" class="form-control" name="zipPostalCode" id="inputCode">
                </div>
                <div>
                    <strong style="font-size:18px; margin-top: 10px; font-weight: 700">Contact Information</strong>

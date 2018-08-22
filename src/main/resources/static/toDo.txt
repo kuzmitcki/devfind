@@ -1,7 +1,0 @@
-tests
-
-
-done
-1) lazy initializations
-разделение по сервисам
-dto

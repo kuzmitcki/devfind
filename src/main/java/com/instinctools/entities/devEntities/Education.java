@@ -11,7 +11,6 @@ import javax.persistence.*;
 @Getter
 @Setter
 @NoArgsConstructor
-@ToString
 public class Education {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -36,16 +35,18 @@ public class Education {
     @ManyToOne(fetch = FetchType.LAZY)
     private Developer developer;
 
-    public Education(final String degree, final  String place, final  String fieldOfStudy, final  String cityOfEducation, final  String monthFrom,
-                     final  String monthTo, final  String yearFrom, final  String yearTo, final  Developer developer) {
-        this.degree = degree;
-        this.place = place;
-        this.fieldOfStudy = fieldOfStudy;
-        this.cityOfEducation = cityOfEducation;
-        this.monthFrom = monthFrom;
-        this.monthTo = monthTo;
-        this.yearFrom = yearFrom;
-        this.yearTo = yearTo;
-        this.developer = developer;
+    @Override
+    public String toString() {
+        return "Education{" +
+                "id=" + id +
+                ", degree='" + degree + '\'' +
+                ", place='" + place + '\'' +
+                ", fieldOfStudy='" + fieldOfStudy + '\'' +
+                ", cityOfEducation='" + cityOfEducation + '\'' +
+                ", monthFrom='" + monthFrom + '\'' +
+                ", monthTo='" + monthTo + '\'' +
+                ", yearFrom='" + yearFrom + '\'' +
+                ", yearTo='" + yearTo + '\'' +
+                '}';
     }
 }

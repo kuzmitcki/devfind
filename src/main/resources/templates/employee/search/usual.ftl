@@ -43,5 +43,5 @@
         </form>
     </div>
 </nav>
-<@s.search "/resume/search" true></@s.search>
+    <@s.search "/resume/search" true></@s.search>
 </@p.page>

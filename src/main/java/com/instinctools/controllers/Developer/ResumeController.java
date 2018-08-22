@@ -41,6 +41,7 @@ public class ResumeController {
         model.addAttribute("telephone", user.getDeveloper().getTelephone());
         model.addAttribute("specializations", specializationRepo.findByDeveloper(user.getDeveloper()));
         model.addAttribute("educations", educationRepo.findByDeveloper(user.getDeveloper()));
+        model.addAttribute("workExperiences", workExperienceRepo.findByDeveloper(user.getDeveloper()));
         return "developer/resume/resume";
     }
 

@@ -17,7 +17,7 @@ import java.util.Set;
 @Getter
 @Setter
 @NoArgsConstructor
-@ToString
+    @ToString
 public class Developer {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

@@ -71,7 +71,7 @@
                     <strong>Job Title: </strong>${job.title!} <a style="font-size: 15px;float: right;font-weight: 300;margin-right: 30px;" id="title" href=""><input type="image" src="https://image.flaticon.com/icons/svg/660/660756.svg" style="height: auto;width: 1.2rem;float:"></a>
                 </div>
                 <div id="titleBox" style="display: none;padding-bottom: 2%;padding-top: 2%;">
-                    <form method="post" action="/edit-employee/job/title/${job.id}">
+                    <form method="post" action="/edit-employee/job/title/${job.id!}">
                         <div class="form-group" style="width: 95%">
                             <input value="${job.title!}"  style="border-radius: 8px;" type="text" class="form-control" name="title" id="inputTitle">
                         </div>
@@ -87,11 +87,10 @@
                 <div id="locationBox" style="display: none;padding-bottom: 2%;padding-top: 2%;">
                     <form method="post" action="/edit-employee/job/location/${job.id!}">
                         <div class="form-group" style="width: 95%">
-                            <input value="${job.jobLocation!}"  style="border-radius: 8px;" type="text" class="form-control" name="location" id="inputLocation">
+                            <input value="${job.title!}"  style="border-radius: 8px;" type="text" class="form-control" name="location" id="inputLocation">
                         </div>
                         <div class="form-group" style="width: 95%">
                             <select  style="color: #4b4b4b; border-radius: 8px" class="custom-select" id="inputCountry" name="country">
-                                <option value="${job.country}">${job.country}</option>
                                 <option value="United States">United States</option>
                                 <option value="United Kingdom">United Kingdom</option>
                                 <option value="Afghanistan">Afghanistan</option>
@@ -375,7 +374,7 @@
                     </div>
 
                     <div style="padding-top: 1%; padding-right: 3%">
-                        <pre style="margin-left: -3px;font-family: Helvetica Neue,Helvetica,Arial,Liberation Sans,Roboto,Noto,sans-serif;font-size: .875rem;letter-spacing: 0;line-height: 1.25rem;font-weight: 400;">${job.desiredExperience!}</pre>
+                        <pre style="font-family: Helvetica Neue,Helvetica,Arial,Liberation Sans,Roboto,Noto,sans-serif;font-size: .875rem;letter-spacing: 0;line-height: 1.25rem;font-weight: 400;">${job.desiredExperience!}</pre>
                     </div>
                 </div>
                 <div style="padding-top: 4%">

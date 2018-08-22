@@ -1,5 +1,6 @@
 package com.instinctools.service.developer.search;
 
+import com.instinctools.controllers.Dto.SearchDto;
 import com.instinctools.entities.empEntites.Employee;
 import com.instinctools.entities.empEntites.Job;
 import com.instinctools.repo.employeeRepo.EmployeeRepo;
@@ -171,14 +172,13 @@ public class JobJobSearchService implements JobSearch {
     }
 
     @Override
-    public Set<Job> searchForJobAdvanced(final String allWords, final String phrase, final String oneWord,
-                                         final String title, final String jobType, final String salary) {
-        return searchForJobByOneWord(oneWord).stream().
-                filter(searchFroJobByPhrase(phrase)::contains).
-                filter(searchForJobByAllWords(allWords)::contains).
-                filter(searchForJobByWordsInTitle(title)::contains).
-                filter(searchForJobByJobType(jobType)::contains).
-                filter(searchForJobBySalaryAndPeriod(salary)::contains).
+    public Set<Job> searchForJobAdvanced(final SearchDto searchDto) {
+        return searchForJobByOneWord(searchDto.getOneWord()).stream().
+                filter(searchFroJobByPhrase(searchDto.getPhrase())::contains).
+                filter(searchForJobByAllWords(searchDto.getAllWords())::contains).
+                filter(searchForJobByWordsInTitle(searchDto.getTitle())::contains).
+                filter(searchForJobByJobType(searchDto.getJobType())::contains).
+                filter(searchForJobBySalaryAndPeriod(searchDto.getSalary())::contains).
                 collect(Collectors.toSet());
     }
 }

@@ -1,17 +1,14 @@
 package com.instinctools.service.developer.adding;
 
-import com.instinctools.entities.devEntities.dto.DesiredJobDTO;
-import com.instinctools.entities.devEntities.dto.DeveloperDTO;
-import com.instinctools.entities.devEntities.dto.EducationDTO;
-import com.instinctools.entities.devEntities.dto.WorkExperienceDTO;
+import com.instinctools.controllers.Dto.*;
 import com.instinctools.entities.userEntites.User;
 
 public interface AddDeveloper {
-    void setBasicQualities(User user, DeveloperDTO developerDTO);
+    void setBasicQualities(User user, UserDto userDTO);
 
-    void setEducation(User user, EducationDTO educationDTO);
+    void setEducation(User user, EducationDto educationDTO);
 
-    void setWorkExperience(User user, WorkExperienceDTO workExperienceDTO, String check);
+    void setWorkExperience(User user, WorkExperienceDto workExperienceDTO, String check);
 
 
     void setDeveloperSummary(User user, String summary);
@@ -19,10 +16,10 @@ public interface AddDeveloper {
     void setDeveloperAdditional(User user, String additional);
 
 
-    void setDeveloperEducation(User user, EducationDTO educationDTO, Long id);
+    void setDeveloperEducation(User user, EducationDto educationDTO, Long id);
 
-    void setDeveloperSkill(User user, String skill, String year);
+    void setDeveloperSkill(User user, SkillDto skillDto);
 
-    void setDesiredJob(User user, DesiredJobDTO desiredJobDTO);
+    void setDesiredJob(User user, DesiredJobDto desiredJobDTO);
 
 }

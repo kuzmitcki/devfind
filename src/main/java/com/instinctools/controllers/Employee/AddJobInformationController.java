@@ -1,8 +1,9 @@
 package com.instinctools.controllers.Employee;
 
+import com.instinctools.controllers.Dto.UserDto;
 import com.instinctools.entities.empEntites.Employee;
 import com.instinctools.entities.empEntites.Job;
-import com.instinctools.entities.empEntites.dto.JobDTO;
+import com.instinctools.controllers.Dto.JobDto;
 import com.instinctools.entities.userEntites.User;
 import com.instinctools.service.employee.adding.AddingJob;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -12,7 +13,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
@@ -37,11 +37,10 @@ public class AddJobInformationController {
 
     @PostMapping("job/wizard/information")
     public String employeeAccountInformation(final @AuthenticationPrincipal User user,
-                                             final @RequestParam(name = "company") String company,
-                                             final @RequestParam(name = "name") String name,
-                                             final @RequestParam(name = "phone", required = false) String phone,
-                                             final @RequestParam(name = "email", required = false) String email) {
-        addingJob.setEmployeeAccountInformation(user, company, name, phone, email);
+                                             final UserDto userDto,
+                                             final Model model) {
+        model.addAttribute("userDto", userDto);
+        addingJob.setEmployeeAccountInformation(user, userDto);
         return "redirect:/job/wizard/job-description/basic";
     }
 
@@ -58,11 +57,10 @@ public class AddJobInformationController {
     @PostMapping("job/wizard/job-description/basic")
     public String jobDescriptionBasic(final @AuthenticationPrincipal User user,
                                       final RedirectAttributes redirectedJob,
-                                      final @RequestParam(name = "jobTitle") String jobTitle,
-                                      final @RequestParam(name = "company") String company,
-                                      final @RequestParam(name = "jobLocation") String jobLocation,
-                                      final @RequestParam(name = "country") String country) {
-        addingJob.setEmployeeBasicInformation(user, redirectedJob, new JobDTO(jobTitle,jobLocation, country), company);
+                                      final JobDto jobDto,
+                                      final Model model) {
+        model.addAttribute("jobDto", jobDto);
+        addingJob.setEmployeeBasicInformation(user, redirectedJob, jobDto);
         return "redirect:/job/wizard/job-description/details";
     }
 
@@ -82,14 +80,12 @@ public class AddJobInformationController {
     }
 
     @PostMapping("job/wizard/job-description/details")
-    public String jobDescriptionDetails(final @RequestParam(name = "jobType") String jobType,
-                                        final @RequestParam(name = "fromSalary") String fromSalary,
-                                        final @RequestParam(name = "toSalary") String toSalary,
-                                        final @RequestParam(name = "salaryPeriod") Long salaryPeriod,
-                                        final @RequestParam(name = "qualifications") String qualifications,
-                                        final RedirectAttributes redirectJob,
-                                        final HttpServletRequest request) {
-        addingJob.setEmployeeJobSalary(jobType, fromSalary, toSalary, salaryPeriod, qualifications, redirectJob, request);
+    public String jobDescriptionDetails(final RedirectAttributes redirectJob,
+                                        final HttpServletRequest request,
+                                        final JobDto jobDto,
+                                        Model model) {
+        model.addAttribute("jobDto", jobDto);
+        addingJob.setEmployeeJobSalary(jobDto, redirectJob, request);
         return "redirect:/job/wizard/description";
     }
 
@@ -111,10 +107,11 @@ public class AddJobInformationController {
 
     @PostMapping("job/wizard/description")
     public String jobDescription(final @AuthenticationPrincipal User user,
-                                 final @RequestParam(name = "desiredExperience") String desiredExperience,
-                                 final @RequestParam(name = "fullDescription") String fullDescription,
+                                 final JobDto jobDto,
+                                 final Model model,
                                  final HttpServletRequest request) {
-        addingJob.setEmployeeDescription(user, desiredExperience, fullDescription, request);
+        model.addAttribute("jobDto", jobDto);
+        addingJob.setEmployeeDescription(user, jobDto, request);
         return "redirect:/employee/jobs";
     }
 }

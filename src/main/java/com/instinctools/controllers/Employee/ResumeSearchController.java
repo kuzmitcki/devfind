@@ -1,5 +1,6 @@
 package com.instinctools.controllers.Employee;
 
+import com.instinctools.controllers.Dto.SearchDto;
 import com.instinctools.entities.devEntities.Developer;
 import com.instinctools.entities.userEntites.User;
 import com.instinctools.repo.developerRepo.DeveloperRepo;
@@ -40,14 +41,16 @@ public class ResumeSearchController {
     }
 
     @PostMapping("/search")
-    public String findResume(final @RequestParam("whatDescription") String whatDescription,
-                             final @RequestParam(value = "whereDescription") String whereDescription,
+    public String findResume(final SearchDto searchDto,
+                             final Model model,
                              final HttpServletRequest request) {
-        request.getSession().setAttribute("devs", resumeSearch.searchForResume(whatDescription, whereDescription));
+        model.addAttribute("searchDto", searchDto);
+        request.getSession().setAttribute("devs", resumeSearch.searchForResume(searchDto));
         return "redirect:/resume/results";
     }
 
     @GetMapping("/results")
+    @SuppressWarnings("unchecked")
     public String resultsPage(final Model model,
                               final HttpServletRequest request) {
         Set<Developer> developers = (Set<Developer>) request.getSession().getAttribute("devs");
@@ -66,19 +69,11 @@ public class ResumeSearchController {
 
     @PostMapping("/search/advanced")
     public String findResumeAdvanced(final @AuthenticationPrincipal User user,
-                                     final @RequestParam("allWords") String allWords,
-                                     final @RequestParam("phrase") String phrase,
-                                     final @RequestParam("oneWord") String oneWord,
-                                     final @RequestParam(name = "title", required = false) String title,
-                                     final @RequestParam(name = "company", required = false) String company,
-                                     final @RequestParam(name = "experience", required = false) Long experience,
-                                     final @RequestParam(name = "place", required = false) String place,
-                                     final @RequestParam(name = "degree", required = false) String degree,
-                                     final @RequestParam(name = "field", required = false) String field,
-                                     final @RequestParam(name = "location", required = false) String location,
-                                     final HttpServletRequest request) {
-        request.getSession().setAttribute("devs", resumeSearch.searchForResumeAdvanced(user, allWords, phrase, oneWord, title, company,
-                                                                                             experience, place, degree, field, location));
+                                     final @ModelAttribute SearchDto searchDto,
+                                     final HttpServletRequest request,
+                                     final Model model) {
+        model.addAttribute("searchDto", searchDto);
+        request.getSession().setAttribute("devs", resumeSearch.searchForResumeAdvanced(user, searchDto));
         return "redirect:/resume/results";
     }
 

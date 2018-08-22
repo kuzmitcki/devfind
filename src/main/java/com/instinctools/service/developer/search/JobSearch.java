@@ -1,5 +1,6 @@
 package com.instinctools.service.developer.search;
 
+import com.instinctools.controllers.Dto.SearchDto;
 import com.instinctools.entities.empEntites.Job;
 
 import java.util.Set;
@@ -33,6 +34,5 @@ public interface JobSearch {
 
     Set<Job> searchForJobBySalaryAndPeriod(String salary);
 
-    Set<Job> searchForJobAdvanced(String allWords, String phrase, String oneWord,
-                                  String title, String jobType, String salary);
+    Set<Job> searchForJobAdvanced(SearchDto searchDto);
 }

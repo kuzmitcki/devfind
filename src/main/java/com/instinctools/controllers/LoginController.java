@@ -49,7 +49,7 @@ public class LoginController {
             model.addAttribute("message", "User exists!");
             return "registration";
         }
-        attribute.addFlashAttribute("activate", "CheckDeveloper your email to activate account");
+        attribute.addFlashAttribute("activate", "CheckDeveloperService your email to activate account");
         return "redirect:/login";
     }
 

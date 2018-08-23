@@ -5,7 +5,7 @@ import com.instinctools.entities.empEntites.Job;
 
 import java.util.Set;
 
-public interface JobSearch {
+public interface JobSearchService {
     Set<Job> searchForJobByTitle(String title);
 
     Set<Job> searchForJobByQualifications(String qualifications);

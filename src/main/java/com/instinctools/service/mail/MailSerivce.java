@@ -3,7 +3,7 @@ package com.instinctools.service.mail;
 import com.instinctools.entities.userEntites.User;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-public interface Mail {
+public interface MailSerivce {
     void send(String emailTo, String subject, String message);
 
     void sendOfferToDeveloper(User user, Long id, RedirectAttributes attributes);

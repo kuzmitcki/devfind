@@ -4,8 +4,8 @@ import com.instinctools.controllers.Dto.SearchDto;
 import com.instinctools.entities.devEntities.Developer;
 import com.instinctools.entities.userEntites.User;
 import com.instinctools.repo.developerRepo.DeveloperRepo;
-import com.instinctools.service.employee.search.ResumeSearch;
-import com.instinctools.service.mail.MailSender;
+import com.instinctools.service.employee.search.ResumeSearchService;
+import com.instinctools.service.mail.MailServiceSender;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -25,16 +25,16 @@ import java.util.Set;
 @RequestMapping("resume")
 @PreAuthorize("hasAuthority('EMPLOYEE')")
 public class ResumeSearchController {
-    private final ResumeSearch resumeSearch;
+    private final ResumeSearchService resumeSearchService;
 
     private final DeveloperRepo developerRepo;
 
-    private final MailSender mailSender;
+    private final MailServiceSender mailSender;
 
-    public ResumeSearchController(final ResumeSearch resumeSearch,
+    public ResumeSearchController(final ResumeSearchService resumeSearchService,
                                   final DeveloperRepo developerRepo,
-                                  final MailSender mailSender) {
-        this.resumeSearch = resumeSearch;
+                                  final MailServiceSender mailSender) {
+        this.resumeSearchService = resumeSearchService;
         this.developerRepo = developerRepo;
         this.mailSender = mailSender;
     }
@@ -49,7 +49,7 @@ public class ResumeSearchController {
                              final Model model,
                              final HttpServletRequest request) {
         model.addAttribute("searchDto", searchDto);
-        request.getSession().setAttribute("devs", resumeSearch.searchForResume(searchDto));
+        request.getSession().setAttribute("devs", resumeSearchService.searchForResume(searchDto));
         return "redirect:/resume/results";
     }
 
@@ -77,7 +77,7 @@ public class ResumeSearchController {
                                      final HttpServletRequest request,
                                      final Model model) {
         model.addAttribute("searchDto", searchDto);
-        request.getSession().setAttribute("devs", resumeSearch.searchForResumeAdvanced(user, searchDto));
+        request.getSession().setAttribute("devs", resumeSearchService.searchForResumeAdvanced(user, searchDto));
         return "redirect:/resume/results";
     }
 

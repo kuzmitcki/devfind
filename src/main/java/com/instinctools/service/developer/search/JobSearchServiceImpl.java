@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Service
-public class JobJobSearchService implements JobSearch {
+public class JobSearchServiceImpl implements JobSearchService {
 
     private final static double SALARY_COEFFICIENT = 0.2;
 
@@ -24,9 +24,9 @@ public class JobJobSearchService implements JobSearch {
     private final EmployeeRepo employeeRepo;
     private final WordsSpliterator wordsSpliterator;
 
-    public JobJobSearchService(final JobRepo jobRepo,
-                               final EmployeeRepo employeeRepo,
-                               final WordsSpliterator wordsSpliterator) {
+    public JobSearchServiceImpl(final JobRepo jobRepo,
+                                final EmployeeRepo employeeRepo,
+                                final WordsSpliterator wordsSpliterator) {
         this.jobRepo = jobRepo;
         this.employeeRepo = employeeRepo;
         this.wordsSpliterator = wordsSpliterator;

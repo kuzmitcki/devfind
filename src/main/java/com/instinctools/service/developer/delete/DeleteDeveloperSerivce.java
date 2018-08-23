@@ -2,7 +2,7 @@ package com.instinctools.service.developer.delete;
 
 import com.instinctools.entities.userEntites.User;
 
-public interface DeleteDeveloper {
+public interface DeleteDeveloperSerivce {
 
 
     void deleteDeveloperEducation(User user, Long id);

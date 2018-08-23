@@ -4,7 +4,7 @@ import com.instinctools.entities.userEntites.User;
 import com.instinctools.repo.developerRepo.EducationRepo;
 import com.instinctools.repo.developerRepo.SpecializationRepo;
 import com.instinctools.repo.developerRepo.WorkExperienceRepo;
-import com.instinctools.service.mail.MailSender;
+import com.instinctools.service.mail.MailServiceSender;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 @PreAuthorize("hasAuthority('DEVELOPER')")
 public class ResumeController {
-    private final MailSender mailSender;
+    private final MailServiceSender mailSender;
 
     private final SpecializationRepo specializationRepo;
 
@@ -25,7 +25,7 @@ public class ResumeController {
 
 
     @Autowired
-    public ResumeController(final MailSender mailSender,
+    public ResumeController(final MailServiceSender mailSender,
                             final SpecializationRepo specializationRepo,
                             final WorkExperienceRepo workExperienceRepo,
                             final EducationRepo educationRepo) {

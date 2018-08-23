@@ -5,7 +5,7 @@ import com.instinctools.entities.empEntites.Employee;
 import com.instinctools.entities.empEntites.Job;
 import com.instinctools.controllers.Dto.JobDto;
 import com.instinctools.entities.userEntites.User;
-import com.instinctools.service.employee.adding.AddingJob;
+import com.instinctools.service.employee.adding.AddingJobService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -21,10 +21,10 @@ import javax.servlet.http.HttpServletRequest;
 @PreAuthorize("hasAuthority('EMPLOYEE')")
 public class AddJobInformationController {
 
-    private final AddingJob addingJob;
+    private final AddingJobService addingJobService;
 
-    public AddJobInformationController(AddingJob addingJob) {
-        this.addingJob = addingJob;
+    public AddJobInformationController(AddingJobService addingJobService) {
+        this.addingJobService = addingJobService;
     }
 
     @GetMapping("job/wizard/information")
@@ -40,7 +40,7 @@ public class AddJobInformationController {
                                              final UserDto userDto,
                                              final Model model) {
         model.addAttribute("userDto", userDto);
-        addingJob.setEmployeeAccountInformation(user, userDto);
+        addingJobService.setEmployeeAccountInformation(user, userDto);
         return "redirect:/job/wizard/job-description/basic";
     }
 
@@ -60,7 +60,7 @@ public class AddJobInformationController {
                                       final JobDto jobDto,
                                       final Model model) {
         model.addAttribute("jobDto", jobDto);
-        addingJob.setEmployeeBasicInformation(user, redirectedJob, jobDto);
+        addingJobService.setEmployeeBasicInformation(user, redirectedJob, jobDto);
         return "redirect:/job/wizard/job-description/details";
     }
 
@@ -85,7 +85,7 @@ public class AddJobInformationController {
                                         final JobDto jobDto,
                                         Model model) {
         model.addAttribute("jobDto", jobDto);
-        addingJob.setEmployeeJobSalary(jobDto, redirectJob, request);
+        addingJobService.setEmployeeJobSalary(jobDto, redirectJob, request);
         return "redirect:/job/wizard/description";
     }
 
@@ -111,7 +111,7 @@ public class AddJobInformationController {
                                  final Model model,
                                  final HttpServletRequest request) {
         model.addAttribute("jobDto", jobDto);
-        addingJob.setEmployeeDescription(user, jobDto, request);
+        addingJobService.setEmployeeDescription(user, jobDto, request);
         return "redirect:/employee/jobs";
     }
 }

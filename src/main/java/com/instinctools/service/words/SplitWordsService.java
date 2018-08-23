@@ -9,7 +9,7 @@ import java.util.regex.Pattern;
 
 
 @Service
-public class SplitWords implements WordsSpliterator {
+public class SplitWordsService implements WordsSpliterator {
     @Override
     public List<String> wordsSpliterator(final String words) {
         Pattern pattern = Pattern.compile("\\w+");

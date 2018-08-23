@@ -6,11 +6,12 @@ import com.instinctools.entities.empEntites.Employee;
 import com.instinctools.entities.userEntites.Role;
 import com.instinctools.entities.userEntites.User;
 import com.instinctools.repo.UserRepo;
-import com.instinctools.service.mail.MailSender;
+import com.instinctools.service.mail.MailServiceSender;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
@@ -19,14 +20,16 @@ import java.util.UUID;
 @Service
 public class UserService implements UserDetailsService{
     private final UserRepo userRepo;
-
-    private final MailSender mailSender;
+    private final PasswordEncoder passwordEncoder;
+    private final MailServiceSender mailSender;
 
     @Autowired
     public UserService(final UserRepo userRepo,
-                       final MailSender mailSender) {
+                       final MailServiceSender mailSender,
+                       final PasswordEncoder passwordEncoder) {
         this.userRepo = userRepo;
         this.mailSender = mailSender;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -50,6 +53,7 @@ public class UserService implements UserDetailsService{
             return false;
         }
         user.setEnable(true);
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         if (devOrEmp.equals("1")) {
             Developer developer = new Developer();
             developer.setUser(user);

@@ -8,8 +8,8 @@ import com.instinctools.controllers.Dto.WorkExperienceDto;
 import com.instinctools.entities.userEntites.User;
 import com.instinctools.repo.UserRepo;
 import com.instinctools.repo.developerRepo.WorkExperienceRepo;
-import com.instinctools.service.mail.Mail;
-import com.instinctools.service.mail.MailSender;
+import com.instinctools.service.mail.MailSerivce;
+import com.instinctools.service.mail.MailServiceSender;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
@@ -17,17 +17,16 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.UUID;
 
 @Service
-public class DeveloperEditingService implements EditDeveloper {
-
+public class EditDeveloperServiceImpl implements EditDeveloperService {
     private final UserRepo userRepo;
-    private final Mail mailSender;
+    private final MailSerivce mailServiceSender;
     private final WorkExperienceRepo workExperienceRepo;
 
-    public DeveloperEditingService(final UserRepo userRepo,
-                                   final MailSender mailSender,
-                                   final WorkExperienceRepo workExperienceRepo) {
+    public EditDeveloperServiceImpl(final UserRepo userRepo,
+                                    final MailServiceSender mailSender,
+                                    final WorkExperienceRepo workExperienceRepo) {
         this.userRepo = userRepo;
-        this.mailSender = mailSender;
+        this.mailServiceSender = mailSender;
         this.workExperienceRepo = workExperienceRepo;
     }
 
@@ -52,7 +51,7 @@ public class DeveloperEditingService implements EditDeveloper {
                     user.getActivationCode()
             );
 
-            mailSender.send(user.getEmail(), "Activation code", message);
+            mailServiceSender.send(user.getEmail(), "Activation code", message);
         }
         user.setDeveloper(developer);
         userRepo.save(user);

@@ -4,8 +4,8 @@ import com.instinctools.controllers.Dto.SearchDto;
 import com.instinctools.entities.empEntites.Job;
 import com.instinctools.entities.userEntites.User;
 import com.instinctools.repo.employeeRepo.JobRepo;
-import com.instinctools.service.developer.search.JobSearch;
-import com.instinctools.service.mail.Mail;
+import com.instinctools.service.developer.search.JobSearchService;
+import com.instinctools.service.mail.MailSerivce;
 import org.springframework.ui.Model;
 import org.springframework.stereotype.Controller;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -24,15 +24,15 @@ import java.util.Set;
 @RequestMapping("job")
 @PreAuthorize("hasAuthority('DEVELOPER')")
 public class SearchForJobController {
-    private final JobSearch jobSearchForJob;
+    private final JobSearchService jobSearchForJobService;
     private final JobRepo jobRepo;
-    private final Mail mailSender;
+    private final MailSerivce mailSerivceSender;
 
-    public SearchForJobController(JobSearch jobSearchForJob, final JobRepo jobRepo,
-                                  final Mail mailSender) {
-        this.jobSearchForJob = jobSearchForJob;
+    public SearchForJobController(JobSearchService jobSearchForJobService, final JobRepo jobRepo,
+                                  final MailSerivce mailSerivceSender) {
+        this.jobSearchForJobService = jobSearchForJobService;
         this.jobRepo = jobRepo;
-        this.mailSender = mailSender;
+        this.mailSerivceSender = mailSerivceSender;
     }
 
     @GetMapping("search")
@@ -44,7 +44,7 @@ public class SearchForJobController {
     public String searchJob(final @RequestParam(name = "whatDescription") String whatDescription,
                             final @RequestParam(name = "whereDescription", required = false) String whereDescription,
                             final HttpServletRequest request) {
-        request.getSession().setAttribute("jobsRequest",  jobSearchForJob.searchForJob(whatDescription, whereDescription));
+        request.getSession().setAttribute("jobsRequest",  jobSearchForJobService.searchForJob(whatDescription, whereDescription));
         return "redirect:/job/results";
     }
 
@@ -71,7 +71,7 @@ public class SearchForJobController {
                                  final SearchDto searchDto,
                                  final Model model) {
         model.addAttribute("searchDto", searchDto);
-        request.getSession().setAttribute("jobsRequest", jobSearchForJob.searchForJobAdvanced(searchDto));
+        request.getSession().setAttribute("jobsRequest", jobSearchForJobService.searchForJobAdvanced(searchDto));
         return "redirect:/job/results";
     }
 
@@ -88,7 +88,7 @@ public class SearchForJobController {
     public String sendResumeToEmployee(final @AuthenticationPrincipal User user,
                                        final @PathVariable("id") Long id,
                                        final RedirectAttributes attributes) {
-        mailSender.sendResumeToEmployee(user, id, attributes);
+        mailSerivceSender.sendResumeToEmployee(user, id, attributes);
         return "redirect:/job/preview/" + id;
     }
 }

@@ -8,21 +8,17 @@ import com.instinctools.entities.userEntites.User;
 import com.instinctools.repo.UserRepo;
 import com.instinctools.repo.employeeRepo.EmployeeRepo;
 import com.instinctools.repo.employeeRepo.JobRepo;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 @Service
-public class JobEditionService implements EditJob {
-
+public class JobServiceEditionServiceImpl implements EditJobService {
     private final JobRepo jobRepo;
     private final UserRepo userRepo;
     private final EmployeeRepo employeeRepo;
-    private final Logger l = LoggerFactory.getLogger(JobEditionService.class);
 
-    public JobEditionService(final JobRepo jobRepo,
-                             final UserRepo userRepo,
-                             final EmployeeRepo employeeRepo) {
+    public JobServiceEditionServiceImpl(final JobRepo jobRepo,
+                                        final UserRepo userRepo,
+                                        final EmployeeRepo employeeRepo) {
         this.jobRepo = jobRepo;
         this.userRepo = userRepo;
         this.employeeRepo = employeeRepo;
@@ -33,7 +29,6 @@ public class JobEditionService implements EditJob {
                                 final JobDto jobDto,
                                 final Long id) {
         Job job = jobRepo.getOne(id);
-        l.info(jobDto.getCountry() + " " + jobDto.getJobLocation());
         job.setJobLocation(jobDto.getJobLocation());
         job.setCountry(jobDto.getCountry());
         Employee employee = job.getEmployee();

@@ -3,8 +3,8 @@ package com.instinctools.controllers.Employee;
 import com.instinctools.controllers.Dto.JobDto;
 import com.instinctools.controllers.Dto.UserDto;
 import com.instinctools.entities.userEntites.User;
-import com.instinctools.service.employee.check.CheckEmployee;
-import com.instinctools.service.employee.edit.EditJob;
+import com.instinctools.service.employee.check.CheckEmployeeService;
+import com.instinctools.service.employee.edit.EditJobService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -17,12 +17,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 @Controller
 @PreAuthorize("hasAuthority('EMPLOYEE')")
 public class EditEmployeeController {
-    private final EditJob editJob;
-    private final CheckEmployee checkEmployee;
+    private final EditJobService editJobService;
+    private final CheckEmployeeService checkEmployeeService;
 
-    public EditEmployeeController(EditJob editJob, CheckEmployee checkEmployee) {
-        this.editJob = editJob;
-        this.checkEmployee = checkEmployee;
+    public EditEmployeeController(EditJobService editJobService, CheckEmployeeService checkEmployeeService) {
+        this.editJobService = editJobService;
+        this.checkEmployeeService = checkEmployeeService;
     }
 
     @GetMapping("employee/jobs")
@@ -37,7 +37,7 @@ public class EditEmployeeController {
                               final UserDto userDto,
                               Model model) {
         model.addAttribute("userDto", userDto);
-        editJob.editEmployeeCompany(user, userDto);
+        editJobService.editEmployeeCompany(user, userDto);
         return "redirect:/employee/jobs";
     }
 
@@ -46,11 +46,11 @@ public class EditEmployeeController {
                                final @PathVariable(name = "id") Long id,
                                final JobDto jobDto,
                                Model model) {
-        if (checkEmployee.checkEmployeeEditing(user, id)) {
+        if (checkEmployeeService.checkEmployeeEditing(user, id)) {
             return "redirect:/employee/jobs";
         }
         model.addAttribute("jobDto", jobDto);
-        editJob.editJobTitle(user, jobDto, id);
+        editJobService.editJobTitle(user, jobDto, id);
         return "redirect:/employee/jobs";
     }
 
@@ -59,11 +59,11 @@ public class EditEmployeeController {
                                   final @PathVariable(name = "id") Long id,
                                   final JobDto jobDto,
                                   Model model) {
-        if (checkEmployee.checkEmployeeEditing(user, id)) {
+        if (checkEmployeeService.checkEmployeeEditing(user, id)) {
             return "redirect:/employee/jobs";
         }
         model.addAttribute("jobDto", jobDto);
-        editJob.editJobLocation(user, jobDto, id);
+        editJobService.editJobLocation(user, jobDto, id);
         return "redirect:/employee/jobs";
     }
 
@@ -72,11 +72,11 @@ public class EditEmployeeController {
                                      final @PathVariable(name = "id") Long id,
                                      final JobDto jobDto,
                                      Model model) {
-        if (checkEmployee.checkEmployeeEditing(user, id)) {
+        if (checkEmployeeService.checkEmployeeEditing(user, id)) {
             return "redirect:/employee/jobs";
         }
         model.addAttribute("jobDto", jobDto);
-        editJob.editJobDescription(user, jobDto, id);
+        editJobService.editJobDescription(user, jobDto, id);
         return "redirect:/employee/jobs";
     }
 
@@ -85,11 +85,11 @@ public class EditEmployeeController {
                                            final @PathVariable(name = "id") Long id,
                                            final JobDto jobDto,
                                            Model model) {
-        if (checkEmployee.checkEmployeeEditing(user, id)) {
+        if (checkEmployeeService.checkEmployeeEditing(user, id)) {
             return "redirect:/employee/jobs";
         }
         model.addAttribute("jobDto", jobDto);
-        editJob.editJobDesiredDescription(user, jobDto, id);
+        editJobService.editJobDesiredDescription(user, jobDto, id);
         return "redirect:/employee/jobs";
     }
 
@@ -98,11 +98,11 @@ public class EditEmployeeController {
                                        final @PathVariable(name = "id") Long id,
                                        final JobDto jobDto,
                                        Model model) {
-        if (checkEmployee.checkEmployeeEditing(user, id)) {
+        if (checkEmployeeService.checkEmployeeEditing(user, id)) {
             return "redirect:/employee/jobs";
         }
         model.addAttribute("jobDto", jobDto);
-        editJob.editJobQualification(user, jobDto, id);
+        editJobService.editJobQualification(user, jobDto, id);
         return "redirect:/employee/jobs";
     }
 }

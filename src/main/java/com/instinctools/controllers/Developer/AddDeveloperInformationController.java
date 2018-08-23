@@ -6,7 +6,7 @@ import com.instinctools.controllers.Dto.EducationDto;
 import com.instinctools.controllers.Dto.SkillDto;
 import com.instinctools.controllers.Dto.DesiredJobDto;
 import com.instinctools.entities.userEntites.User;
-import com.instinctools.service.developer.adding.AddDeveloper;
+import com.instinctools.service.developer.adding.AddDeveloperService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -20,10 +20,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 @PreAuthorize("hasAuthority('DEVELOPER')")
 public class AddDeveloperInformationController {
 
-    private final AddDeveloper addDeveloper;
+    private final AddDeveloperService addDeveloperService;
 
-    public AddDeveloperInformationController(AddDeveloper addDeveloper) {
-        this.addDeveloper = addDeveloper;
+    public AddDeveloperInformationController(AddDeveloperService addDeveloperService) {
+        this.addDeveloperService = addDeveloperService;
     }
 
     @GetMapping("resume/wizard/profile")
@@ -39,7 +39,7 @@ public class AddDeveloperInformationController {
                                   final Model model,
                                   final UserDto userDto) {
         model.addAttribute("developerDto", userDto);
-        addDeveloper.setBasicQualities(user, userDto);
+        addDeveloperService.setBasicQualities(user, userDto);
         return "redirect:/resume/wizard/education";
     }
 
@@ -57,10 +57,10 @@ public class AddDeveloperInformationController {
                                   final Model model) {
         model.addAttribute("educationDto", educationDto);
         if (!user.getDeveloper().getWorkExperiences().isEmpty()) {
-            addDeveloper.setEducation(user, educationDto);
+            addDeveloperService.setEducation(user, educationDto);
             return "redirect:/developer/resume";
         }
-        addDeveloper.setEducation(user, educationDto);
+        addDeveloperService.setEducation(user, educationDto);
         return   "redirect:/resume/wizard/experience";
     }
 
@@ -75,7 +75,7 @@ public class AddDeveloperInformationController {
                                    final WorkExperienceDto workExperienceDto,
                                    final Model model) {
         model.addAttribute("workExperienceDTO", workExperienceDto);
-        addDeveloper.setWorkExperience(user, workExperienceDto, check);
+        addDeveloperService.setWorkExperience(user, workExperienceDto, check);
         return "redirect:/developer/resume";
     }
 
@@ -84,7 +84,7 @@ public class AddDeveloperInformationController {
                          final Model model,
                          final SkillDto skillDto) {
         model.addAttribute("skillDto", skillDto);
-        addDeveloper.setDeveloperSkill(user, skillDto);
+        addDeveloperService.setDeveloperSkill(user, skillDto);
         return "redirect:/developer/resume";
     }
 
@@ -94,21 +94,21 @@ public class AddDeveloperInformationController {
                                  Model model) {
         model.addAttribute("desiredJobDto", desiredJobDto);
         desiredJobDto.setDeveloper(user.getDeveloper());
-        addDeveloper.setDesiredJob(user, desiredJobDto);
+        addDeveloperService.setDesiredJob(user, desiredJobDto);
         return "redirect:/developer/resume";
     }
 
     @PostMapping("edit-developer/summary")
     public String summary(final @AuthenticationPrincipal User user,
                           final @RequestParam(name = "summary") String summary) {
-        addDeveloper.setDeveloperSummary(user, summary);
+        addDeveloperService.setDeveloperSummary(user, summary);
         return "redirect:/developer/resume";
     }
 
     @PostMapping("edit-developer/additional")
     public String additionalInformation(final @AuthenticationPrincipal  User user,
                                         final @RequestParam(name = "additional") String additional) {
-        addDeveloper.setDeveloperAdditional(user, additional);
+        addDeveloperService.setDeveloperAdditional(user, additional);
         return "redirect:/developer/resume";
     }
 
@@ -118,7 +118,7 @@ public class AddDeveloperInformationController {
                                 final EducationDto educationDto,
                                 final Model model) {
         model.addAttribute("educationDto", educationDto);
-        addDeveloper.setDeveloperEducation(user, educationDto, id);
+        addDeveloperService.setDeveloperEducation(user, educationDto, id);
         return "redirect:/developer/resume";
     }
 }

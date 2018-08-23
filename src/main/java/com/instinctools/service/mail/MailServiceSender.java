@@ -18,7 +18,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 
 @Service
-public class MailSender implements Mail {
+public class MailServiceSender implements MailSerivce {
     private final JavaMailSender mailSender;
 
     private final DeveloperRepo developerRepo;
@@ -31,8 +31,8 @@ public class MailSender implements Mail {
     private String username;
 
     @Autowired
-    public MailSender(final JavaMailSender mailSender, final DeveloperRepo developerRepo,
-                      final UserRepo userRepo, final JobRepo jobRepo) {
+    public MailServiceSender(final JavaMailSender mailSender, final DeveloperRepo developerRepo,
+                             final UserRepo userRepo, final JobRepo jobRepo) {
         this.mailSender = mailSender;
         this.developerRepo = developerRepo;
         this.userRepo = userRepo;

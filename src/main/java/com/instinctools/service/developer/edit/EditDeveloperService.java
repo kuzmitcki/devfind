@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import javax.servlet.http.HttpServletRequest;
 
 @Service
-public interface EditDeveloper {
+public interface EditDeveloperService {
     void editResumeBasicInformation(User user, String email, UserDto userDTO, HttpServletRequest request);
 
     void editDeveloperWorkExperience(User user, Long id, WorkExperienceDto workExperienceDTO);

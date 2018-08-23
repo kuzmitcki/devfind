@@ -18,27 +18,23 @@ import com.instinctools.repo.developerRepo.DeveloperRepo;
 import com.instinctools.repo.developerRepo.SpecializationRepo;
 import com.instinctools.repo.developerRepo.DesiredJobRepo;
 import org.modelmapper.ModelMapper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 @Service
-public class AddingDeveloperService  implements AddDeveloper {
-
+public class AddingDeveloperServiceImpl implements AddDeveloperService {
     private final UserRepo userRepo;
     private final EducationRepo educationRepo;
     private final DeveloperRepo developerRepo;
     private final WorkExperienceRepo workExperienceRepo;
     private final SpecializationRepo specializationRepo;
     private final DesiredJobRepo desiredJobRepo;
-    private final Logger l = LoggerFactory.getLogger(AddingDeveloperService.class);
 
-    public AddingDeveloperService(final UserRepo userRepo,
-                                  final EducationRepo educationRepo,
-                                  final DeveloperRepo developerRepo,
-                                  final WorkExperienceRepo workExperienceRepo,
-                                  final SpecializationRepo specializationRepo,
-                                  final DesiredJobRepo desiredJobRepo) {
+    public AddingDeveloperServiceImpl(final UserRepo userRepo,
+                                      final EducationRepo educationRepo,
+                                      final DeveloperRepo developerRepo,
+                                      final WorkExperienceRepo workExperienceRepo,
+                                      final SpecializationRepo specializationRepo,
+                                      final DesiredJobRepo desiredJobRepo) {
         this.userRepo = userRepo;
         this.educationRepo = educationRepo;
         this.developerRepo = developerRepo;

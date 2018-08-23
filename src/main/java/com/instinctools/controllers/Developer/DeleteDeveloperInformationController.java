@@ -1,7 +1,7 @@
 package com.instinctools.controllers.Developer;
 
 import com.instinctools.entities.userEntites.User;
-import com.instinctools.service.developer.delete.DeleteDeveloper;
+import com.instinctools.service.developer.delete.DeleteDeveloperSerivce;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -12,9 +12,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 @PreAuthorize("hasAuthority('DEVELOPER')")
 public class DeleteDeveloperInformationController {
 
-    private final DeleteDeveloper developerService;
+    private final DeleteDeveloperSerivce developerService;
 
-    public DeleteDeveloperInformationController(DeleteDeveloper developerService) {
+    public DeleteDeveloperInformationController(DeleteDeveloperSerivce developerService) {
         this.developerService = developerService;
     }
 

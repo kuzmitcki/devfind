@@ -13,10 +13,10 @@ import java.util.Set;
 
 
 @Service
-public class DeleteDeveloperInformationService implements DeleteDeveloper {
+public class DeleteDeveloperServiceImpl implements DeleteDeveloperSerivce {
     private final UserRepo userRepo;
 
-    public DeleteDeveloperInformationService(final UserRepo userRepo) {
+    public DeleteDeveloperServiceImpl(final UserRepo userRepo) {
         this.userRepo = userRepo;
     }
 

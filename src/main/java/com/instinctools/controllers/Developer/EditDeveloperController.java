@@ -5,8 +5,8 @@ import com.instinctools.controllers.Dto.WorkExperienceDto;
 import com.instinctools.entities.userEntites.User;
 import com.instinctools.repo.developerRepo.EducationRepo;
 import com.instinctools.repo.developerRepo.WorkExperienceRepo;
-import com.instinctools.service.developer.check.CheckDeveloper;
-import com.instinctools.service.developer.edit.EditDeveloper;
+import com.instinctools.service.developer.check.CheckDeveloperService;
+import com.instinctools.service.developer.edit.EditDeveloperService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -22,19 +22,19 @@ import javax.servlet.http.HttpServletRequest;
 @PreAuthorize("hasAuthority('DEVELOPER')")
 public class EditDeveloperController {
 
-    private final EditDeveloper editDeveloper;
+    private final EditDeveloperService editDeveloperService;
     private final WorkExperienceRepo workExperienceRepo;
     private final EducationRepo educationRepo;
-    private final CheckDeveloper checkDeveloper;
+    private final CheckDeveloperService checkDeveloperService;
 
-    public EditDeveloperController(final EditDeveloper editDeveloper,
+    public EditDeveloperController(final EditDeveloperService editDeveloperService,
                                    final WorkExperienceRepo workExperienceRepo,
                                    final EducationRepo educationRepo,
-                                   final CheckDeveloper checkDeveloper) {
-        this.editDeveloper = editDeveloper;
+                                   final CheckDeveloperService checkDeveloperService) {
+        this.editDeveloperService = editDeveloperService;
         this.workExperienceRepo = workExperienceRepo;
         this.educationRepo = educationRepo;
-        this.checkDeveloper = checkDeveloper;
+        this.checkDeveloperService = checkDeveloperService;
     }
 
     @PostMapping("/edit-developer/information")
@@ -44,7 +44,7 @@ public class EditDeveloperController {
                                          final HttpServletRequest request,
                                          final Model model) {
         model.addAttribute("developerDto", userDTO);
-        editDeveloper.editResumeBasicInformation(user, email, userDTO, request);
+        editDeveloperService.editResumeBasicInformation(user, email, userDTO, request);
         return "redirect:/developer/resume";
     }
 
@@ -52,7 +52,7 @@ public class EditDeveloperController {
     public String educationEditPage(final @AuthenticationPrincipal User user,
                                     final @PathVariable(name = "id") Long id,
                                     final Model model) {
-        if (checkDeveloper.checkDeveloperEditingEducation(user, id)) {
+        if (checkDeveloperService.checkDeveloperEditingEducation(user, id)) {
             return "redirect:/developer/resume";
         }
         model.addAttribute("educ", educationRepo.getOne(id));
@@ -65,7 +65,7 @@ public class EditDeveloperController {
                                      final WorkExperienceDto workExperienceDto,
                                      final Model model) {
         model.addAttribute("workExperienceDto", workExperienceDto);
-        editDeveloper.editDeveloperWorkExperience(user, id, workExperienceDto);
+        editDeveloperService.editDeveloperWorkExperience(user, id, workExperienceDto);
         return "redirect:/developer/resume";
     }
 
@@ -73,7 +73,7 @@ public class EditDeveloperController {
     public String workExperienceEditPage(final @AuthenticationPrincipal User user,
                                          final @PathVariable(name = "id") Long id,
                                          final Model model) {
-        if (checkDeveloper.checkDeveloperEditingWork(user, id)) {
+        if (checkDeveloperService.checkDeveloperEditingWork(user, id)) {
             return "redirect:/developer/resume";
         }
         model.addAttribute("work", workExperienceRepo.getOne(id));

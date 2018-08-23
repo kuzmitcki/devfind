@@ -8,7 +8,7 @@ import com.instinctools.controllers.Dto.WorkExperienceDto;
 import com.instinctools.entities.userEntites.User;
 import com.instinctools.repo.UserRepo;
 import com.instinctools.repo.developerRepo.WorkExperienceRepo;
-import com.instinctools.service.mail.MailSerivce;
+import com.instinctools.service.mail.MailService;
 import com.instinctools.service.mail.MailServiceSender;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -19,7 +19,7 @@ import java.util.UUID;
 @Service
 public class EditDeveloperServiceImpl implements EditDeveloperService {
     private final UserRepo userRepo;
-    private final MailSerivce mailServiceSender;
+    private final MailService mailServiceSender;
     private final WorkExperienceRepo workExperienceRepo;
 
     public EditDeveloperServiceImpl(final UserRepo userRepo,

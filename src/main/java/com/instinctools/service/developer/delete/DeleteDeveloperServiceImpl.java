@@ -32,7 +32,8 @@ public class DeleteDeveloperServiceImpl implements DeleteDeveloperSerivce {
     }
 
     @Override
-    public void deleteDeveloperWork(final User user, final Long id) {
+    public void deleteDeveloperWork(final User user,
+                                    final Long id) {
         Developer developer = user.getDeveloper();
         Set<WorkExperience> workExperiences = new HashSet<>(developer.getWorkExperiences());
         developer.getWorkExperiences().clear();
@@ -43,7 +44,8 @@ public class DeleteDeveloperServiceImpl implements DeleteDeveloperSerivce {
     }
 
     @Override
-    public void deleteDeveloperSkill(final User user, final Long id) {
+    public void deleteDeveloperSkill(final User user,
+                                     final Long id) {
         Developer developer = user.getDeveloper();
         Set<Specialization> specializations = new HashSet<>(developer.getSpecializations());
         developer.getSpecializations().clear();

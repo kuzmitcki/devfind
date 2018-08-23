@@ -35,7 +35,7 @@ public class EditEmployeeController {
     @PostMapping("edit-employee/company")
     public String editCompany(final @AuthenticationPrincipal User user,
                               final UserDto userDto,
-                              Model model) {
+                              final Model model) {
         model.addAttribute("userDto", userDto);
         editJobService.editEmployeeCompany(user, userDto);
         return "redirect:/employee/jobs";
@@ -45,7 +45,7 @@ public class EditEmployeeController {
     public String editJobTitle(final @AuthenticationPrincipal User user,
                                final @PathVariable(name = "id") Long id,
                                final JobDto jobDto,
-                               Model model) {
+                               final Model model) {
         if (checkEmployeeService.checkEmployeeEditing(user, id)) {
             return "redirect:/employee/jobs";
         }
@@ -58,7 +58,7 @@ public class EditEmployeeController {
     public String editJobLocation(final @AuthenticationPrincipal User user,
                                   final @PathVariable(name = "id") Long id,
                                   final JobDto jobDto,
-                                  Model model) {
+                                  final Model model) {
         if (checkEmployeeService.checkEmployeeEditing(user, id)) {
             return "redirect:/employee/jobs";
         }
@@ -71,7 +71,7 @@ public class EditEmployeeController {
     public String editJobDescription(final @AuthenticationPrincipal User user,
                                      final @PathVariable(name = "id") Long id,
                                      final JobDto jobDto,
-                                     Model model) {
+                                     final Model model) {
         if (checkEmployeeService.checkEmployeeEditing(user, id)) {
             return "redirect:/employee/jobs";
         }
@@ -97,7 +97,7 @@ public class EditEmployeeController {
     public String editJobQualification(final @AuthenticationPrincipal User user,
                                        final @PathVariable(name = "id") Long id,
                                        final JobDto jobDto,
-                                       Model model) {
+                                       final Model model) {
         if (checkEmployeeService.checkEmployeeEditing(user, id)) {
             return "redirect:/employee/jobs";
         }

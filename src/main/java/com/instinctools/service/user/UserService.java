@@ -18,7 +18,7 @@ import java.util.Collections;
 import java.util.UUID;
 
 @Service
-public class UserService implements UserDetailsService{
+public class UserService implements UserDetailsService {
     private final UserRepo userRepo;
     private final PasswordEncoder passwordEncoder;
     private final MailServiceSender mailSender;
@@ -33,11 +33,11 @@ public class UserService implements UserDetailsService{
     }
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(final String username) throws UsernameNotFoundException {
         return userRepo.findByUsername(username);
     }
 
-    public boolean activateUser(String code) {
+    public boolean activateUser(final String code) {
         User user = userRepo.findByActivationCode(code);
         if (user == null) {
             return false;
@@ -47,7 +47,8 @@ public class UserService implements UserDetailsService{
         return true;
     }
 
-    public boolean saveUser(final User user, final String devOrEmp) {
+    public boolean saveUser(final User user,
+                            final String devOrEmp) {
         User userFromDb = userRepo.findByUsername(user.getUsername());
         if (userFromDb != null) {
             return false;

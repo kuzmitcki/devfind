@@ -18,7 +18,8 @@ public class AddingJobServiceImpl implements AddingJobService {
     private final JobRepo jobRepo;
     private final UserRepo userRepo;
 
-    public AddingJobServiceImpl(JobRepo jobRepo, UserRepo userRepo) {
+    public AddingJobServiceImpl(final JobRepo jobRepo,
+                                final UserRepo userRepo) {
         this.jobRepo = jobRepo;
         this.userRepo = userRepo;
     }

@@ -25,7 +25,8 @@ public class LoginController {
     private final UserRepo userRepo;
 
     @Autowired
-    public LoginController(final UserService userService, UserRepo userRepo) {
+    public LoginController(final UserService userService,
+                           final UserRepo userRepo) {
         this.userService = userService;
         this.userRepo = userRepo;
     }
@@ -54,7 +55,8 @@ public class LoginController {
     }
 
     @GetMapping("/activate/{code}")
-    public String activate(final Model model, final @PathVariable String code) {
+    public String activate(final Model model,
+                           final @PathVariable String code) {
         boolean isActivated = userService.activateUser(code);
         if (isActivated) {
             model.addAttribute("message", "User successfully activated");
@@ -88,7 +90,7 @@ public class LoginController {
     public String change(final Model model,
                          final @PathVariable String code,
                          final @AuthenticationPrincipal User user,
-                         HttpServletRequest request) {
+                         final HttpServletRequest request) {
         model.addAttribute("developer", user.getDeveloper());
         boolean isActivated = userService.activateUser(code);
         if (isActivated) {

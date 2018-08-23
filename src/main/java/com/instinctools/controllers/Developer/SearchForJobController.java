@@ -5,7 +5,7 @@ import com.instinctools.entities.empEntites.Job;
 import com.instinctools.entities.userEntites.User;
 import com.instinctools.repo.employeeRepo.JobRepo;
 import com.instinctools.service.developer.search.JobSearchService;
-import com.instinctools.service.mail.MailSerivce;
+import com.instinctools.service.mail.MailService;
 import org.springframework.ui.Model;
 import org.springframework.stereotype.Controller;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -26,13 +26,13 @@ import java.util.Set;
 public class SearchForJobController {
     private final JobSearchService jobSearchForJobService;
     private final JobRepo jobRepo;
-    private final MailSerivce mailSerivceSender;
+    private final MailService mailServiceSender;
 
     public SearchForJobController(JobSearchService jobSearchForJobService, final JobRepo jobRepo,
-                                  final MailSerivce mailSerivceSender) {
+                                  final MailService mailServiceSender) {
         this.jobSearchForJobService = jobSearchForJobService;
         this.jobRepo = jobRepo;
-        this.mailSerivceSender = mailSerivceSender;
+        this.mailServiceSender = mailServiceSender;
     }
 
     @GetMapping("search")
@@ -88,7 +88,7 @@ public class SearchForJobController {
     public String sendResumeToEmployee(final @AuthenticationPrincipal User user,
                                        final @PathVariable("id") Long id,
                                        final RedirectAttributes attributes) {
-        mailSerivceSender.sendResumeToEmployee(user, id, attributes);
+        mailServiceSender.sendResumeToEmployee(user, id, attributes);
         return "redirect:/job/preview/" + id;
     }
 }

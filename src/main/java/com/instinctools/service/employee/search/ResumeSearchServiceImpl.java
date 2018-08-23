@@ -124,7 +124,7 @@ public class ResumeSearchServiceImpl implements ResumeSearchService {
 
     @Override
     public Set<Developer> searchForDeveloperByLocation(final String location) {
-        if (location.isEmpty()){
+        if (location.isEmpty()) {
             return new HashSet<>(developerRepo.findAll());
         }
         return developerRepo.findByCityIgnoreCaseOrZipPostalCodeIgnoreCaseOrCountryIgnoreCase(location, location, location);
@@ -180,10 +180,10 @@ public class ResumeSearchServiceImpl implements ResumeSearchService {
         AtomicLong number = new AtomicLong(0);
         Set<Developer> developers = new HashSet<>();
         for (String word : wordsSpliterator.wordsSpliterator(allWords)) {
-            if (!searchForResumeBySkills(word).isEmpty() ||
-                !searchForResumeByAdditionalInformation(word).isEmpty() ||
-                !searchForResumeBySummary(word).isEmpty() ||
-                !searchForResumeByWorkDescription(word).isEmpty()) {
+            if (!searchForResumeBySkills(word).isEmpty()
+             || !searchForResumeByAdditionalInformation(word).isEmpty()
+             || !searchForResumeBySummary(word).isEmpty()
+             || !searchForResumeByWorkDescription(word).isEmpty()) {
                 number.incrementAndGet();
             }
             developers.addAll(Stream.of(searchForResumeBySkills(word),
@@ -205,7 +205,6 @@ public class ResumeSearchServiceImpl implements ResumeSearchService {
                          searchForResumeByAdditionalInformation(phrase),
                          searchForResumeBySummary(phrase)).
                 flatMap(Set::stream).collect(Collectors.toSet());
-
     }
 
     @Override

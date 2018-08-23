@@ -18,7 +18,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 
 @Service
-public class MailServiceSender implements MailSerivce {
+public class MailServiceSender implements MailService {
     private final JavaMailSender mailSender;
 
     private final DeveloperRepo developerRepo;
@@ -31,8 +31,10 @@ public class MailServiceSender implements MailSerivce {
     private String username;
 
     @Autowired
-    public MailServiceSender(final JavaMailSender mailSender, final DeveloperRepo developerRepo,
-                             final UserRepo userRepo, final JobRepo jobRepo) {
+    public MailServiceSender(final JavaMailSender mailSender,
+                             final DeveloperRepo developerRepo,
+                             final UserRepo userRepo,
+                             final JobRepo jobRepo) {
         this.mailSender = mailSender;
         this.developerRepo = developerRepo;
         this.userRepo = userRepo;
@@ -40,7 +42,9 @@ public class MailServiceSender implements MailSerivce {
     }
 
     @Override
-    public void send(final String emailTo, final String subject, final String message) {
+    public void send(final String emailTo,
+                     final String subject,
+                     final String message) {
         SimpleMailMessage mailMessage = new SimpleMailMessage();
         mailMessage.setFrom(username);
         mailMessage.setTo(emailTo);
@@ -50,7 +54,8 @@ public class MailServiceSender implements MailSerivce {
     }
 
     @Override
-    public void sendOfferToDeveloper(final User user, final Long id,
+    public void sendOfferToDeveloper(final User user,
+                                     final Long id,
                                      final RedirectAttributes attributes) {
         Developer developer = developerRepo.getOne(id);
         if (!StringUtils.isEmpty(developer.getUser().getEmail())) {
@@ -87,7 +92,8 @@ public class MailServiceSender implements MailSerivce {
     }
 
     @Override
-    public void sendResumeToEmployee(final User user, final Long id,
+    public void sendResumeToEmployee(final User user,
+                                     final Long id,
                                      final RedirectAttributes attributes) {
         Job job = jobRepo.getOne(id);
         Employee employee = job.getEmployee();

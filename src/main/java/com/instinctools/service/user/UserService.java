@@ -55,14 +55,14 @@ public class UserService implements UserDetailsService {
         }
         user.setEnable(true);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        if (devOrEmp.equals("1")) {
+        if ("1".equals(devOrEmp)) {
             Developer developer = new Developer();
             developer.setUser(user);
             developer.setEnable(true);
             user.setDeveloper(developer);
             user.setRoles(Collections.singleton(Role.DEVELOPER));
         }
-        if (devOrEmp.equals("2")) {
+        if ("2".equals(devOrEmp)) {
             Employee employee = new Employee();
             employee.setUser(user);
             user.setEmployee(employee);

@@ -25,5 +25,4 @@ public interface AddDeveloperService {
     void setDeveloperSkill(User user, SkillDto skillDto);
 
     void setDesiredJob(User user, DesiredJobDto desiredJobDTO);
-
 }

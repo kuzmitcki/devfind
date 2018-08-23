@@ -28,7 +28,8 @@ public class SearchForJobController {
     private final JobRepo jobRepo;
     private final MailService mailServiceSender;
 
-    public SearchForJobController(JobSearchService jobSearchForJobService, final JobRepo jobRepo,
+    public SearchForJobController(final JobSearchService jobSearchForJobService,
+                                  final JobRepo jobRepo,
                                   final MailService mailServiceSender) {
         this.jobSearchForJobService = jobSearchForJobService;
         this.jobRepo = jobRepo;

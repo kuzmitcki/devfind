@@ -16,5 +16,4 @@ public interface EditJobService {
     void editEmployeeCompany(User user, UserDto userDto);
 
     void editJobQualification(User user, JobDto jobDto, Long id);
-
 }

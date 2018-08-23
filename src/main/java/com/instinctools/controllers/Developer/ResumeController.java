@@ -16,13 +16,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 @PreAuthorize("hasAuthority('DEVELOPER')")
 public class ResumeController {
     private final MailServiceSender mailSender;
-
     private final SpecializationRepo specializationRepo;
-
     private final WorkExperienceRepo workExperienceRepo;
-
     private final EducationRepo educationRepo;
-
 
     @Autowired
     public ResumeController(final MailServiceSender mailSender,
@@ -42,11 +38,11 @@ public class ResumeController {
         model.addAttribute("developer", user.getDeveloper());
         model.addAttribute("telephone", user.getDeveloper().getTelephone());
         model.addAttribute("specializations",
-                specializationRepo.findByDeveloper(user.getDeveloper()));
+                                        specializationRepo.findByDeveloper(user.getDeveloper()));
         model.addAttribute("educations",
-                educationRepo.findByDeveloper(user.getDeveloper()));
+                                         educationRepo.findByDeveloper(user.getDeveloper()));
         model.addAttribute("workExperiences",
-                workExperienceRepo.findByDeveloper(user.getDeveloper()));
+                                        workExperienceRepo.findByDeveloper(user.getDeveloper()));
         return "developer/resume/resume";
     }
 
@@ -65,5 +61,4 @@ public class ResumeController {
         model.addAttribute("workExperiences", workExperienceRepo.findByDeveloper(user.getDeveloper()));
         return "developer/preview/preview";
     }
-
 }

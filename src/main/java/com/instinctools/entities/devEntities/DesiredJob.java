@@ -1,6 +1,6 @@
 package com.instinctools.entities.devEntities;
 
-import lombok.*;
+import lombok.Data;
 
 import javax.persistence.Id;
 import javax.persistence.GeneratedValue;

@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 public class CheckEmployeeServiceImpl implements CheckEmployeeService {
     private final JobRepo jobRepo;
 
-    public CheckEmployeeServiceImpl(JobRepo jobRepo) {
+    public CheckEmployeeServiceImpl(final JobRepo jobRepo) {
         this.jobRepo = jobRepo;
     }
 
@@ -17,5 +17,4 @@ public class CheckEmployeeServiceImpl implements CheckEmployeeService {
                                         final Long id) {
         return user.getEmployee().equals(jobRepo.getOne(id).getEmployee());
     }
-
 }

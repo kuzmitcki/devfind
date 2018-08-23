@@ -54,7 +54,5 @@ public class DeleteDeveloperServiceImpl implements DeleteDeveloperSerivce {
         user.setDeveloper(developer);
         userRepo.save(user);
     }
-
-
 }
 

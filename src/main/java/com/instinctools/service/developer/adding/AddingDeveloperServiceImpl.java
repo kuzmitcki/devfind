@@ -157,5 +157,4 @@ public class AddingDeveloperServiceImpl implements AddDeveloperService {
         user.setDeveloper(developer);
         userRepo.save(user);
     }
-
 }

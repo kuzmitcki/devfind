@@ -20,7 +20,8 @@ public class EditEmployeeController {
     private final EditJobService editJobService;
     private final CheckEmployeeService checkEmployeeService;
 
-    public EditEmployeeController(EditJobService editJobService, CheckEmployeeService checkEmployeeService) {
+    public EditEmployeeController(final EditJobService editJobService,
+                                  final CheckEmployeeService checkEmployeeService) {
         this.editJobService = editJobService;
         this.checkEmployeeService = checkEmployeeService;
     }

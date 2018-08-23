@@ -31,9 +31,12 @@ public class ResumeSearchServiceImpl implements ResumeSearchService {
     private final DesiredJobRepo desiredJobRepo;
     private final EducationRepo educationRepo;
 
-    public ResumeSearchServiceImpl(final WordsSpliterator wordsSpliterator, final SpecializationRepo specializationRepo,
-                                   final DeveloperRepo developerRepo, final WorkExperienceRepo workExperienceRepo,
-                                   final DesiredJobRepo desiredJobRepo, final EducationRepo educationRepo) {
+    public ResumeSearchServiceImpl(final WordsSpliterator wordsSpliterator,
+                                   final SpecializationRepo specializationRepo,
+                                   final DeveloperRepo developerRepo,
+                                   final WorkExperienceRepo workExperienceRepo,
+                                   final DesiredJobRepo desiredJobRepo,
+                                   final EducationRepo educationRepo) {
         this.wordsSpliterator = wordsSpliterator;
         this.specializationRepo = specializationRepo;
         this.developerRepo = developerRepo;

@@ -23,7 +23,7 @@ public class AddJobInformationController {
 
     private final AddingJobService addingJobService;
 
-    public AddJobInformationController(AddingJobService addingJobService) {
+    public AddJobInformationController(final AddingJobService addingJobService) {
         this.addingJobService = addingJobService;
     }
 

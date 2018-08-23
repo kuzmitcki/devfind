@@ -14,14 +14,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 import javax.servlet.http.HttpServletRequest;
-
 
 @Controller
 public class LoginController {
     private final UserService userService;
-
     private final UserRepo userRepo;
 
     @Autowired
@@ -103,5 +100,4 @@ public class LoginController {
         }
         return "redirect:/developer/resume";
     }
-
 }

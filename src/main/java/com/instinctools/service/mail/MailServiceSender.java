@@ -20,11 +20,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @Service
 public class MailServiceSender implements MailService {
     private final JavaMailSender mailSender;
-
     private final DeveloperRepo developerRepo;
-
     private final UserRepo userRepo;
-
     private final JobRepo jobRepo;
 
     @Value("${spring.mail.username}")

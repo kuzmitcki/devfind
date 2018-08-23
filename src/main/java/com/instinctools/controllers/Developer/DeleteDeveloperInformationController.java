@@ -25,7 +25,6 @@ public class DeleteDeveloperInformationController {
         return "redirect:/developer/resume";
     }
 
-
     @PostMapping("edit-developer/work-delete/{id}")
     public String  deleteWork(final @AuthenticationPrincipal User user,
                               final @PathVariable(name = "id") Long id) {
@@ -39,6 +38,4 @@ public class DeleteDeveloperInformationController {
         developerService.deleteDeveloperSkill(user, id);
         return "redirect:/developer/resume";
     }
-
-
 }

@@ -20,5 +20,4 @@ public class SplitWordsService implements WordsSpliterator {
         }
         return wordsList;
     }
-
 }

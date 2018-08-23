@@ -94,7 +94,4 @@ public class AddingJobServiceImpl implements AddingJobService {
         user.setEmployee(employee);
         userRepo.save(user);
     }
-
-
-
 }

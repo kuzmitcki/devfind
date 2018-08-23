@@ -10,6 +10,4 @@ public interface DeleteDeveloperSerivce {
     void deleteDeveloperWork(User user, Long id);
 
     void deleteDeveloperSkill(User user, Long id);
-
-
 }

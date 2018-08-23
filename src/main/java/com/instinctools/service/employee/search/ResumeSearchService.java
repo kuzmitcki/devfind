@@ -42,5 +42,4 @@ public interface ResumeSearchService {
     Set<Developer> searchForResumeByOneWord(String oneWord);
 
     Set<Developer> searchForResumeAdvanced(User user, SearchDto searchDto);
-
 }

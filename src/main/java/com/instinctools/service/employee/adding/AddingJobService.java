@@ -16,5 +16,4 @@ public interface AddingJobService {
     void setEmployeeBasicInformation(User user, RedirectAttributes redirectedJob, JobDto jobDTO);
 
     void setEmployeeAccountInformation(User user, UserDto userDto);
-
 }

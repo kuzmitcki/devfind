@@ -11,14 +11,14 @@ import com.instinctools.repo.employeeRepo.JobRepo;
 import org.springframework.stereotype.Service;
 
 @Service
-public class JobServiceEditionServiceImpl implements EditJobService {
+public class JobEditionServiceImpl implements EditJobService {
     private final JobRepo jobRepo;
     private final UserRepo userRepo;
     private final EmployeeRepo employeeRepo;
 
-    public JobServiceEditionServiceImpl(final JobRepo jobRepo,
-                                        final UserRepo userRepo,
-                                        final EmployeeRepo employeeRepo) {
+    public JobEditionServiceImpl(final JobRepo jobRepo,
+                                 final UserRepo userRepo,
+                                 final EmployeeRepo employeeRepo) {
         this.jobRepo = jobRepo;
         this.userRepo = userRepo;
         this.employeeRepo = employeeRepo;

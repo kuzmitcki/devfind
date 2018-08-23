@@ -14,11 +14,11 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Service
-public class AddingJobServiceServiceImpl implements AddingJobService {
+public class AddingJobServiceImpl implements AddingJobService {
     private final JobRepo jobRepo;
     private final UserRepo userRepo;
 
-    public AddingJobServiceServiceImpl(JobRepo jobRepo, UserRepo userRepo) {
+    public AddingJobServiceImpl(JobRepo jobRepo, UserRepo userRepo) {
         this.jobRepo = jobRepo;
         this.userRepo = userRepo;
     }

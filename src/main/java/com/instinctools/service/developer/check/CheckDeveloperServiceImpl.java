@@ -6,12 +6,12 @@ import com.instinctools.repo.developerRepo.WorkExperienceRepo;
 import org.springframework.stereotype.Service;
 
 @Service
-public class CheckDeveloperServiceServiceImpl implements CheckDeveloperService {
+public class CheckDeveloperServiceImpl implements CheckDeveloperService {
     private final WorkExperienceRepo workExperienceRepo;
     private final EducationRepo educationRepo;
 
-    public CheckDeveloperServiceServiceImpl(final WorkExperienceRepo workExperienceRepo,
-                                            final EducationRepo educationRepo) {
+    public CheckDeveloperServiceImpl(final WorkExperienceRepo workExperienceRepo,
+                                     final EducationRepo educationRepo) {
         this.workExperienceRepo = workExperienceRepo;
         this.educationRepo = educationRepo;
     }

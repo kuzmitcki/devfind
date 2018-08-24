@@ -4,8 +4,6 @@ import  com.instinctools.entities.userEntites.Role;
 import com.instinctools.entities.userEntites.User;
 import com.instinctools.repo.UserRepo;
 import com.instinctools.service.user.UserService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -18,14 +16,12 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
+
 
 @Controller
 public class LoginController {
     private final UserService userService;
     private final UserRepo userRepo;
-    private Logger l = LoggerFactory.getLogger(LoginController.class);
 
     @Autowired
     public LoginController(final UserService userService,
@@ -36,10 +32,6 @@ public class LoginController {
 
     @GetMapping()
     public String login() {
-        List<String> strings = Arrays.asList("some", "some", "some");
-        int sum = strings.stream().mapToInt(String::length).sum();
-        l.info(String.valueOf(sum));
-
         return "login";
     }
 

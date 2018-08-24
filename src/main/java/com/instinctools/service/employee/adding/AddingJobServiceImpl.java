@@ -64,8 +64,6 @@ public class AddingJobServiceImpl implements AddingJobService {
         job.setJobLocation(jobDto.getJobLocation());
         job.setCountry(jobDto.getCountry());
 
-
-
         Employee employee = user.getEmployee();
         employee.setCompany(jobDto.getCompany());
         user.setEmployee(employee);

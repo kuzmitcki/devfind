@@ -54,10 +54,12 @@ public class JobSearchServiceImpl implements JobSearchService {
     @Override
     public Set<Job> searchForJobByCompany(final String company) {
         if (company.isEmpty()) {
-            return employeeRepo.findAll().stream().map(Employee::getJobs).flatMap(Collection::stream).collect(Collectors.toSet());
+            return employeeRepo.findAll().stream().map(Employee::getJobs)
+                        .flatMap(Collection::stream).collect(Collectors.toSet());
         }
-        return employeeRepo.findByCompanyIgnoreCaseLike("%" + company + "%").stream().map(Employee::getJobs).
-                flatMap(Collection::stream).collect(Collectors.toSet());
+        return employeeRepo.findByCompanyIgnoreCaseLike("%" + company + "%")
+                .stream().map(Employee::getJobs)
+                    .flatMap(Collection::stream).collect(Collectors.toSet());
     }
 
     @Override
@@ -69,9 +71,9 @@ public class JobSearchServiceImpl implements JobSearchService {
     @Override
     public Set<Job> searchForJob(final String description) {
         return Stream.of(searchForJobByTitle(description),
-                searchForJobByQualifications(description),
-                searchForJobByCompany(description)).
-                flatMap(Set::stream).collect(Collectors.toSet());
+                         searchForJobByQualifications(description),
+                         searchForJobByCompany(description)).
+                    flatMap(Set::stream).collect(Collectors.toSet());
     }
 
     @Override
@@ -114,11 +116,11 @@ public class JobSearchServiceImpl implements JobSearchService {
     @Override
     public Set<Job> searchForJobByAllWords(final String allWords) {
         Set<Job> jobs = new HashSet<>();
-        int number = 0;
+        long number = 0;
         for (String word : wordsSpliterator.wordsSpliterator(allWords)) {
             if (!searchForJobByDesiredExperience(word).isEmpty()
-                || !searchForJobByQualifications(word).isEmpty()
-                || !searchForJobByDescription(word).isEmpty()) {
+             || !searchForJobByQualifications(word).isEmpty()
+             || !searchForJobByDescription(word).isEmpty()) {
                 number++;
             }
 
@@ -156,7 +158,7 @@ public class JobSearchServiceImpl implements JobSearchService {
 
     @Override
     public Set<Job> searchForJobByJobType(final String jobType) {
-        if (jobType.equals("All job types")) {
+        if ("All job types".equals(jobType)) {
             return new HashSet<>(jobRepo.findAll());
         }
         return jobRepo.findByJobTypeIgnoreCaseLike("%" + jobType + "%");
@@ -167,8 +169,10 @@ public class JobSearchServiceImpl implements JobSearchService {
         if (salary.isEmpty()) {
             return new HashSet<>(jobRepo.findAll());
         }
-        return jobRepo.findByToSalaryBetween(Long.valueOf(salary), (long) (Long.valueOf(salary) + (Long.valueOf(salary) * SALARY_COEFFICIENT))).stream().
-                filter(jobRepo.findByFromSalaryBetween((long) (Long.valueOf(salary) - (Long.valueOf(salary) * SALARY_COEFFICIENT)), Long.valueOf(salary))::contains)
+        return jobRepo.findByToSalaryBetween(Long.valueOf(salary),
+                                            (long) (Long.valueOf(salary) + (Long.valueOf(salary) * SALARY_COEFFICIENT))).stream().
+                       filter(jobRepo.findByFromSalaryBetween((long) (Long.valueOf(salary) - (Long.valueOf(salary) * SALARY_COEFFICIENT)),
+                              Long.valueOf(salary))::contains)
                 .collect(Collectors.toSet());
     }
 

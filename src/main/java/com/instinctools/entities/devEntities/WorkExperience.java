@@ -3,7 +3,6 @@ package com.instinctools.entities.devEntities;
 
 import lombok.Data;
 import org.hibernate.annotations.Type;
-
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.GeneratedValue;

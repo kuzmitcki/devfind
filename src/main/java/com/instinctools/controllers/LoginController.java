@@ -1,6 +1,5 @@
 package com.instinctools.controllers;
 
-
 import  com.instinctools.entities.userEntites.Role;
 import com.instinctools.entities.userEntites.User;
 import com.instinctools.repo.UserRepo;
@@ -47,7 +46,7 @@ public class LoginController {
             model.addAttribute("message", "User exists!");
             return "registration";
         }
-        attribute.addFlashAttribute("activate", "CheckDeveloperService your email to activate account");
+        attribute.addFlashAttribute("activate", "Check your email to activate account");
         return "redirect:/login";
     }
 

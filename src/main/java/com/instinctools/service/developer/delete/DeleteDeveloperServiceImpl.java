@@ -13,7 +13,7 @@ import java.util.Set;
 
 
 @Service
-public class DeleteDeveloperServiceImpl implements DeleteDeveloperSerivce {
+public class DeleteDeveloperServiceImpl implements DeleteDeveloperService {
     private final UserRepo userRepo;
 
     public DeleteDeveloperServiceImpl(final UserRepo userRepo) {

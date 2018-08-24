@@ -26,9 +26,7 @@ import java.util.Set;
 @PreAuthorize("hasAuthority('EMPLOYEE')")
 public class ResumeSearchController {
     private final ResumeSearchService resumeSearchService;
-
     private final DeveloperRepo developerRepo;
-
     private final MailServiceSender mailSender;
 
     public ResumeSearchController(final ResumeSearchService resumeSearchService,

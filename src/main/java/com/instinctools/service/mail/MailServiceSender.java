@@ -1,3 +1,4 @@
+
 package com.instinctools.service.mail;
 
 
@@ -108,3 +109,4 @@ public class MailServiceSender implements MailService {
         attributes.addFlashAttribute("message", "You successfully send message with your resume to " + employee.getUser().getEmail() + ". Please expect a reply.");
     }
 }
+

@@ -8,8 +8,6 @@ import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
 import javax.persistence.Entity;
 
-import java.util.Objects;
-
 @Data
 @Entity
 public class Job {
@@ -42,22 +40,4 @@ public class Job {
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Employee employee;
-
-
-    @Override
-    public boolean equals(final Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        Job job = (Job) o;
-        return Objects.equals(id, job.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
-    }
 }

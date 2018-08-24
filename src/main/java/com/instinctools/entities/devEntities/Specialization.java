@@ -8,7 +8,6 @@ import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
 import javax.persistence.GenerationType;
 
-
 @Entity
 @Data
 public class Specialization {

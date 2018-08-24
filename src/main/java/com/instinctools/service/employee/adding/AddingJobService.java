@@ -8,7 +8,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.servlet.http.HttpServletRequest;
 
 public interface AddingJobService {
-
     void setEmployeeDescription(User user, JobDto jobDto, HttpServletRequest request);
 
     void setEmployeeJobSalary(JobDto jobDto, RedirectAttributes redirectJob, HttpServletRequest request);

@@ -18,7 +18,6 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -102,7 +101,7 @@ public class ResumeSearchServiceImpl implements ResumeSearchService {
 
     @Override
     public Set<Developer> searchForResumeByEducationDegree(final String degree) {
-        if (degree.equals("1")) {
+        if ("1".equals(degree)) {
             return new HashSet<>(developerRepo.findAll());
         }
         return educationRepo.findByDegreeIgnoreCase(degree).stream().map(Education::getDeveloper).collect(Collectors.toSet());
@@ -120,8 +119,8 @@ public class ResumeSearchServiceImpl implements ResumeSearchService {
     @Override
     public Set<Developer> searchForResumeByDescription(final String description) {
         return Stream.of(searchForResumeByTitleAndDesiredTitle(description),
-                          searchForResumeByCompany(description),
-                          searchForResumeBySkills(description))
+                         searchForResumeByCompany(description),
+                         searchForResumeBySkills(description))
                .flatMap(Set::stream).collect(Collectors.toSet());
     }
 
@@ -140,7 +139,7 @@ public class ResumeSearchServiceImpl implements ResumeSearchService {
         }
         return searchForDeveloperByLocation(searchDto.getWhereDescription()).stream()
                                                               .filter(searchForResumeByDescription(searchDto.getWhatDescription())::contains)
-                                                              .collect(Collectors.toSet());
+                                                                 .collect(Collectors.toSet());
     }
 
     @Override
@@ -180,14 +179,14 @@ public class ResumeSearchServiceImpl implements ResumeSearchService {
 
     @Override
     public Set<Developer> searchForResumeByWords(final String allWords) {
-        AtomicLong number = new AtomicLong(0);
+        long number = 0;
         Set<Developer> developers = new HashSet<>();
         for (String word : wordsSpliterator.wordsSpliterator(allWords)) {
             if (!searchForResumeBySkills(word).isEmpty()
              || !searchForResumeByAdditionalInformation(word).isEmpty()
              || !searchForResumeBySummary(word).isEmpty()
              || !searchForResumeByWorkDescription(word).isEmpty()) {
-                number.incrementAndGet();
+                number++;
             }
             developers.addAll(Stream.of(searchForResumeBySkills(word),
                                         searchForResumeByWorkDescription(word),
@@ -195,7 +194,7 @@ public class ResumeSearchServiceImpl implements ResumeSearchService {
                                         searchForResumeBySummary(word)).flatMap(Set::stream).
                               collect(Collectors.toSet()));
         }
-        if (number.get() < wordsSpliterator.wordsSpliterator(allWords).size()) {
+        if (number < wordsSpliterator.wordsSpliterator(allWords).size()) {
             return Collections.emptySet();
         }
         return developers;

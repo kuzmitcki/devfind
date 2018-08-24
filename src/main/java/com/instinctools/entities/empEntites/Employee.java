@@ -11,7 +11,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.OneToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.FetchType;
-import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -33,21 +32,4 @@ public class Employee {
     @OneToMany(orphanRemoval = true, fetch = FetchType.LAZY)
     @JoinColumn(name = "employee_id")
     private Set<Job> jobs;
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        Employee employee = (Employee) o;
-        return id == employee.id;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
-    }
 }

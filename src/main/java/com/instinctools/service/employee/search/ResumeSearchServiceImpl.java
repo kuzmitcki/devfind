@@ -59,7 +59,8 @@ public class ResumeSearchServiceImpl implements ResumeSearchService {
         if (title.isEmpty()) {
             return new HashSet<>(developerRepo.findAll());
         }
-        return workExperienceRepo.findByJobTitleIgnoreCaseLike("%" + title + "%").stream().map(WorkExperience::getDeveloper).collect(Collectors.toSet());
+        return workExperienceRepo.findByJobTitleIgnoreCaseLike("%" + title + "%")
+                                    .stream().map(WorkExperience::getDeveloper).collect(Collectors.toSet());
     }
 
     @Override
@@ -166,11 +167,11 @@ public class ResumeSearchServiceImpl implements ResumeSearchService {
         Set<Developer> developers = new HashSet<>(developerRepo.findAll());
         Set<Developer> devs = new HashSet<>();
         for (Developer developer : developers) {
-            long dbExperience = 0;
-            for (WorkExperience workExperience : developer.getWorkExperiences()) {
-                dbExperience = dbExperience + Long.parseLong(workExperience.getYearFrom()) - Long.parseLong(workExperience.getYearTo());
-            }
-            if (dbExperience >= experience) {
+            long sum = developer.getWorkExperiences().stream()
+                                                        .mapToLong(workExperience -> Long.parseLong(workExperience.getYearFrom()) -
+                                                                                     Long.parseLong(workExperience.getYearTo()))
+                       .sum();
+            if (sum >= experience){
                 devs.add(developer);
             }
         }

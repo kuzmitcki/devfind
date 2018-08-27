@@ -5,7 +5,6 @@ import org.hibernate.annotations.Type;
 
 @Data
 public class JobDto {
-
     private String title;
 
     @Type(type = "text")

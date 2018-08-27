@@ -225,7 +225,7 @@ public class ResumeSearchServiceImpl implements ResumeSearchService {
     }
 
     @Override
-    public Set<Developer> searchForResumeAdvanced(final User user, final SearchDto searchDto) {
+    public Set<Developer> searchForResumeAdvanced(final SearchDto searchDto) {
         return searchForResumeByOneWord(searchDto.getOneWord()).stream()
                 .filter(searchForResumeByWords(searchDto.getAllWords())::contains)
                 .filter(searchForResumeByPhrase(searchDto.getPhrase())::contains)

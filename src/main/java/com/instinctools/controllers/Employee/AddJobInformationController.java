@@ -20,7 +20,6 @@ import javax.servlet.http.HttpServletRequest;
 @Controller
 @PreAuthorize("hasAuthority('EMPLOYEE')")
 public class AddJobInformationController {
-
     private final AddingJobService addingJobService;
 
     public AddJobInformationController(final AddingJobService addingJobService) {

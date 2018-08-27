@@ -21,7 +21,8 @@ public class DeleteDeveloperServiceImpl implements DeleteDeveloperService {
     }
 
     @Override
-    public void deleteDeveloperEducation(final User user, final Long id) {
+    public void deleteDeveloperEducation(final User user,
+                                         final Long id) {
         Developer developer = user.getDeveloper();
         Set<Education> educations = new HashSet<>(developer.getEducation());
         developer.getEducation().clear();

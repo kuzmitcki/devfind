@@ -75,7 +75,7 @@ public class ResumeSearchController {
                                      final HttpServletRequest request,
                                      final Model model) {
         model.addAttribute("searchDto", searchDto);
-        request.getSession().setAttribute("devs", resumeSearchService.searchForResumeAdvanced(user, searchDto));
+        request.getSession().setAttribute("devs", resumeSearchService.searchForResumeAdvanced(searchDto));
         return "redirect:/resume/results";
     }
 

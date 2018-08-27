@@ -14,7 +14,7 @@ public class DeleteDeveloperInformationController {
 
     private final DeleteDeveloperService developerService;
 
-    public DeleteDeveloperInformationController(DeleteDeveloperService developerService) {
+    public DeleteDeveloperInformationController(final DeleteDeveloperService developerService) {
         this.developerService = developerService;
     }
 

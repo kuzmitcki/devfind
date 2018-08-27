@@ -110,7 +110,8 @@ public class AddingDeveloperServiceImpl implements AddDeveloperService {
     }
 
     @Override
-    public void setDeveloperAdditional(final User user, final String additional) {
+    public void setDeveloperAdditional(final User user,
+                                       final String additional) {
         Developer developer = user.getDeveloper();
         developer.setAdditionalInformation(additional);
         userRepo.save(user);
@@ -119,7 +120,9 @@ public class AddingDeveloperServiceImpl implements AddDeveloperService {
 
 
     @Override
-    public void setDeveloperEducation(final User user, final EducationDto educationDTO, final Long id) {
+    public void setDeveloperEducation(final User user,
+                                      final EducationDto educationDTO,
+                                      final Long id) {
         Education education = educationRepo.getOne(id);
 
         ModelMapper modelMapper = new ModelMapper();
@@ -129,7 +132,8 @@ public class AddingDeveloperServiceImpl implements AddDeveloperService {
     }
 
     @Override
-    public void setDeveloperSkill(final User user, final SkillDto skillDto) {
+    public void setDeveloperSkill(final User user,
+                                  final SkillDto skillDto) {
         final Developer developer = user.getDeveloper();
         Specialization specialization  = new Specialization();
         specialization.setDeveloper(user.getDeveloper());
@@ -141,7 +145,8 @@ public class AddingDeveloperServiceImpl implements AddDeveloperService {
     }
 
     @Override
-    public void setDesiredJob(final User user, final DesiredJobDto desiredJobDTO) {
+    public void setDesiredJob(final User user,
+                              final DesiredJobDto desiredJobDTO) {
         Developer developer = user.getDeveloper();
         DesiredJob desiredJob = developer.getDesiredJob();
         if (desiredJob == null) {

@@ -8,10 +8,10 @@ import com.instinctools.repo.employeeRepo.JobRepo;
 import com.instinctools.service.words.WordsSpliterator;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.LinkedList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -32,90 +32,90 @@ public class JobSearchServiceImpl implements JobSearchService {
     }
 
     @Override
-    public Set<Job> searchForJobByTitle(final String title) {
+    public List<Job> searchForJobByTitle(final String title) {
         if (title.isEmpty()) {
-            return new HashSet<>(jobRepo.findAll());
+            return jobRepo.findAll();
         }
         return jobRepo.findByTitleIgnoreCaseLike("%" + title + "%");
     }
 
     @Override
-    public Set<Job> searchForJobByQualifications(final String qualifications) {
+    public List<Job> searchForJobByQualifications(final String qualifications) {
         if (qualifications.isEmpty()) {
-            return new HashSet<>(jobRepo.findAll());
+            return jobRepo.findAll();
         }
-        Set<Job> jobs = new HashSet<>();
+        List<Job> jobs = new LinkedList<>();
         for (String word :  wordsSpliterator.wordsSpliterator(qualifications)) {
             jobs.addAll(jobRepo.findByQualificationsIgnoreCaseLike("%" + word + "%"));
         }
-        return jobs;
+        return jobs.stream().distinct().collect(Collectors.toList());
     }
 
     @Override
-    public Set<Job> searchForJobByCompany(final String company) {
+    public List<Job> searchForJobByCompany(final String company) {
         if (company.isEmpty()) {
-            return employeeRepo.findAll().stream().map(Employee::getJobs)
-                        .flatMap(Collection::stream).collect(Collectors.toSet());
+            return employeeRepo.findAll().stream().map(Employee::getJobs).
+                    flatMap(Collection::stream).distinct().collect(Collectors.toList());
         }
-        return employeeRepo.findByCompanyIgnoreCaseLike("%" + company + "%")
-                .stream().map(Employee::getJobs)
-                    .flatMap(Collection::stream).collect(Collectors.toSet());
+        return employeeRepo.findByCompanyIgnoreCaseLike("%" + company + "%").
+                stream().map(Employee::getJobs).
+                        flatMap(Collection::stream).distinct().collect(Collectors.toList());
     }
 
     @Override
-    public Set<Job> searchForJobByLocation(final String location) {
+    public List<Job> searchForJobByLocation(final String location) {
         return Stream.concat(jobRepo.findByJobLocationIgnoreCaseLike("%" + location + "%").stream(),
-                jobRepo.findByCountryIgnoreCaseLike("%" + location + "%").stream()).collect(Collectors.toSet());
+                jobRepo.findByCountryIgnoreCaseLike("%" + location + "%").stream()).distinct().collect(Collectors.toList());
     }
 
     @Override
-    public Set<Job> searchForJob(final String description) {
+    public List<Job> searchForJob(final String description) {
         return Stream.of(searchForJobByTitle(description),
                          searchForJobByQualifications(description),
                          searchForJobByCompany(description)).
-                    flatMap(Set::stream).collect(Collectors.toSet());
+                    flatMap(List::stream).distinct().collect(Collectors.toList());
     }
 
     @Override
-    public Set<Job> searchForJob(final String whatDescription, final String whereDescription) {
+    public List<Job> searchForJob(final String whatDescription, final String whereDescription) {
         if (!whereDescription.isEmpty()) {
             return searchForJob(whatDescription);
         }
-        return searchForJob(whatDescription).stream().filter(searchForJobByLocation(whereDescription)::contains)
-                .collect(Collectors.toSet());
+        return searchForJob(whatDescription).stream().filter(searchForJobByLocation(whereDescription)::contains).
+                distinct().collect(Collectors.toList());
     }
 
     @Override
-    public Set<Job> searchForJobByDesiredExperience(final String desiredExperience) {
+    public List<Job> searchForJobByDesiredExperience(final String desiredExperience) {
         if (desiredExperience.isEmpty()) {
-            return new HashSet<>(jobRepo.findAll());
+            return jobRepo.findAll();
         }
         return jobRepo.findByDesiredExperienceIgnoreCaseLike("%" + desiredExperience + "%");
     }
 
     @Override
-    public Set<Job> searchForJobByDescription(final String description) {
+    public List<Job> searchForJobByDescription(final String description) {
         if (description.isEmpty()) {
-            return new HashSet<>(jobRepo.findAll());
+            return jobRepo.findAll();
         }
         return jobRepo.findByFullDescriptionIgnoreCaseLike("%" + description + "%");
     }
 
     @Override
-    public Set<Job> searchForJobByOneWord(final String oneWord) {
-        Set<Job> jobs = new HashSet<>();
+    public List<Job> searchForJobByOneWord(final String oneWord) {
+        List<Job> jobs = new LinkedList<>();
         for (String word :  wordsSpliterator.wordsSpliterator(oneWord)) {
             jobs.addAll(Stream.of(searchForJobByDesiredExperience(word),
-                    searchForJobByQualifications(word),
-                    searchForJobByTitle(word))
-                    .flatMap(Set::stream).collect(Collectors.toSet()));
+                                  searchForJobByQualifications(word),
+                                  searchForJobByTitle(word)).
+                    flatMap(List::stream).distinct().collect(Collectors.toList()));
         }
         return jobs;
     }
 
     @Override
-    public Set<Job> searchForJobByAllWords(final String allWords) {
-        Set<Job> jobs = new HashSet<>();
+    public List<Job> searchForJobByAllWords(final String allWords) {
+        List<Job> jobs = new LinkedList<>();
         long number = 0;
         for (String word : wordsSpliterator.wordsSpliterator(allWords)) {
             if (!searchForJobByDesiredExperience(word).isEmpty()
@@ -125,65 +125,65 @@ public class JobSearchServiceImpl implements JobSearchService {
             }
 
             jobs.addAll(Stream.of(searchForJobByDesiredExperience(word),
-                    searchForJobByQualifications(word),
-                    searchForJobByDescription(word))
-                    .flatMap(Set::stream).collect(Collectors.toSet()));
+                                  searchForJobByQualifications(word),
+                                  searchForJobByDescription(word)).
+                    flatMap(List::stream).distinct().collect(Collectors.toList()));
         }
         if (number < wordsSpliterator.wordsSpliterator(allWords).size()) {
-            return Collections.emptySet();
+            return Collections.emptyList();
         }
         return jobs;
     }
 
     @Override
-    public Set<Job> searchFroJobByPhrase(final String phrase) {
+    public List<Job> searchFroJobByPhrase(final String phrase) {
         return Stream.of(searchForJobByDesiredExperience(phrase),
                          searchForJobByQualifications(phrase),
-                         searchForJobByDescription(phrase))
-                .flatMap(Set::stream).collect(Collectors.toSet());
+                         searchForJobByDescription(phrase)).
+                flatMap(List::stream).distinct().collect(Collectors.toList());
     }
 
     @Override
-    public Set<Job> searchForJobByWordsInTitle(final String title) {
+    public List<Job> searchForJobByWordsInTitle(final String title) {
         if (title.isEmpty()) {
-            return new HashSet<>(jobRepo.findAll());
+            return jobRepo.findAll();
 
         }
-        Set<Job> jobs = new HashSet<>();
+        List<Job> jobs = new LinkedList<>();
         for (String word : wordsSpliterator.wordsSpliterator(title)) {
             jobs.addAll(searchForJobByTitle(word));
         }
-        return jobs;
+        return jobs.stream().distinct().collect(Collectors.toList());
     }
 
     @Override
-    public Set<Job> searchForJobByJobType(final String jobType) {
+    public List<Job> searchForJobByJobType(final String jobType) {
         if ("All job types".equals(jobType)) {
-            return new HashSet<>(jobRepo.findAll());
+            return jobRepo.findAll();
         }
         return jobRepo.findByJobTypeIgnoreCaseLike("%" + jobType + "%");
     }
 
     @Override
-    public Set<Job> searchForJobBySalaryAndPeriod(final String salary) {
+    public List<Job> searchForJobBySalaryAndPeriod(final String salary) {
         if (salary.isEmpty()) {
-            return new HashSet<>(jobRepo.findAll());
+            return jobRepo.findAll();
         }
         return jobRepo.findByToSalaryBetween(Long.valueOf(salary),
                                             (long) (Long.valueOf(salary) + (Long.valueOf(salary) * SALARY_COEFFICIENT))).stream().
                        filter(jobRepo.findByFromSalaryBetween((long) (Long.valueOf(salary) - (Long.valueOf(salary) * SALARY_COEFFICIENT)),
-                              Long.valueOf(salary))::contains)
-                .collect(Collectors.toSet());
+                              Long.valueOf(salary))::contains).
+                distinct().collect(Collectors.toList());
     }
 
     @Override
-    public Set<Job> searchForJobAdvanced(final SearchDto searchDto) {
+    public List<Job> searchForJobAdvanced(final SearchDto searchDto) {
         return searchForJobByOneWord(searchDto.getOneWord()).stream().
                 filter(searchFroJobByPhrase(searchDto.getPhrase())::contains).
                 filter(searchForJobByAllWords(searchDto.getAllWords())::contains).
                 filter(searchForJobByWordsInTitle(searchDto.getTitle())::contains).
                 filter(searchForJobByJobType(searchDto.getJobType())::contains).
                 filter(searchForJobBySalaryAndPeriod(searchDto.getSalary())::contains).
-                collect(Collectors.toSet());
+                distinct().collect(Collectors.toList());
     }
 }

@@ -12,8 +12,9 @@ import javax.persistence.OneToOne;
 import javax.persistence.CascadeType;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Data
@@ -46,15 +47,15 @@ public class Developer {
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "developer_id")
-    private Set<Specialization> specializations;
+    private List<Specialization> specializations = new LinkedList<>();
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "developer_id")
-    private Set<Education> education = new HashSet<>();
+    private List<Education> education = new LinkedList<>();
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "developer_id")
-    private Set<WorkExperience> workExperiences;
+    private List<WorkExperience> workExperiences = new LinkedList<>();
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "desiredJob_id")
@@ -62,6 +63,19 @@ public class Developer {
 
     @OneToOne(fetch = FetchType.LAZY)
     private User user;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Developer developer = (Developer) o;
+        return Objects.equals(id, developer.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
 }
 
 

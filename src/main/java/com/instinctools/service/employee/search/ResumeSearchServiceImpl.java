@@ -6,18 +6,18 @@ import com.instinctools.entities.devEntities.Specialization;
 import com.instinctools.entities.devEntities.DesiredJob;
 import com.instinctools.entities.devEntities.Education;
 import com.instinctools.entities.devEntities.WorkExperience;
-import com.instinctools.entities.userEntites.User;
 import com.instinctools.repo.developerRepo.DesiredJobRepo;
 import com.instinctools.repo.developerRepo.SpecializationRepo;
 import com.instinctools.repo.developerRepo.DeveloperRepo;
 import com.instinctools.repo.developerRepo.EducationRepo;
 import com.instinctools.repo.developerRepo.WorkExperienceRepo;
 import com.instinctools.service.words.WordsSpliterator;
+
 import org.springframework.stereotype.Service;
+
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
+import java.util.LinkedList;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -45,143 +45,144 @@ public class ResumeSearchServiceImpl implements ResumeSearchService {
     }
 
     @Override
-    public Set<Developer> searchForResumeByTitleAndDesiredTitle(final String title) {
+    public List<Developer> searchForResumeByTitleAndDesiredTitle(final String title) {
         if (title.isEmpty()) {
-            return new HashSet<>(developerRepo.findAll());
+            return developerRepo.findAll();
         }
         return Stream.concat(desiredJobRepo.findByDesiredJobTitleIgnoreCaseLike("%" + title + "%").stream().map(DesiredJob::getDeveloper),
-                             workExperienceRepo.findByJobTitleIgnoreCaseLike("%" + title + "%").stream().map(WorkExperience::getDeveloper))
-               .collect(Collectors.toSet());
+                             workExperienceRepo.findByJobTitleIgnoreCaseLike("%" + title + "%").stream().map(WorkExperience::getDeveloper)).
+                distinct().
+                collect(Collectors.toList());
     }
 
     @Override
-    public Set<Developer> searchForResumeByWorkTitle(final String title) {
+    public List<Developer> searchForResumeByWorkTitle(final String title) {
         if (title.isEmpty()) {
-            return new HashSet<>(developerRepo.findAll());
+            return developerRepo.findAll();
         }
-        return workExperienceRepo.findByJobTitleIgnoreCaseLike("%" + title + "%")
-                                    .stream().map(WorkExperience::getDeveloper).collect(Collectors.toSet());
+        return workExperienceRepo.findByJobTitleIgnoreCaseLike("%" + title + "%").
+                stream().map(WorkExperience::getDeveloper).distinct().collect(Collectors.toList());
     }
 
     @Override
-    public Set<Developer> searchForResumeByCompany(final String company) {
+    public List<Developer> searchForResumeByCompany(final String company) {
         if (company.isEmpty()) {
-            return new HashSet<>(developerRepo.findAll());
+            return developerRepo.findAll();
         }
-        return workExperienceRepo.findByCompanyIgnoreCase(company).stream().map(WorkExperience::getDeveloper).collect(Collectors.toSet());
+        return workExperienceRepo.findByCompanyIgnoreCase(company).stream().map(WorkExperience::getDeveloper).distinct().collect(Collectors.toList());
     }
 
     @Override
-    public Set<Developer> searchForResumeByWorkDescription(final String description) {
+    public List<Developer> searchForResumeByWorkDescription(final String description) {
         if (description.isEmpty()) {
-            return new HashSet<>(developerRepo.findAll());
+            return developerRepo.findAll();
         }
         return  workExperienceRepo.findByDescriptionIgnoreCaseLike("%" + description + "%").stream().
-                map(WorkExperience::getDeveloper).collect(Collectors.toSet());
+                map(WorkExperience::getDeveloper).distinct().collect(Collectors.toList());
     }
 
     @Override
-    public Set<Developer> searchForResumeBySkills(final String skills) {
+    public List<Developer> searchForResumeBySkills(final String skills) {
         if (skills.isEmpty()) {
-            return specializationRepo.findAll().stream().map(Specialization::getDeveloper).collect(Collectors.toSet());
+            return specializationRepo.findAll().stream().map(Specialization::getDeveloper).distinct().collect(Collectors.toList());
         }
-        Set<Specialization> specializations = new HashSet<>();
+        List<Specialization> specializations = new LinkedList<>();
         for (String word : wordsSpliterator.wordsSpliterator(skills)) {
             specializations.addAll(specializationRepo.findBySkillIgnoreCase(word));
         }
-        return specializations.stream().map(Specialization::getDeveloper).collect(Collectors.toSet());
+        return specializations.stream().map(Specialization::getDeveloper).distinct().collect(Collectors.toList());
     }
 
     @Override
-    public Set<Developer> searchForResumeByEducationPlace(final String place) {
+    public List<Developer> searchForResumeByEducationPlace(final String place) {
         if (place.isEmpty()) {
-            return new HashSet<>(developerRepo.findAll());
+            return developerRepo.findAll();
         }
-        return educationRepo.findByPlaceIgnoreCaseLike("%" + place + "%").stream().map(Education::getDeveloper).collect(Collectors.toSet());
+        return educationRepo.findByPlaceIgnoreCaseLike("%" + place + "%").stream().map(Education::getDeveloper).distinct().collect(Collectors.toList());
     }
 
     @Override
-    public Set<Developer> searchForResumeByEducationDegree(final String degree) {
+    public List<Developer> searchForResumeByEducationDegree(final String degree) {
         if ("1".equals(degree)) {
-            return new HashSet<>(developerRepo.findAll());
+            return developerRepo.findAll();
         }
-        return educationRepo.findByDegreeIgnoreCase(degree).stream().map(Education::getDeveloper).collect(Collectors.toSet());
+        return educationRepo.findByDegreeIgnoreCase(degree).stream().map(Education::getDeveloper).distinct().collect(Collectors.toList());
     }
 
     @Override
-    public Set<Developer> searchForResumeByFieldOfStudy(final String fieldOfStudy) {
+    public List<Developer> searchForResumeByFieldOfStudy(final String fieldOfStudy) {
         if (fieldOfStudy.equals("")) {
-            return new HashSet<>(developerRepo.findAll());
+            return developerRepo.findAll();
         }
         return educationRepo.findByFieldOfStudyIgnoreCaseLike("%" + fieldOfStudy + "%").
-               stream().map(Education::getDeveloper).collect(Collectors.toSet());
+               stream().map(Education::getDeveloper).distinct().collect(Collectors.toList());
     }
 
     @Override
-    public Set<Developer> searchForResumeByDescription(final String description) {
+    public List<Developer> searchForResumeByDescription(final String description) {
         return Stream.of(searchForResumeByTitleAndDesiredTitle(description),
                          searchForResumeByCompany(description),
-                         searchForResumeBySkills(description))
-               .flatMap(Set::stream).collect(Collectors.toSet());
+                         searchForResumeBySkills(description)).
+                flatMap(List::stream).collect(Collectors.toList());
     }
 
     @Override
-    public Set<Developer> searchForDeveloperByLocation(final String location) {
+    public List<Developer> searchForDeveloperByLocation(final String location) {
         if (location.isEmpty()) {
-            return new HashSet<>(developerRepo.findAll());
+            return developerRepo.findAll();
         }
         return developerRepo.findByCityIgnoreCaseOrZipPostalCodeIgnoreCaseOrCountryIgnoreCase(location, location, location);
     }
 
     @Override
-    public Set<Developer> searchForResume(final SearchDto searchDto) {
+    public List<Developer> searchForResume(final SearchDto searchDto) {
         if (searchDto.getWhereDescription().isEmpty()) {
             return searchForResumeByDescription(searchDto.getWhatDescription());
         }
-        return searchForDeveloperByLocation(searchDto.getWhereDescription()).stream()
-                                                              .filter(searchForResumeByDescription(searchDto.getWhatDescription())::contains)
-                                                                 .collect(Collectors.toSet());
+        return searchForDeveloperByLocation(searchDto.getWhereDescription()).stream().
+                    filter(searchForResumeByDescription(searchDto.getWhatDescription())::contains).
+                        distinct().collect(Collectors.toList());
     }
 
     @Override
-    public Set<Developer> searchForResumeByAdditionalInformation(final String additional) {
+    public List<Developer> searchForResumeByAdditionalInformation(final String additional) {
         if (additional.isEmpty()) {
-            return new HashSet<>(developerRepo.findAll());
+            return developerRepo.findAll();
         }
         return developerRepo.findByAdditionalInformationIgnoreCaseLike("%" + additional + "%");
     }
 
     @Override
-    public Set<Developer> searchForResumeBySummary(final String summary) {
+    public List<Developer> searchForResumeBySummary(final String summary) {
         if (summary.isEmpty()) {
-            return new HashSet<>(developerRepo.findAll());
+            return developerRepo.findAll();
         }
         return developerRepo.findBySummaryIgnoreCaseLike("%" + summary + "%");
     }
 
     @Override
-    public Set<Developer> searchForDeveloperByExperience(final Long experience) {
+    public List<Developer> searchForDeveloperByExperience(final Long experience) {
         if (experience == 15) {
-            return new HashSet<>(developerRepo.findAll());
+            return developerRepo.findAll();
         }
-        Set<Developer> developers = new HashSet<>(developerRepo.findAll());
-        Set<Developer> devs = new HashSet<>();
+        List<Developer> developers = developerRepo.findAll();
+        List<Developer> devs = new LinkedList<>();
         for (Developer developer : developers) {
-            long sum = developer.getWorkExperiences().stream()
-                                                        .mapToLong(workExperience -> Long.parseLong(workExperience.getYearFrom()) -
-                                                                                     Long.parseLong(workExperience.getYearTo()))
-                       .sum();
+            long sum = developer.getWorkExperiences().stream().
+                                                         mapToLong(workExperience -> Long.parseLong(workExperience.getYearFrom()) -
+                                                                                     Long.parseLong(workExperience.getYearTo())).
+                    sum();
             if (sum >= experience){
                 devs.add(developer);
             }
         }
-        return devs;
+        return devs.stream().distinct().collect(Collectors.toList());
     }
 
     @Override
-    public Set<Developer> searchForResumeByWords(final String allWords) {
+    public List<Developer> searchForResumeByWords(final String allWords) {
         long number = 0;
-        Set<Developer> developers = new HashSet<>();
+        List<Developer> developers = new LinkedList<>();
         for (String word : wordsSpliterator.wordsSpliterator(allWords)) {
             if (!searchForResumeBySkills(word).isEmpty()
              || !searchForResumeByAdditionalInformation(word).isEmpty()
@@ -192,49 +193,50 @@ public class ResumeSearchServiceImpl implements ResumeSearchService {
             developers.addAll(Stream.of(searchForResumeBySkills(word),
                                         searchForResumeByWorkDescription(word),
                                         searchForResumeByAdditionalInformation(word),
-                                        searchForResumeBySummary(word)).flatMap(Set::stream).
-                              collect(Collectors.toSet()));
+                                        searchForResumeBySummary(word)).flatMap(List::stream).
+                    distinct().collect(Collectors.toList()));
         }
         if (number < wordsSpliterator.wordsSpliterator(allWords).size()) {
-            return Collections.emptySet();
+            return Collections.emptyList();
         }
-        return developers;
+        return developers.stream().distinct().collect(Collectors.toList());
     }
 
     @Override
-    public Set<Developer> searchForResumeByPhrase(final String phrase) {
+    public List<Developer> searchForResumeByPhrase(final String phrase) {
         return Stream.of(searchForResumeBySkills(phrase),
                          searchForResumeByWorkDescription(phrase),
                          searchForResumeByAdditionalInformation(phrase),
                          searchForResumeBySummary(phrase)).
-                flatMap(Set::stream).collect(Collectors.toSet());
+                flatMap(List::stream).distinct().collect(Collectors.toList());
     }
 
     @Override
-    public Set<Developer> searchForResumeByOneWord(final String oneWord) {
+    public List<Developer> searchForResumeByOneWord(final String oneWord) {
         List<String> words = wordsSpliterator.wordsSpliterator(oneWord);
-        Set<Developer> developers = new HashSet<>();
+        List<Developer> developers = new LinkedList<>();
         for (String word : words) {
             developers.addAll(Stream.of(searchForResumeBySkills(word),
                                         searchForResumeByWorkDescription(word),
                                         searchForResumeByAdditionalInformation(word),
                                         searchForResumeBySummary(word)).
-                              flatMap(Set::stream).collect(Collectors.toSet()));
+                              flatMap(List::stream).distinct().collect(Collectors.toSet()));
         }
         return developers;
     }
 
     @Override
-    public Set<Developer> searchForResumeAdvanced(final SearchDto searchDto) {
-        return searchForResumeByOneWord(searchDto.getOneWord()).stream()
-                .filter(searchForResumeByWords(searchDto.getAllWords())::contains)
-                .filter(searchForResumeByPhrase(searchDto.getPhrase())::contains)
-                .filter(searchForResumeByWorkTitle(searchDto.getTitle())::contains)
-                .filter(searchForResumeByCompany(searchDto.getCompany())::contains)
-                .filter(searchForResumeByEducationPlace(searchDto.getPlace())::contains)
-                .filter(searchForResumeByEducationDegree(searchDto.getDegree())::contains)
-                .filter(searchForResumeByFieldOfStudy(searchDto.getField())::contains)
-                .filter(searchForDeveloperByLocation(searchDto.getLocation())::contains)
-                .filter(searchForDeveloperByExperience(searchDto.getExperience())::contains).collect(Collectors.toSet());
+    public List<Developer> searchForResumeAdvanced(final SearchDto searchDto) {
+        return searchForResumeByOneWord(searchDto.getOneWord()).stream().
+                filter(searchForResumeByWords(searchDto.getAllWords())::contains).
+                filter(searchForResumeByPhrase(searchDto.getPhrase())::contains).
+                filter(searchForResumeByWorkTitle(searchDto.getTitle())::contains).
+                filter(searchForResumeByCompany(searchDto.getCompany())::contains).
+                filter(searchForResumeByEducationPlace(searchDto.getPlace())::contains).
+                filter(searchForResumeByEducationDegree(searchDto.getDegree())::contains).
+                filter(searchForResumeByFieldOfStudy(searchDto.getField())::contains).
+                filter(searchForDeveloperByLocation(searchDto.getLocation())::contains).
+                filter(searchForDeveloperByExperience(searchDto.getExperience())::contains).
+               distinct().collect(Collectors.toList());
     }
 }

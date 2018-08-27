@@ -18,8 +18,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
 @Controller
 @RequestMapping("resume")
@@ -55,9 +54,9 @@ public class ResumeSearchController {
     @SuppressWarnings("unchecked")
     public String resultsPage(final Model model,
                               final HttpServletRequest request) {
-        Set<Developer> developers = (Set<Developer>) request.getSession().getAttribute("devs");
+        List<Developer> developers = (List<Developer>) request.getSession().getAttribute("devs");
         if (developers == null) {
-            model.addAttribute("developers", new HashSet<>(developerRepo.findAll()));
+            model.addAttribute("developers", developerRepo.findAll());
         } else {
             model.addAttribute("developers", developers);
         }

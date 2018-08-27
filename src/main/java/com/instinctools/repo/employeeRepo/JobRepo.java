@@ -4,26 +4,26 @@ import com.instinctools.entities.empEntites.Employee;
 import com.instinctools.entities.empEntites.Job;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.Set;
+import java.util.List;
 
 public interface JobRepo extends JpaRepository<Job, Long> {
-    Set<Job> findByTitleIgnoreCaseLike(String titleLike);
+    List<Job> findByTitleIgnoreCaseLike(String titleLike);
 
-    Set<Job> findByQualificationsIgnoreCaseLike(String qualificationsLike);
+    List<Job> findByQualificationsIgnoreCaseLike(String qualificationsLike);
 
-    Set<Job> findByFullDescriptionIgnoreCaseLike(String descriptionLike);
+    List<Job> findByFullDescriptionIgnoreCaseLike(String descriptionLike);
 
-    Set<Job> findByJobTypeIgnoreCaseLike(String jobTypeLike);
+    List<Job> findByJobTypeIgnoreCaseLike(String jobTypeLike);
 
-    Set<Job> findByJobLocationIgnoreCaseLike(String jobLocationLike);
+    List<Job> findByJobLocationIgnoreCaseLike(String jobLocationLike);
 
-    Set<Job> findByCountryIgnoreCaseLike(String countryLike);
+    List<Job> findByCountryIgnoreCaseLike(String countryLike);
 
-    Set<Job> findByDesiredExperienceIgnoreCaseLike(String desiredExperienceLike);
+    List<Job> findByDesiredExperienceIgnoreCaseLike(String desiredExperienceLike);
 
-    Set<Job> findByToSalaryBetween(Long toSalary, Long toSalaryWithCoefficient);
+    List<Job> findByToSalaryBetween(Long toSalary, Long toSalaryWithCoefficient);
 
-    Set<Job> findByFromSalaryBetween(Long fromSalaryWithCoefficient, Long fromSalary);
+    List<Job> findByFromSalaryBetween(Long fromSalaryWithCoefficient, Long fromSalary);
 
-    Set<Job> findByEmployee(Employee employee);
+    List<Job> findByEmployee(Employee employee);
 }

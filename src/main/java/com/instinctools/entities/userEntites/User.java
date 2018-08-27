@@ -19,7 +19,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.EnumType;
 import javax.validation.constraints.Email;
 import java.util.Collection;
-import java.util.Set;
+import java.util.List;
 
 @Entity
 @Data
@@ -50,7 +50,7 @@ public class User implements UserDetails {
     @ElementCollection(targetClass = Role.class, fetch = FetchType.LAZY)
     @CollectionTable(name = "roles", joinColumns = @JoinColumn(name = "user_id"))
     @Enumerated(EnumType.STRING)
-    private Set<Role> roles;
+    private List<Role> roles;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

@@ -8,8 +8,9 @@ import com.instinctools.entities.userEntites.User;
 import com.instinctools.repo.UserRepo;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.LinkedList;
+import java.util.List;
+
 
 
 @Service
@@ -24,7 +25,7 @@ public class DeleteDeveloperServiceImpl implements DeleteDeveloperService {
     public void deleteDeveloperEducation(final User user,
                                          final Long id) {
         Developer developer = user.getDeveloper();
-        Set<Education> educations = new HashSet<>(developer.getEducation());
+        List<Education> educations = new LinkedList<>(developer.getEducation());
         developer.getEducation().clear();
         educations.removeIf(e -> e.getId().equals(id));
         developer.setEducation(educations);
@@ -36,7 +37,7 @@ public class DeleteDeveloperServiceImpl implements DeleteDeveloperService {
     public void deleteDeveloperWork(final User user,
                                     final Long id) {
         Developer developer = user.getDeveloper();
-        Set<WorkExperience> workExperiences = new HashSet<>(developer.getWorkExperiences());
+        List<WorkExperience> workExperiences = new LinkedList<>(developer.getWorkExperiences());
         developer.getWorkExperiences().clear();
         workExperiences.removeIf(e -> e.getId().equals(id));
         developer.setWorkExperiences(workExperiences);
@@ -48,7 +49,7 @@ public class DeleteDeveloperServiceImpl implements DeleteDeveloperService {
     public void deleteDeveloperSkill(final User user,
                                      final Long id) {
         Developer developer = user.getDeveloper();
-        Set<Specialization> specializations = new HashSet<>(developer.getSpecializations());
+        List<Specialization> specializations = new LinkedList<>(developer.getSpecializations());
         developer.getSpecializations().clear();
         specializations.removeIf(s -> s.getId().equals(id));
         developer.setSpecializations(specializations);

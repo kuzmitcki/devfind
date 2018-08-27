@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Set;
 
 @Service
@@ -32,7 +34,7 @@ public class AddingJobServiceImpl implements AddingJobService {
         job.setFullDescription(jobDto.getFullDescription());
         job.setDesiredExperience(jobDto.getDesiredExperience());
         Employee employee = user.getEmployee();
-        Set<Job> jobs = new HashSet<>(employee.getJobs());
+        List<Job> jobs = new LinkedList<>(employee.getJobs());
         employee.getJobs().clear();
         jobs.add(job);
         employee.setJobs(jobs);

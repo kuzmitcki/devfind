@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Set;
+import java.util.List;
 
 @Controller
 @RequestMapping("job")
@@ -53,7 +53,7 @@ public class SearchForJobController {
     @SuppressWarnings("unchecked")
     public String searchResults(final HttpServletRequest request,
                                 final Model model) {
-        Set<Job> jobs = (Set<Job>) request.getSession().getAttribute("jobsRequest");
+        List<Job> jobs = (List<Job>) request.getSession().getAttribute("jobsRequest");
         if (jobs == null) {
             model.addAttribute("jobs", jobRepo.findAll());
         } else {

@@ -4,10 +4,10 @@ import com.instinctools.entities.devEntities.Developer;
 import com.instinctools.entities.devEntities.Specialization;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.Set;
+import java.util.List;
 
 public interface SpecializationRepo extends JpaRepository<Specialization, Long> {
-    Set<Specialization> findBySkillIgnoreCase(String skill);
+    List<Specialization> findBySkillIgnoreCase(String skill);
 
-    Set<Specialization> findByDeveloper(Developer developer);
+    List<Specialization> findByDeveloper(Developer developer);
 }

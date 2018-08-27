@@ -8,7 +8,6 @@ import javax.persistence.Entity;
 import javax.persistence.OneToOne;
 import javax.persistence.GenerationType;
 
-
 @Data
 @Entity
 public class DesiredJob {

@@ -60,13 +60,13 @@ public class UserService implements UserDetailsService {
             developer.setUser(user);
             developer.setEnable(true);
             user.setDeveloper(developer);
-            user.setRoles(Collections.singleton(Role.DEVELOPER));
+            user.setRoles(Collections.singletonList(Role.DEVELOPER));
         }
         if ("2".equals(devOrEmp)) {
             Employee employee = new Employee();
             employee.setUser(user);
             user.setEmployee(employee);
-            user.setRoles(Collections.singleton(Role.EMPLOYEE));
+            user.setRoles(Collections.singletonList(Role.EMPLOYEE));
         }
         user.setActivationCode(UUID.randomUUID().toString());
         userRepo.save(user);

@@ -3,8 +3,8 @@ package com.instinctools.repo.developerRepo;
 import com.instinctools.entities.devEntities.DesiredJob;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.Set;
+import java.util.List;
 
 public interface DesiredJobRepo extends JpaRepository<DesiredJob, Long> {
-    Set<DesiredJob> findByDesiredJobTitleIgnoreCaseLike(String desiredJobTitleLike);
+    List<DesiredJob> findByDesiredJobTitleIgnoreCaseLike(String desiredJobTitleLike);
 }

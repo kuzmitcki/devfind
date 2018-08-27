@@ -104,7 +104,7 @@ public class JobSearchServiceImpl implements JobSearchService {
     @Override
     public List<Job> searchForJobByOneWord(final String oneWord) {
         List<Job> jobs = new LinkedList<>();
-        for (String word :  wordsSpliterator.wordsSpliterator(oneWord)) {
+        for (String word : wordsSpliterator.wordsSpliterator(oneWord)) {
             jobs.addAll(Stream.of(searchForJobByDesiredExperience(word),
                                   searchForJobByQualifications(word),
                                   searchForJobByTitle(word)).

@@ -14,7 +14,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -39,12 +38,11 @@ public class EditDeveloperController {
 
     @PostMapping("/edit-developer/information")
     public String editContactInformation(final @AuthenticationPrincipal User user,
-                                         final @RequestParam(name = "email") String email,
                                          final UserDto userDTO,
                                          final HttpServletRequest request,
                                          final Model model) {
         model.addAttribute("developerDto", userDTO);
-        editDeveloperService.editResumeBasicInformation(user, email, userDTO, request);
+        editDeveloperService.editResumeBasicInformation(user, userDTO, request);
         return "redirect:/developer/resume";
     }
 

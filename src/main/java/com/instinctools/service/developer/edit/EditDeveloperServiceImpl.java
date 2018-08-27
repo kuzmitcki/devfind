@@ -32,7 +32,6 @@ public class EditDeveloperServiceImpl implements EditDeveloperService {
 
     @Override
     public void editResumeBasicInformation(final User user,
-                                           final String email,
                                            final UserDto userDTO,
                                            final HttpServletRequest request) {
         Developer developer = user.getDeveloper();
@@ -41,8 +40,8 @@ public class EditDeveloperServiceImpl implements EditDeveloperService {
         developer.setTelephone(userDTO.getTelephone());
         developer.setZipPostalCode(userDTO.getZipPostalCode());
 
-        if (!user.getEmail().equals(email)) {
-            request.getSession().setAttribute("email", email);
+        if (!user.getEmail().equals(userDTO.getEmail())) {
+            request.getSession().setAttribute("email", userDTO.getEmail());
             user.setActivationCode(UUID.randomUUID().toString());
             String message = String.format(
                     "Hello, %s! \n"

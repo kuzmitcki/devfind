@@ -70,8 +70,7 @@ public class ResumeSearchController {
     }
 
     @PostMapping("/search/advanced")
-    public String findResumeAdvanced(final @AuthenticationPrincipal User user,
-                                     final @ModelAttribute SearchDto searchDto,
+    public String findResumeAdvanced(final @ModelAttribute SearchDto searchDto,
                                      final HttpServletRequest request,
                                      final Model model) {
         model.addAttribute("searchDto", searchDto);

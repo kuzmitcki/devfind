@@ -85,4 +85,11 @@ public class User implements UserDetails {
     public boolean isDeveloperRole() {
                 return roles.contains(Role.DEVELOPER);
         }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                '}';
+    }
 }

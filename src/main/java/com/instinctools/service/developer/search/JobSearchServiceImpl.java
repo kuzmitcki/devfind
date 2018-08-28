@@ -184,6 +184,6 @@ public class JobSearchServiceImpl implements JobSearchService {
                 filter(searchForJobByWordsInTitle(searchDto.getTitle())::contains).
                 filter(searchForJobByJobType(searchDto.getJobType())::contains).
                 filter(searchForJobBySalaryAndPeriod(searchDto.getSalary())::contains).
-                distinct().collect(Collectors.toList());
+               distinct().collect(Collectors.toList());
     }
 }

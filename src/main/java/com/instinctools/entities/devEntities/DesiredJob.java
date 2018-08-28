@@ -24,5 +24,5 @@ public class DesiredJob {
     private String desiredSalaryPeriod;
 
     @OneToOne
-    private Developer developer;
+    private Developer developer = null;
 }

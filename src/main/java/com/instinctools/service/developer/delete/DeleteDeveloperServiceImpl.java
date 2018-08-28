@@ -1,60 +1,38 @@
 package com.instinctools.service.developer.delete;
 
-import com.instinctools.entities.devEntities.Developer;
-import com.instinctools.entities.devEntities.Education;
-import com.instinctools.entities.devEntities.Specialization;
-import com.instinctools.entities.devEntities.WorkExperience;
-import com.instinctools.entities.userEntites.User;
-import com.instinctools.repo.UserRepo;
+import com.instinctools.repo.developerRepo.EducationRepo;
+import com.instinctools.repo.developerRepo.SpecializationRepo;
+import com.instinctools.repo.developerRepo.WorkExperienceRepo;
 import org.springframework.stereotype.Service;
-
-import java.util.LinkedList;
-import java.util.List;
-
 
 
 @Service
 public class DeleteDeveloperServiceImpl implements DeleteDeveloperService {
-    private final UserRepo userRepo;
+    private final EducationRepo educationRepo;
+    private final WorkExperienceRepo workExperienceRepo;
+    private final SpecializationRepo specializationRepo;
 
-    public DeleteDeveloperServiceImpl(final UserRepo userRepo) {
-        this.userRepo = userRepo;
+    public DeleteDeveloperServiceImpl(final EducationRepo educationRepo,
+                                      final WorkExperienceRepo workExperienceRepo,
+                                      final SpecializationRepo specializationRepo) {
+        this.educationRepo = educationRepo;
+        this.workExperienceRepo = workExperienceRepo;
+        this.specializationRepo = specializationRepo;
     }
 
     @Override
-    public void deleteDeveloperEducation(final User user,
-                                         final Long id) {
-        Developer developer = user.getDeveloper();
-        List<Education> educations = new LinkedList<>(developer.getEducation());
-        developer.getEducation().clear();
-        educations.removeIf(e -> e.getId().equals(id));
-        developer.setEducation(educations);
-        user.setDeveloper(developer);
-        userRepo.save(user);
+    public void deleteDeveloperEducation(final Long id) {
+        educationRepo.deleteById(id);
     }
 
     @Override
-    public void deleteDeveloperWork(final User user,
-                                    final Long id) {
-        Developer developer = user.getDeveloper();
-        List<WorkExperience> workExperiences = new LinkedList<>(developer.getWorkExperiences());
-        developer.getWorkExperiences().clear();
-        workExperiences.removeIf(e -> e.getId().equals(id));
-        developer.setWorkExperiences(workExperiences);
-        user.setDeveloper(developer);
-        userRepo.save(user);
+    public void deleteDeveloperWork(final Long id) {
+       workExperienceRepo.deleteById(id);
     }
 
     @Override
-    public void deleteDeveloperSkill(final User user,
-                                     final Long id) {
-        Developer developer = user.getDeveloper();
-        List<Specialization> specializations = new LinkedList<>(developer.getSpecializations());
-        developer.getSpecializations().clear();
-        specializations.removeIf(s -> s.getId().equals(id));
-        developer.setSpecializations(specializations);
-        user.setDeveloper(developer);
-        userRepo.save(user);
+    public void deleteDeveloperSkill(final Long id) {
+        specializationRepo.deleteById(id);
     }
 }
 

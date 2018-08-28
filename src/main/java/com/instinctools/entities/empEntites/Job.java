@@ -40,4 +40,20 @@ public class Job {
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Employee employee;
+
+    @Override
+    public String toString() {
+        return "Job{" +
+                "title='" + title + '\'' +
+                ", fullDescription='" + fullDescription + '\'' +
+                ", desiredExperience='" + desiredExperience + '\'' +
+                ", fromSalary=" + fromSalary +
+                ", toSalary=" + toSalary +
+                ", jobType='" + jobType + '\'' +
+                ", qualifications='" + qualifications + '\'' +
+                ", salaryPeriod=" + salaryPeriod +
+                ", jobLocation='" + jobLocation + '\'' +
+                ", country='" + country + '\'' +
+                '}';
+    }
 }

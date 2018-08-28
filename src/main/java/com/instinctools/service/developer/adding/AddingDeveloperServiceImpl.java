@@ -11,7 +11,6 @@ import com.instinctools.entities.devEntities.Education;
 import com.instinctools.entities.devEntities.Specialization;
 import com.instinctools.entities.devEntities.WorkExperience;
 import com.instinctools.entities.userEntites.User;
-import com.instinctools.repo.UserRepo;
 import com.instinctools.repo.developerRepo.EducationRepo;
 import com.instinctools.repo.developerRepo.WorkExperienceRepo;
 import com.instinctools.repo.developerRepo.DeveloperRepo;
@@ -22,20 +21,17 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class AddingDeveloperServiceImpl implements AddDeveloperService {
-    private final UserRepo userRepo;
     private final EducationRepo educationRepo;
     private final DeveloperRepo developerRepo;
     private final WorkExperienceRepo workExperienceRepo;
     private final SpecializationRepo specializationRepo;
     private final DesiredJobRepo desiredJobRepo;
 
-    public AddingDeveloperServiceImpl(final UserRepo userRepo,
-                                      final EducationRepo educationRepo,
+    public AddingDeveloperServiceImpl(final EducationRepo educationRepo,
                                       final DeveloperRepo developerRepo,
                                       final WorkExperienceRepo workExperienceRepo,
                                       final SpecializationRepo specializationRepo,
                                       final DesiredJobRepo desiredJobRepo) {
-        this.userRepo = userRepo;
         this.educationRepo = educationRepo;
         this.developerRepo = developerRepo;
         this.workExperienceRepo = workExperienceRepo;
@@ -59,8 +55,7 @@ public class AddingDeveloperServiceImpl implements AddDeveloperService {
             }
             ModelMapper mapper = new ModelMapper();
             mapper.map(userDTO, developer);
-            user.setDeveloper(developer);
-            userRepo.save(user);
+            developerRepo.save(developer);
         }
     }
 
@@ -74,10 +69,7 @@ public class AddingDeveloperServiceImpl implements AddDeveloperService {
             mapper.map(educationDTO, education);
             education.setDeveloper(developer);
             educationRepo.save(education);
-            developer.setEducation(educationRepo.findByDeveloper(developer));
-            developerRepo.save(developer);
         }
-
     }
 
     @Override
@@ -87,18 +79,14 @@ public class AddingDeveloperServiceImpl implements AddDeveloperService {
         final Developer developer = user.getDeveloper();
         if (check != null) {
             developer.setJobExperience(false);
-            user.setDeveloper(developer);
-            userRepo.save(user);
+            developerRepo.save(developer);
         } else {
             WorkExperience workExperience = new WorkExperience();
             ModelMapper mapper = new ModelMapper();
             mapper.map(workExperienceDTO, workExperience);
             workExperience.setDeveloper(user.getDeveloper());
             workExperienceRepo.save(workExperience);
-            developer.setWorkExperiences(workExperienceRepo.findByDeveloper(developer));
-            developerRepo.save(developer);
         }
-
     }
 
     @Override
@@ -114,10 +102,8 @@ public class AddingDeveloperServiceImpl implements AddDeveloperService {
                                        final String additional) {
         Developer developer = user.getDeveloper();
         developer.setAdditionalInformation(additional);
-        userRepo.save(user);
-
+        developerRepo.save(developer);
     }
-
 
     @Override
     public void setDeveloperEducation(final User user,
@@ -134,14 +120,11 @@ public class AddingDeveloperServiceImpl implements AddDeveloperService {
     @Override
     public void setDeveloperSkill(final User user,
                                   final SkillDto skillDto) {
-        final Developer developer = user.getDeveloper();
         Specialization specialization  = new Specialization();
         specialization.setDeveloper(user.getDeveloper());
         specialization.setExperience(skillDto.getExperience());
         specialization.setSkill(skillDto.getSkill());
         specializationRepo.save(specialization);
-        developer.setSpecializations(specializationRepo.findByDeveloper(developer));
-        developerRepo.save(developer);
     }
 
     @Override
@@ -158,8 +141,6 @@ public class AddingDeveloperServiceImpl implements AddDeveloperService {
         ModelMapper mapper = new ModelMapper();
         mapper.map(desiredJobDTO, desiredJob);
         desiredJob.setDeveloper(developer);
-        developer.setDesiredJob(desiredJob);
-        user.setDeveloper(developer);
-        userRepo.save(user);
+        desiredJobRepo.save(desiredJob);
     }
 }

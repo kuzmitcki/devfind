@@ -111,7 +111,7 @@ public class ResumeSearchServiceImpl implements ResumeSearchService {
 
     @Override
     public List<Developer> searchForResumeByFieldOfStudy(final String fieldOfStudy) {
-        if (fieldOfStudy.equals("")) {
+        if (fieldOfStudy.isEmpty()) {
             return developerRepo.findAll();
         }
         return educationRepo.findByFieldOfStudyIgnoreCaseLike("%" + fieldOfStudy + "%").
@@ -123,7 +123,7 @@ public class ResumeSearchServiceImpl implements ResumeSearchService {
         return Stream.of(searchForResumeByTitleAndDesiredTitle(description),
                          searchForResumeByCompany(description),
                          searchForResumeBySkills(description)).
-                flatMap(List::stream).collect(Collectors.toList());
+                distinct().flatMap(List::stream).collect(Collectors.toList());
     }
 
     @Override
@@ -220,7 +220,7 @@ public class ResumeSearchServiceImpl implements ResumeSearchService {
                                         searchForResumeByWorkDescription(word),
                                         searchForResumeByAdditionalInformation(word),
                                         searchForResumeBySummary(word)).
-                              flatMap(List::stream).distinct().collect(Collectors.toSet()));
+                              flatMap(List::stream).distinct().collect(Collectors.toList()));
         }
         return developers;
     }

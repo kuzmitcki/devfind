@@ -7,6 +7,7 @@ import com.instinctools.controllers.Dto.UserDto;
 import com.instinctools.controllers.Dto.WorkExperienceDto;
 import com.instinctools.entities.userEntites.User;
 import com.instinctools.repo.UserRepo;
+import com.instinctools.repo.developerRepo.DeveloperRepo;
 import com.instinctools.repo.developerRepo.WorkExperienceRepo;
 import com.instinctools.service.mail.MailService;
 import com.instinctools.service.mail.MailServiceSender;
@@ -18,16 +19,15 @@ import java.util.UUID;
 
 @Service
 public class EditDeveloperServiceImpl implements EditDeveloperService {
-    private final UserRepo userRepo;
     private final MailService mailServiceSender;
     private final WorkExperienceRepo workExperienceRepo;
+    private final DeveloperRepo developerRepo;
 
-    public EditDeveloperServiceImpl(final UserRepo userRepo,
-                                    final MailServiceSender mailSender,
-                                    final WorkExperienceRepo workExperienceRepo) {
-        this.userRepo = userRepo;
+    public EditDeveloperServiceImpl(final MailServiceSender mailSender,
+                                    final WorkExperienceRepo workExperienceRepo, DeveloperRepo developerRepo) {
         this.mailServiceSender = mailSender;
         this.workExperienceRepo = workExperienceRepo;
+        this.developerRepo = developerRepo;
     }
 
     @Override
@@ -52,8 +52,7 @@ public class EditDeveloperServiceImpl implements EditDeveloperService {
 
             mailServiceSender.send(user.getEmail(), "Activation code", message);
         }
-        user.setDeveloper(developer);
-        userRepo.save(user);
+        developerRepo.save(developer);
     }
 
     @Override

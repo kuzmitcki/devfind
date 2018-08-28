@@ -48,7 +48,7 @@
         </form>
     </div>
 </nav>
-    <#list employee.jobs as job>
+    <#list jobs as job>
 <div class="container h-100 " style=" font-family: Helvetica Neue,Helvetica,Arial,Liberation Sans,Roboto,Noto,sans-serif;">
     <div  class="row h-100 justify-content-center align-items-center">
         <div style="margin-bottom: 15%;width: 90%; background-color: white">
@@ -87,7 +87,7 @@
                 <div id="locationBox" style="display: none;padding-bottom: 2%;padding-top: 2%;">
                     <form method="post" action="/edit-employee/job/location/${job.id!}">
                         <div class="form-group" style="width: 95%">
-                            <input value="${job.title!}"  style="border-radius: 8px;" type="text" class="form-control" name="jobLocation" id="inputLocation">
+                            <input value="${job.jobLocation!}"  style="border-radius: 8px;" type="text" class="form-control" name="jobLocation" id="inputLocation">
                         </div>
                         <div class="form-group" style="width: 95%">
                             <select  style="color: #4b4b4b; border-radius: 8px" class="custom-select" id="inputCountry" name="country">

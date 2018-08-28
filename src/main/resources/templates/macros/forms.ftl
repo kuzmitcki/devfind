@@ -700,7 +700,7 @@
                                 <span style="color: #767676;font-family: Helvetica Neue,Helvetica,Arial,Liberation Sans,Roboto,Noto,sans-serif;font-size: .75rem;letter-spacing: 0;line-height: 1.25rem;font-weight: 400;display: inline-block">Describe your position and any significant accomplishments..</span>
                             </div>
                         </label>
-                        <textarea  name="description" style="border-radius: 8px" class="form-control" id="textArea" rows="3"><#if isResumeAdd><#else>${work.description!}</#if></textarea>
+                        <textarea  name="description" style="color: #6c757d;font-size: 13px;border-radius: 8px" class="form-control" id="textArea" rows="3"><#if isResumeAdd><#else>${work.description!}</#if></textarea>
                     </div>
                 <#if isResumeAdd>
                 <div class="col-auto my-1">

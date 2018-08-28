@@ -12,7 +12,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.CascadeType;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -47,27 +47,31 @@ public class Developer {
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "developer_id")
-    private List<Specialization> specializations = new LinkedList<>();
+    private List<Specialization> specializations = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "developer_id")
-    private List<Education> education = new LinkedList<>();
+    private List<Education> education = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "developer_id")
-    private List<WorkExperience> workExperiences = new LinkedList<>();
+    private List<WorkExperience> workExperiences = new ArrayList<>();
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "desiredJob_id")
-    private DesiredJob desiredJob;
+    private DesiredJob desiredJob = null;
 
     @OneToOne(fetch = FetchType.LAZY)
-    private User user;
+    private User user = null;
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         Developer developer = (Developer) o;
         return Objects.equals(id, developer.id);
     }

@@ -32,5 +32,5 @@ public class Education {
     private String yearTo;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    private Developer developer;
+    private Developer developer = null;
 }

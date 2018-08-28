@@ -10,10 +10,6 @@ import com.instinctools.repo.employeeRepo.JobRepo;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.servlet.http.HttpServletRequest;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
 
 @Service
 public class AddingJobServiceImpl implements AddingJobService {
@@ -33,14 +29,9 @@ public class AddingJobServiceImpl implements AddingJobService {
         Job job = (Job) request.getSession().getAttribute("job");
         job.setFullDescription(jobDto.getFullDescription());
         job.setDesiredExperience(jobDto.getDesiredExperience());
-        Employee employee = user.getEmployee();
-        List<Job> jobs = new LinkedList<>(employee.getJobs());
-        employee.getJobs().clear();
-        jobs.add(job);
-        employee.setJobs(jobs);
-        user.setEmployee(employee);
+        job.setEmployee(user.getEmployee());
+        user.getEmployee().getJobs().add(job);
         jobRepo.save(job);
-        userRepo.save(user);
     }
 
     @Override

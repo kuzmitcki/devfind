@@ -1,11 +1,9 @@
 package com.instinctools.service.developer.delete;
 
-import com.instinctools.entities.userEntites.User;
-
 public interface DeleteDeveloperService {
-    void deleteDeveloperEducation(User user, Long id);
+    void deleteDeveloperEducation(Long id);
 
-    void deleteDeveloperWork(User user, Long id);
+    void deleteDeveloperWork(Long id);
 
-    void deleteDeveloperSkill(User user, Long id);
+    void deleteDeveloperSkill(Long id);
 }

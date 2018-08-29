@@ -1,11 +1,13 @@
 package com.instinctools.controllers.Developer;
 
+import com.instinctools.controllers.Dto.SpecializationDto;
 import com.instinctools.controllers.Dto.UserDto;
 import com.instinctools.controllers.Dto.WorkExperienceDto;
 import com.instinctools.entities.userEntites.User;
 import com.instinctools.repo.developerRepo.EducationRepo;
 import com.instinctools.repo.developerRepo.WorkExperienceRepo;
 import com.instinctools.service.exceptions.EducationNotFoundException;
+import com.instinctools.service.exceptions.SpecializationNotFoundException;
 import com.instinctools.service.exceptions.WorkExperienceNotFoundException;
 import com.instinctools.service.developer.check.CheckDeveloperService;
 import com.instinctools.service.developer.edit.EditDeveloperService;
@@ -78,5 +80,14 @@ public class EditDeveloperController {
         }
         model.addAttribute("work", workExperienceRepo.getOne(id));
         return "developer/edit/experience";
+    }
+
+    @PostMapping("/edit-developer/skill/{id}")
+    public String skillEdit(final @PathVariable("id") Long id,
+                            final SpecializationDto specializationDto,
+                            final Model model) throws SpecializationNotFoundException {
+        model.addAttribute("specializationDto", specializationDto);
+        editDeveloperService.editDeveloperSkill(id, specializationDto);
+        return "redirect:/developer/resume";
     }
 }

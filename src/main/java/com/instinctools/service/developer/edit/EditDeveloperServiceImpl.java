@@ -1,13 +1,17 @@
 package com.instinctools.service.developer.edit;
 
 
+import com.instinctools.controllers.Dto.SpecializationDto;
 import com.instinctools.entities.devEntities.Developer;
+import com.instinctools.entities.devEntities.Specialization;
 import com.instinctools.entities.devEntities.WorkExperience;
 import com.instinctools.controllers.Dto.UserDto;
 import com.instinctools.controllers.Dto.WorkExperienceDto;
 import com.instinctools.entities.userEntites.User;
 import com.instinctools.repo.developerRepo.DeveloperRepo;
+import com.instinctools.repo.developerRepo.SpecializationRepo;
 import com.instinctools.repo.developerRepo.WorkExperienceRepo;
+import com.instinctools.service.exceptions.SpecializationNotFoundException;
 import com.instinctools.service.exceptions.WorkExperienceNotFoundException;
 import com.instinctools.service.mail.MailService;
 import com.instinctools.service.mail.MailServiceSender;
@@ -23,12 +27,16 @@ public class EditDeveloperServiceImpl implements EditDeveloperService {
     private final MailService mailServiceSender;
     private final WorkExperienceRepo workExperienceRepo;
     private final DeveloperRepo developerRepo;
+    private final SpecializationRepo specializationRepo;
 
     public EditDeveloperServiceImpl(final MailServiceSender mailSender,
-                                    final WorkExperienceRepo workExperienceRepo, DeveloperRepo developerRepo) {
+                                    final WorkExperienceRepo workExperienceRepo,
+                                    final DeveloperRepo developerRepo,
+                                    final SpecializationRepo specializationRepo) {
         this.mailServiceSender = mailSender;
         this.workExperienceRepo = workExperienceRepo;
         this.developerRepo = developerRepo;
+        this.specializationRepo = specializationRepo;
     }
 
     @Override
@@ -68,5 +76,16 @@ public class EditDeveloperServiceImpl implements EditDeveloperService {
         workExperience.setDeveloper(user.getDeveloper());
 
         workExperienceRepo.save(workExperience);
+    }
+
+    @Override
+    public void editDeveloperSkill(final Long id,
+                                   final SpecializationDto specializationDto) throws SpecializationNotFoundException {
+        Specialization specialization = specializationRepo.findById(id).
+                                                    orElseThrow(() ->
+                                                            new SpecializationNotFoundException("Cannot find specialization with id " + id));
+        ModelMapper modelMapper = new ModelMapper();
+        modelMapper.map(specializationDto, specialization);
+        specializationRepo.save(specialization);
     }
 }

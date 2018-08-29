@@ -290,15 +290,49 @@
         <div style="padding: 20px;">
                     <#list specializations as specialization>
                         <div style="padding-top: 10px">
-                            <a  style="font-size: 15px;float: right;font-weight: 300;margin-right: 20px;" href="/edit-developer/skill/${specialization.id!}"><input type="image" src="https://image.flaticon.com/icons/svg/660/660756.svg" style="height: 1.1rem;width: 1.5rem;float:"></a>
+                            <a  style="font-size: 15px;float: right;font-weight: 300;margin-right: 20px;" href="#" id="editSkills"><input type="image" src="https://image.flaticon.com/icons/svg/660/660756.svg" style="height: 1.1rem;width: 1.5rem;float:"></a>
                             <form method="post" action="/edit-developer/skill-delete/${specialization.id!}">
                                 <input type="image" src="https://image.flaticon.com/icons/svg/148/148777.svg" style="height: 1.1rem;width: 1.5rem;float: right;margin-right: 15px;">
                                 <input type="hidden" name="_csrf" value="${_csrf.token}"/>
                             </form>
+                            <div id="editSkillsBox" style="display: none">
+                                <form method="post" action="/edit-developer/skill/${specialization.id!}">
+                                    <div class="form-group">
+                                        <label  for="inputSkill" style="color: #4b4b4b;font-size: .875rem;letter-spacing: 0;line-height: 1.25rem;font-weight: 700;display: block;">Skill
+                                            <div>
+                                                <span style="color: #767676;font-family: Helvetica Neue,Helvetica,Arial,Liberation Sans,Roboto,Noto,sans-serif;font-size: .75rem;letter-spacing: 0;line-height: 1.25rem;font-weight: 400;display: inline-block">e.g. Microsoft Office.</span>
+                                            </div>
+                                        </label>
+                                        <input required value="${specialization.skill}" style="border-radius: 8px;" type="text" class="form-control" name="skill" id="inputSkill">
+                                    </div>
+                                    <div class="form-group">
+                                        <label  for="inputExperience" style="color: #4b4b4b;font-size: .875rem;letter-spacing: 0;line-height: 1.25rem;font-weight: 700;display: block;">Experience</label>
+                                        <select required style="color: #4b4b4b; border-radius: 8px;font-family: Helvetica Neue,Helvetica,Arial,Liberation Sans,Roboto,Noto,sans-serif;font-size: .875rem;" class="custom-select" id="inputExperience" name="experience">
+                                            <option selected>${specialization.experience}</option>
+                                            <option>Less than 1 year</option>
+                                            <option>1 year</option>
+                                            <option>2 years</option>
+                                            <option>3 years</option>
+                                            <option>4 years</option>
+                                            <option>5 years</option>
+                                            <option>6 years</option>
+                                            <option>7 years</option>
+                                            <option>8 years</option>
+                                            <option>9 years</option>
+                                            <option>10 years</option>
+                                            <option>11 years</option>
+                                        </select>
+                                    </div>
+                                    <div style="font-size: 0.85rem" class="form-group">
+                                        <input type="hidden" name="_csrf" value="${_csrf.token}" />
+                                        <button type="submit" style="border-radius: 18px;  margin-top: 10px;" class="btn btn-primary">Save</button>
+                                        <a style="border-radius: 18px;  margin-top: 10px;" class="btn btn-primary" id="skills" href="">Cancel</a>
+                                    </div>
+                                </form>
+                            </div>
                             <div style="font-family: Helvetica Neue,Helvetica,Arial,Liberation Sans,Roboto,Noto,sans-serif;font-size: .875rem;letter-spacing: 0;line-height: 1.25rem;font-weight: 400;">
                                 ${specialization.skill} (${specialization.experience})
                             </div>
-                            <hr style="width:100%;font-weight: 600;color: gainsboro">
                         </div>
                     </#list>
         </div>
@@ -346,6 +380,10 @@
         };
         document.getElementById("contact").onclick = function () {
             openBox("contactBox", this);
+            return false;
+        };
+        document.getElementById("editSkills").onclick = function () {
+            openBox("editSkillsBox", this);
             return false;
         };
         document.getElementById("desired").onclick = function () {

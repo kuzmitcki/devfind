@@ -4,10 +4,9 @@ import com.instinctools.controllers.Dto.JobDto;
 import com.instinctools.controllers.Dto.UserDto;
 import com.instinctools.entities.userEntites.User;
 import com.instinctools.repo.employeeRepo.JobRepo;
+import com.instinctools.service.exceptions.JobNotFoundException;
 import com.instinctools.service.employee.check.CheckEmployeeService;
 import com.instinctools.service.employee.edit.EditJobService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -23,7 +22,6 @@ public class EditEmployeeController {
     private final EditJobService editJobService;
     private final CheckEmployeeService checkEmployeeService;
     private final JobRepo jobRepo;
-    private final Logger l = LoggerFactory.getLogger(EditEmployeeController.class);
 
     public EditEmployeeController(final EditJobService editJobService,
                                   final CheckEmployeeService checkEmployeeService,
@@ -54,7 +52,7 @@ public class EditEmployeeController {
     public String editJobTitle(final @AuthenticationPrincipal User user,
                                final @PathVariable(name = "id") Long id,
                                final JobDto jobDto,
-                               final Model model) {
+                               final Model model) throws JobNotFoundException {
         if (checkEmployeeService.checkEmployeeEditing(user, id)) {
             return "redirect:/employee/jobs";
         }
@@ -67,7 +65,7 @@ public class EditEmployeeController {
     public String editJobLocation(final @AuthenticationPrincipal User user,
                                   final @PathVariable(name = "id") Long id,
                                   final JobDto jobDto,
-                                  final Model model) {
+                                  final Model model) throws JobNotFoundException {
         if (checkEmployeeService.checkEmployeeEditing(user, id)) {
             return "redirect:/employee/jobs";
         }
@@ -80,7 +78,7 @@ public class EditEmployeeController {
     public String editJobDescription(final @AuthenticationPrincipal User user,
                                      final @PathVariable(name = "id") Long id,
                                      final JobDto jobDto,
-                                     final Model model) {
+                                     final Model model) throws JobNotFoundException {
         if (checkEmployeeService.checkEmployeeEditing(user, id)) {
             return "redirect:/employee/jobs";
         }
@@ -93,7 +91,7 @@ public class EditEmployeeController {
     public String editJobDesiredExperience(final @AuthenticationPrincipal User user,
                                            final @PathVariable(name = "id") Long id,
                                            final JobDto jobDto,
-                                           final Model model) {
+                                           final Model model) throws JobNotFoundException {
         if (checkEmployeeService.checkEmployeeEditing(user, id)) {
             return "redirect:/employee/jobs";
         }
@@ -106,7 +104,7 @@ public class EditEmployeeController {
     public String editJobQualification(final @AuthenticationPrincipal User user,
                                        final @PathVariable(name = "id") Long id,
                                        final JobDto jobDto,
-                                       final Model model) {
+                                       final Model model) throws JobNotFoundException {
         if (checkEmployeeService.checkEmployeeEditing(user, id)) {
             return "redirect:/employee/jobs";
         }

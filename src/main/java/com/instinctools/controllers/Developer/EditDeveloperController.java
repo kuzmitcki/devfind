@@ -5,6 +5,8 @@ import com.instinctools.controllers.Dto.WorkExperienceDto;
 import com.instinctools.entities.userEntites.User;
 import com.instinctools.repo.developerRepo.EducationRepo;
 import com.instinctools.repo.developerRepo.WorkExperienceRepo;
+import com.instinctools.service.exceptions.EducationNotFoundException;
+import com.instinctools.service.exceptions.WorkExperienceNotFoundException;
 import com.instinctools.service.developer.check.CheckDeveloperService;
 import com.instinctools.service.developer.edit.EditDeveloperService;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -49,7 +51,7 @@ public class EditDeveloperController {
     @GetMapping("edit-developer/education/{id}")
     public String educationEditPage(final @AuthenticationPrincipal User user,
                                     final @PathVariable(name = "id") Long id,
-                                    final Model model) {
+                                    final Model model) throws EducationNotFoundException {
         if (checkDeveloperService.checkDeveloperEditingEducation(user, id)) {
             return "redirect:/developer/resume";
         }
@@ -61,7 +63,7 @@ public class EditDeveloperController {
     public String workExperienceEdit(final @AuthenticationPrincipal User user,
                                      final @PathVariable("id") Long id,
                                      final WorkExperienceDto workExperienceDto,
-                                     final Model model) {
+                                     final Model model) throws WorkExperienceNotFoundException {
         model.addAttribute("workExperienceDto", workExperienceDto);
         editDeveloperService.editDeveloperWorkExperience(user, id, workExperienceDto);
         return "redirect:/developer/resume";
@@ -70,7 +72,7 @@ public class EditDeveloperController {
     @GetMapping("/edit-developer/experience/{id}")
     public String workExperienceEditPage(final @AuthenticationPrincipal User user,
                                          final @PathVariable(name = "id") Long id,
-                                         final Model model) {
+                                         final Model model) throws WorkExperienceNotFoundException {
         if (checkDeveloperService.checkDeveloperEditingWork(user, id)) {
             return "redirect:/developer/resume";
         }

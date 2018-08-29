@@ -6,6 +6,7 @@ import com.instinctools.entities.empEntites.Employee;
 import com.instinctools.entities.userEntites.Role;
 import com.instinctools.entities.userEntites.User;
 import com.instinctools.repo.UserRepo;
+import com.instinctools.service.exceptions.ResourceNotFoundException;
 import com.instinctools.service.mail.MailServiceSender;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collections;
 import java.util.UUID;
+
 
 @Service
 public class UserService implements UserDetailsService {
@@ -37,10 +39,10 @@ public class UserService implements UserDetailsService {
         return userRepo.findByUsername(username);
     }
 
-    public boolean activateUser(final String code) {
+    public boolean activateUser(final String code) throws ResourceNotFoundException {
         User user = userRepo.findByActivationCode(code);
         if (user == null) {
-            return false;
+            throw new ResourceNotFoundException("User with activation code " + code + " is not found");
         }
         user.setActivationCode(null);
         userRepo.save(user);

@@ -3,6 +3,7 @@ package com.instinctools.controllers;
 import com.instinctools.entities.userEntites.Role;
 import com.instinctools.entities.userEntites.User;
 import com.instinctools.repo.UserRepo;
+import com.instinctools.service.exceptions.ResourceNotFoundException;
 import com.instinctools.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -52,7 +53,7 @@ public class LoginController {
 
     @GetMapping("/activate/{code}")
     public String activate(final Model model,
-                           final @PathVariable String code) {
+                           final @PathVariable String code) throws ResourceNotFoundException {
         boolean isActivated = userService.activateUser(code);
         if (isActivated) {
             model.addAttribute("message", "User successfully activated");
@@ -86,7 +87,7 @@ public class LoginController {
     public String change(final Model model,
                          final @PathVariable String code,
                          final @AuthenticationPrincipal User user,
-                         final HttpServletRequest request) {
+                         final HttpServletRequest request) throws ResourceNotFoundException {
         model.addAttribute("developer", user.getDeveloper());
         boolean isActivated = userService.activateUser(code);
         if (isActivated) {

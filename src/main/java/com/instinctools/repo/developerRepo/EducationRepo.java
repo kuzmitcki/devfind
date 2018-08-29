@@ -5,6 +5,7 @@ import com.instinctools.entities.devEntities.Education;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface EducationRepo extends JpaRepository<Education, Long> {
     List<Education> findByPlaceIgnoreCaseLike(String cityLike);

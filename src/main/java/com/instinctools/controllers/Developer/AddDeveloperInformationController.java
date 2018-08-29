@@ -7,6 +7,7 @@ import com.instinctools.controllers.Dto.SkillDto;
 import com.instinctools.controllers.Dto.DesiredJobDto;
 import com.instinctools.entities.userEntites.User;
 import com.instinctools.service.developer.adding.AddDeveloperService;
+import com.instinctools.service.exceptions.EducationNotFoundException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -116,7 +117,7 @@ public class AddDeveloperInformationController {
     public String educationEdit(final @AuthenticationPrincipal User user,
                                 final @PathVariable("id") Long id,
                                 final EducationDto educationDto,
-                                final Model model) {
+                                final Model model) throws EducationNotFoundException {
         model.addAttribute("educationDto", educationDto);
         addDeveloperService.setDeveloperEducation(user, educationDto, id);
         return "redirect:/developer/resume";

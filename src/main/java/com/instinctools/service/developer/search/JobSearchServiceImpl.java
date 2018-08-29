@@ -15,6 +15,7 @@ import java.util.Collections;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+
 @Service
 public class JobSearchServiceImpl implements JobSearchService {
     private final static double SALARY_COEFFICIENT = 0.2;

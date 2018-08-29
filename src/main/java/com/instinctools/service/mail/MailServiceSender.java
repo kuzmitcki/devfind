@@ -9,6 +9,8 @@ import com.instinctools.entities.userEntites.User;
 import com.instinctools.repo.UserRepo;
 import com.instinctools.repo.developerRepo.DeveloperRepo;
 import com.instinctools.repo.employeeRepo.JobRepo;
+import com.instinctools.service.exceptions.DeveloperNotFoundException;
+import com.instinctools.service.exceptions.JobNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
@@ -54,8 +56,10 @@ public class MailServiceSender implements MailService {
     @Override
     public void sendOfferToDeveloper(final User user,
                                      final Long id,
-                                     final RedirectAttributes attributes) {
-        Developer developer = developerRepo.getOne(id);
+                                     final RedirectAttributes attributes) throws DeveloperNotFoundException {
+        Developer developer = developerRepo.findById(id).
+                                orElseThrow(()->
+                                            new DeveloperNotFoundException("Cannot find developer with id " + id + ". Developer doesn't exists"));
         if (!StringUtils.isEmpty(developer.getUser().getEmail())) {
             String message = String.format(
                     "Hello, %s! \n" +
@@ -92,8 +96,8 @@ public class MailServiceSender implements MailService {
     @Override
     public void sendResumeToEmployee(final User user,
                                      final Long id,
-                                     final RedirectAttributes attributes) {
-        Job job = jobRepo.getOne(id);
+                                     final RedirectAttributes attributes) throws JobNotFoundException {
+        Job job = jobRepo.findById(id).orElseThrow(()-> new JobNotFoundException("Cannot find job with id " + id));
         Employee employee = job.getEmployee();
 
         if (!StringUtils.isEmpty(employee.getUser().getEmail())) {

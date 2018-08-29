@@ -1,5 +1,8 @@
 package com.instinctools.controllers.Developer;
 
+import com.instinctools.service.exceptions.EducationNotFoundException;
+import com.instinctools.service.exceptions.SpecializationNotFoundException;
+import com.instinctools.service.exceptions.WorkExperienceNotFoundException;
 import com.instinctools.service.developer.delete.DeleteDeveloperService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -17,19 +20,19 @@ public class DeleteDeveloperInformationController {
     }
 
     @PostMapping("edit-developer/education-delete/{id}")
-    public String  deleteEducation(final @PathVariable(name = "id") Long id) {
+    public String  deleteEducation(final @PathVariable(name = "id") Long id) throws EducationNotFoundException {
         developerService.deleteDeveloperEducation(id);
         return "redirect:/developer/resume";
     }
 
     @PostMapping("edit-developer/work-delete/{id}")
-    public String  deleteWork(final @PathVariable(name = "id") Long id) {
+    public String  deleteWork(final @PathVariable(name = "id") Long id) throws WorkExperienceNotFoundException {
         developerService.deleteDeveloperWork(id);
         return "redirect:/developer/resume";
     }
 
     @PostMapping("edit-developer/skill-delete/{id}")
-    public String deleteSkill(final @PathVariable("id") Long id) {
+    public String deleteSkill(final @PathVariable("id") Long id) throws SpecializationNotFoundException {
         developerService.deleteDeveloperSkill(id);
         return "redirect:/developer/resume";
     }

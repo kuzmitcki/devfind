@@ -21,6 +21,7 @@ import java.util.LinkedList;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+
 @Service
 public class ResumeSearchServiceImpl implements ResumeSearchService {
     private final WordsSpliterator wordsSpliterator;

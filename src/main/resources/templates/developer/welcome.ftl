@@ -54,4 +54,13 @@
         <a class="btn btn-primary" style="font-size: 24px; border-radius: 9px;" href="/resume/wizard/profile">Create</a>
         <img style="margin-left: 22%;width: 450px" src="https://hiring.careerbuilder.com/assets/jobs/jobs--progress-image.png">
     </div>
+
+<script>
+    var jcontent ={
+        "firstname" : "John",
+        "lastnme" : "Smith"
+    }
+    const output = document.getElementById('output');
+    output.innerHTML = jcontent.firstname + ' ' + jcontent.lastnme;
+</script>
 </@p.page>

@@ -9,6 +9,7 @@ import com.instinctools.repo.employeeRepo.EmployeeRepo;
 import com.instinctools.repo.employeeRepo.JobRepo;
 import org.springframework.stereotype.Service;
 
+
 @Service
 public class JobEditionServiceImpl implements EditJobService {
     private final JobRepo jobRepo;

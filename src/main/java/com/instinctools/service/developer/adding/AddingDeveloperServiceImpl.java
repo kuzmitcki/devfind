@@ -16,8 +16,10 @@ import com.instinctools.repo.developerRepo.WorkExperienceRepo;
 import com.instinctools.repo.developerRepo.DeveloperRepo;
 import com.instinctools.repo.developerRepo.SpecializationRepo;
 import com.instinctools.repo.developerRepo.DesiredJobRepo;
+import com.instinctools.service.exceptions.EducationNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+
 
 @Service
 public class AddingDeveloperServiceImpl implements AddDeveloperService {
@@ -108,8 +110,10 @@ public class AddingDeveloperServiceImpl implements AddDeveloperService {
     @Override
     public void setDeveloperEducation(final User user,
                                       final EducationDto educationDTO,
-                                      final Long id) {
-        Education education = educationRepo.getOne(id);
+                                      final Long id) throws EducationNotFoundException {
+        Education education = educationRepo.findById(id).
+                                    orElseThrow(()->
+                                            new EducationNotFoundException("Cannot find education with id " + id + ". Education doesn't exists"));
 
         ModelMapper modelMapper = new ModelMapper();
         modelMapper.map(educationDTO, education);

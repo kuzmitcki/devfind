@@ -9,6 +9,7 @@ import com.instinctools.entities.userEntites.User;
 import com.instinctools.repo.UserRepo;
 import com.instinctools.repo.developerRepo.DeveloperRepo;
 import com.instinctools.repo.developerRepo.WorkExperienceRepo;
+import com.instinctools.service.exceptions.WorkExperienceNotFoundException;
 import com.instinctools.service.mail.MailService;
 import com.instinctools.service.mail.MailServiceSender;
 import org.modelmapper.ModelMapper;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.UUID;
+
 
 @Service
 public class EditDeveloperServiceImpl implements EditDeveloperService {
@@ -58,8 +60,9 @@ public class EditDeveloperServiceImpl implements EditDeveloperService {
     @Override
     public void editDeveloperWorkExperience(final User user,
                                             final Long id,
-                                            final WorkExperienceDto workExperienceDTO) {
-        WorkExperience workExperience = workExperienceRepo.getOne(id);
+                                            final WorkExperienceDto workExperienceDTO) throws WorkExperienceNotFoundException {
+        WorkExperience workExperience = workExperienceRepo.findById(id).
+                                            orElseThrow(()-> new WorkExperienceNotFoundException("Cannot find work with id " + id));
 
         ModelMapper mapper = new ModelMapper();
         mapper.map(workExperienceDTO, workExperience);

@@ -4,6 +4,7 @@ import com.instinctools.controllers.Dto.SearchDto;
 import com.instinctools.entities.empEntites.Job;
 import com.instinctools.entities.userEntites.User;
 import com.instinctools.repo.employeeRepo.JobRepo;
+import com.instinctools.service.exceptions.JobNotFoundException;
 import com.instinctools.service.developer.search.JobSearchService;
 import com.instinctools.service.mail.MailService;
 import org.springframework.ui.Model;
@@ -78,8 +79,8 @@ public class SearchForJobController {
 
     @GetMapping("/preview/{id}")
     public String jobPreview(final @PathVariable("id") Long id,
-                             final Model model) {
-        Job job = jobRepo.getOne(id);
+                             final Model model) throws JobNotFoundException {
+        Job job = jobRepo.findById(id).orElseThrow(()-> new JobNotFoundException("Cannot find job with id " + id));
         model.addAttribute("employee", job.getEmployee());
         model.addAttribute("job", job);
         return "developer/preview/jobPreview";
@@ -88,7 +89,7 @@ public class SearchForJobController {
     @PostMapping("/send-resume/{id}")
     public String sendResumeToEmployee(final @AuthenticationPrincipal User user,
                                        final @PathVariable("id") Long id,
-                                       final RedirectAttributes attributes) {
+                                       final RedirectAttributes attributes) throws JobNotFoundException {
         mailServiceSender.sendResumeToEmployee(user, id, attributes);
         return "redirect:/job/preview/" + id;
     }

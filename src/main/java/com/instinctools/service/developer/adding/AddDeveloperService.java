@@ -6,6 +6,7 @@ import com.instinctools.controllers.Dto.WorkExperienceDto;
 import com.instinctools.controllers.Dto.SkillDto;
 import com.instinctools.controllers.Dto.DesiredJobDto;
 import com.instinctools.entities.userEntites.User;
+import com.instinctools.service.exceptions.EducationNotFoundException;
 
 public interface AddDeveloperService {
     void setBasicQualities(User user, UserDto userDTO);
@@ -14,13 +15,11 @@ public interface AddDeveloperService {
 
     void setWorkExperience(User user, WorkExperienceDto workExperienceDTO, String check);
 
-
     void setDeveloperSummary(User user, String summary);
 
     void setDeveloperAdditional(User user, String additional);
 
-
-    void setDeveloperEducation(User user, EducationDto educationDTO, Long id);
+    void setDeveloperEducation(User user, EducationDto educationDTO, Long id) throws EducationNotFoundException;
 
     void setDeveloperSkill(User user, SkillDto skillDto);
 

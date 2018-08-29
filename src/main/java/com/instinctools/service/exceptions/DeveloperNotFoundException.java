@@ -3,7 +3,7 @@ package com.instinctools.service.exceptions;
 public class DeveloperNotFoundException extends Exception {
 
     /**
-     * Creates new instance of resource not found exception.
+     * Creates new instance of developer not found exception.
      *
      * @param message error message
      */
@@ -12,7 +12,7 @@ public class DeveloperNotFoundException extends Exception {
     }
 
     /**
-     * Creates new instance of resource not found exception.
+     * Creates new instance of developer not found exception.
      *
      * @param message   error message
      * @param exception exception

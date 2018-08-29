@@ -33,4 +33,14 @@ public class Education {
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Developer developer = null;
+
+    @Override
+    public String toString() {
+        return "Education{" +
+                "degree='" + degree + '\'' +
+                ", place='" + place + '\'' +
+                ", fieldOfStudy='" + fieldOfStudy + '\'' +
+                ", cityOfEducation='" + cityOfEducation + '\'' +
+                '}';
+    }
 }

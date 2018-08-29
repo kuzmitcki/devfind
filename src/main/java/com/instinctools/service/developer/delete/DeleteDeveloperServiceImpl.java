@@ -25,15 +25,15 @@ public class DeleteDeveloperServiceImpl implements DeleteDeveloperService {
 
     @Override
     public void deleteDeveloperEducation(final Long id) throws EducationNotFoundException {
-        educationRepo.delete(educationRepo.findById(id).
-                                                orElseThrow(()->
-                                                        new EducationNotFoundException("Cannot delete education with id " + id + ". Education doesn't exist")));
+       educationRepo.delete(educationRepo.findById(id).
+                                                     orElseThrow(() ->
+                                                             new EducationNotFoundException("Cannot delete education with id " + id + ". Education doesn't exist")));
     }
 
     @Override
     public void deleteDeveloperWork(final Long id) throws WorkExperienceNotFoundException {
-       workExperienceRepo.delete(workExperienceRepo.findById(id).
-                                            orElseThrow(()->
+        workExperienceRepo.delete(workExperienceRepo.findById(id).
+                                            orElseThrow(() ->
                                                     new WorkExperienceNotFoundException("Cannot delete work with id " + id + ". Work doesn't exist")));
     }
 

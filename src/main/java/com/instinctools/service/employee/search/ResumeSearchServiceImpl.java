@@ -13,6 +13,8 @@ import com.instinctools.repo.developerRepo.EducationRepo;
 import com.instinctools.repo.developerRepo.WorkExperienceRepo;
 import com.instinctools.service.words.WordsSpliterator;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
@@ -234,10 +236,10 @@ public class ResumeSearchServiceImpl implements ResumeSearchService {
                 filter(searchForResumeByWorkTitle(searchDto.getTitle())::contains).
                 filter(searchForResumeByCompany(searchDto.getCompany())::contains).
                 filter(searchForResumeByEducationPlace(searchDto.getPlace())::contains).
-                filter(searchForResumeByEducationDegree(searchDto.getDegree())::contains).
-                filter(searchForResumeByFieldOfStudy(searchDto.getField())::contains).
-                filter(searchForDeveloperByLocation(searchDto.getLocation())::contains).
-                filter(searchForDeveloperByExperience(searchDto.getExperience())::contains).
+                    filter(searchForResumeByEducationDegree(searchDto.getDegree())::contains).
+                    filter(searchForResumeByFieldOfStudy(searchDto.getField())::contains).
+                    filter(searchForDeveloperByLocation(searchDto.getLocation())::contains).
+                    filter(searchForDeveloperByExperience(searchDto.getExperience())::contains).
                distinct().collect(Collectors.toList());
     }
 }

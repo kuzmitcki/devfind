@@ -25,4 +25,14 @@ public class DesiredJob {
 
     @OneToOne
     private Developer developer = null;
+
+    @Override
+    public String toString() {
+        return "DesiredJob{" +
+                "desiredJobTitle='" + desiredJobTitle + '\'' +
+                ", desiredJobType='" + desiredJobType + '\'' +
+                ", desiredSalary=" + desiredSalary +
+                ", desiredSalaryPeriod='" + desiredSalaryPeriod + '\'' +
+                '}';
+    }
 }

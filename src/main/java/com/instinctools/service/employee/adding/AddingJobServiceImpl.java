@@ -6,6 +6,7 @@ import com.instinctools.entities.empEntites.Job;
 import com.instinctools.controllers.Dto.JobDto;
 import com.instinctools.entities.userEntites.User;
 import com.instinctools.repo.UserRepo;
+import com.instinctools.repo.employeeRepo.EmployeeRepo;
 import com.instinctools.repo.employeeRepo.JobRepo;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -16,11 +17,14 @@ import javax.servlet.http.HttpServletRequest;
 public class AddingJobServiceImpl implements AddingJobService {
     private final JobRepo jobRepo;
     private final UserRepo userRepo;
+    private final EmployeeRepo employeeRepo;
 
     public AddingJobServiceImpl(final JobRepo jobRepo,
-                                final UserRepo userRepo) {
+                                final UserRepo userRepo,
+                                final EmployeeRepo employeeRepo) {
         this.jobRepo = jobRepo;
         this.userRepo = userRepo;
+        this.employeeRepo = employeeRepo;
     }
 
     @Override
@@ -33,6 +37,7 @@ public class AddingJobServiceImpl implements AddingJobService {
         job.setEmployee(user.getEmployee());
         user.getEmployee().getJobs().add(job);
         jobRepo.save(job);
+        employeeRepo.save(user.getEmployee());
     }
 
     @Override
@@ -60,9 +65,7 @@ public class AddingJobServiceImpl implements AddingJobService {
 
         Employee employee = user.getEmployee();
         employee.setCompany(jobDto.getCompany());
-        user.setEmployee(employee);
-
-        userRepo.save(user);
+        employeeRepo.save(employee);
 
         redirectedJob.addFlashAttribute("job", job);
     }

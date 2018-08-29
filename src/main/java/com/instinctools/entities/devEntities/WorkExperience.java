@@ -36,4 +36,13 @@ public class WorkExperience {
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Developer developer;
+
+    @Override
+    public String toString() {
+        return "WorkExperience{" +
+                "jobTitle='" + jobTitle + '\'' +
+                ", company='" + company + '\'' +
+                ", city='" + city + '\'' +
+                '}';
+    }
 }

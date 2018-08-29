@@ -6,7 +6,6 @@ import com.instinctools.entities.devEntities.WorkExperience;
 import com.instinctools.controllers.Dto.UserDto;
 import com.instinctools.controllers.Dto.WorkExperienceDto;
 import com.instinctools.entities.userEntites.User;
-import com.instinctools.repo.UserRepo;
 import com.instinctools.repo.developerRepo.DeveloperRepo;
 import com.instinctools.repo.developerRepo.WorkExperienceRepo;
 import com.instinctools.service.exceptions.WorkExperienceNotFoundException;

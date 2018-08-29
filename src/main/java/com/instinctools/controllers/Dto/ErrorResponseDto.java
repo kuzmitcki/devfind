@@ -1,26 +1,14 @@
 package com.instinctools.controllers.Dto;
 
+
+import lombok.Data;
+
+@Data
 public class ErrorResponseDto {
 
     private String errorMessage;
 
     private String detailException;
-
-    public String getErrorMessage() {
-        return errorMessage;
-    }
-
-    public void setErrorMessage(final String errorMessage) {
-        this.errorMessage = errorMessage;
-    }
-
-    public String getDetailException() {
-        return detailException;
-    }
-
-    public void setDetailException(final String detailException) {
-        this.detailException = detailException;
-    }
 
     /**
      * Generate ErrorResponseDto object by message.

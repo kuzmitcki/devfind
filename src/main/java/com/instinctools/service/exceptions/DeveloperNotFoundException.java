@@ -1,6 +1,10 @@
 package com.instinctools.service.exceptions;
 
-public class DeveloperNotFoundException extends Exception {
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.ResponseStatus;
+
+@ResponseStatus(value = HttpStatus.NOT_FOUND)
+public class DeveloperNotFoundException extends RuntimeException {
 
     /**
      * Creates new instance of developer not found exception.

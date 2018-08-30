@@ -45,7 +45,7 @@ public class AddDeveloperInformationController {
     }
 
     @GetMapping("resume/wizard/education")
-    public String resumeEducationPage(@AuthenticationPrincipal  User user,
+    public String resumeEducationPage(final @AuthenticationPrincipal  User user,
                                       final Model model) {
         model.addAttribute("education",
                 user.getDeveloper().getEducation().isEmpty());
@@ -92,7 +92,7 @@ public class AddDeveloperInformationController {
     @PostMapping("edit-developer/desired")
     public String editDesiredJob(final @AuthenticationPrincipal User user,
                                  final DesiredJobDto desiredJobDto,
-                                 Model model) {
+                                 final Model model) {
         model.addAttribute("desiredJobDto", desiredJobDto);
         desiredJobDto.setDeveloper(user.getDeveloper());
         addDeveloperService.setDesiredJob(user, desiredJobDto);

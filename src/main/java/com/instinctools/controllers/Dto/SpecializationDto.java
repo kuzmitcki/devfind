@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class SpecializationDto {
-
     private String skill;
+
     private String experience;
 }

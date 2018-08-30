@@ -82,7 +82,7 @@ public class AddJobInformationController {
     public String jobDescriptionDetails(final RedirectAttributes redirectJob,
                                         final HttpServletRequest request,
                                         final JobDto jobDto,
-                                        Model model) {
+                                        final Model model) {
         model.addAttribute("jobDto", jobDto);
         addingJobService.setEmployeeJobSalary(jobDto, redirectJob, request);
         return "redirect:/job/wizard/description";

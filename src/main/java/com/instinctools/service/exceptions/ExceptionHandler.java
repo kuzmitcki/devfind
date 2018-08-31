@@ -1,12 +1,6 @@
-package com.instinctools.config;
+package com.instinctools.service.exceptions;
 
 import com.instinctools.controllers.Dto.ErrorResponseDto;
-import com.instinctools.service.exceptions.WorkExperienceNotFoundException;
-import com.instinctools.service.exceptions.ResourceNotFoundException;
-import com.instinctools.service.exceptions.EducationNotFoundException;
-import com.instinctools.service.exceptions.DeveloperNotFoundException;
-import com.instinctools.service.exceptions.JobNotFoundException;
-import com.instinctools.service.exceptions.SpecializationNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;

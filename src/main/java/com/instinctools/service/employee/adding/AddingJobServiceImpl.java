@@ -1,6 +1,7 @@
 package com.instinctools.service.employee.adding;
 
 import com.instinctools.controllers.Dto.UserDto;
+import com.instinctools.entities.devEntities.WorkExperience;
 import com.instinctools.entities.empEntites.Employee;
 import com.instinctools.entities.empEntites.Job;
 import com.instinctools.controllers.Dto.JobDto;
@@ -11,6 +12,7 @@ import com.instinctools.repo.employeeRepo.JobRepo;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.servlet.http.HttpServletRequest;
+import java.util.Arrays;
 
 
 @Service

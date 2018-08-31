@@ -17,7 +17,8 @@ public class CheckEmployeeServiceImpl implements CheckEmployeeService {
     @Override
     public boolean checkEmployeeEditing(final User user,
                                         final Long id) throws JobNotFoundException {
-        jobRepo.findById(id).orElseThrow(() -> new JobNotFoundException("Cannot find job with id " + id));
-        return user.getEmployee().equals(jobRepo.getOne(id).getEmployee());
+        return user.getEmployee().equals(jobRepo.
+                                            findById(id).
+                                                orElseThrow(() -> new JobNotFoundException("Cannot find job with id " + id)).getEmployee());
     }
 }

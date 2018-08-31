@@ -70,11 +70,9 @@ public class EditDeveloperServiceImpl implements EditDeveloperService {
                                             final WorkExperienceDto workExperienceDTO) throws WorkExperienceNotFoundException {
         WorkExperience workExperience = workExperienceRepo.findById(id).
                                             orElseThrow(()-> new WorkExperienceNotFoundException("Cannot find work with id " + id));
-
         ModelMapper mapper = new ModelMapper();
         mapper.map(workExperienceDTO, workExperience);
         workExperience.setDeveloper(user.getDeveloper());
-
         workExperienceRepo.save(workExperience);
     }
 

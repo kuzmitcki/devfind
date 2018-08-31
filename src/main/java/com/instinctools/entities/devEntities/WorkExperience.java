@@ -41,8 +41,8 @@ public class WorkExperience {
     public String toString() {
         return "WorkExperience{" +
                 "jobTitle='" + jobTitle + '\'' +
-                ", company='" + company + '\'' +
-                ", city='" + city + '\'' +
+                ", yearFrom='" + yearFrom + '\'' +
+                ", yearTo='" + yearTo + '\'' +
                 '}';
     }
 }

@@ -1,16 +1,25 @@
 package com.instinctools.controllers.Developer;
 
+import com.instinctools.entities.devEntities.WorkExperience;
 import com.instinctools.entities.userEntites.User;
 import com.instinctools.repo.developerRepo.EducationRepo;
 import com.instinctools.repo.developerRepo.SpecializationRepo;
 import com.instinctools.repo.developerRepo.WorkExperienceRepo;
 import com.instinctools.service.mail.MailServiceSender;
+import net.bytebuddy.TypeCache;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+
+import java.util.Comparator;
+import java.util.List;
+import java.util.LongSummaryStatistics;
+import java.util.stream.Collectors;
 
 @Controller
 @PreAuthorize("hasAuthority('DEVELOPER')")
@@ -19,6 +28,7 @@ public class ResumeController {
     private final SpecializationRepo specializationRepo;
     private final WorkExperienceRepo workExperienceRepo;
     private final EducationRepo educationRepo;
+    private final Logger l = LoggerFactory.getLogger(ResumeController.class);
 
     @Autowired
     public ResumeController(final MailServiceSender mailSender,
@@ -43,6 +53,9 @@ public class ResumeController {
                                          educationRepo.findByDeveloper(user.getDeveloper()));
         model.addAttribute("workExperiences",
                                          workExperienceRepo.findByDeveloper(user.getDeveloper()));
+        List<WorkExperience> collect = user.getDeveloper().getWorkExperiences().stream().sorted(Comparator.comparing(WorkExperience::getYearFrom)).
+                                        collect(Collectors.toList());
+        l.info(collect.toString());
         return "developer/resume/resume";
     }
 

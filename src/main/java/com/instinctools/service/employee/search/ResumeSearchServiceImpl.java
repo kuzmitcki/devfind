@@ -231,11 +231,11 @@ public class ResumeSearchServiceImpl implements ResumeSearchService {
     @Override
     public List<Developer> searchForResumeAdvanced(final SearchDto searchDto) {
         return searchForResumeByOneWord(searchDto.getOneWord()).stream().
-                filter(searchForResumeByWords(searchDto.getAllWords())::contains).
-                filter(searchForResumeByPhrase(searchDto.getPhrase())::contains).
-                filter(searchForResumeByWorkTitle(searchDto.getTitle())::contains).
-                filter(searchForResumeByCompany(searchDto.getCompany())::contains).
-                filter(searchForResumeByEducationPlace(searchDto.getPlace())::contains).
+                    filter(searchForResumeByWords(searchDto.getAllWords())::contains).
+                    filter(searchForResumeByPhrase(searchDto.getPhrase())::contains).
+                    filter(searchForResumeByWorkTitle(searchDto.getTitle())::contains).
+                    filter(searchForResumeByCompany(searchDto.getCompany())::contains).
+                    filter(searchForResumeByEducationPlace(searchDto.getPlace())::contains).
                     filter(searchForResumeByEducationDegree(searchDto.getDegree())::contains).
                     filter(searchForResumeByFieldOfStudy(searchDto.getField())::contains).
                     filter(searchForDeveloperByLocation(searchDto.getLocation())::contains).
